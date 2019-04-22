@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 /**
  *
  * @title AcHandTable
@@ -188,7 +187,7 @@ class Demo2 extends Component {
   render() {
     return (
       <div className="demoPadding">
-        <div>啊发发发送发送到发</div>
+        <div>dddddddd</div>
       </div>
     );
   }

@@ -183,7 +183,6 @@ class Demo2 extends Component {
     console.log('updateData', updateData);
   };
 
-
   render() {
     return (
       <div className="demoPadding">

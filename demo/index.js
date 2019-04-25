@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import { Con, Row, Col } from 'bee-layout';
 import { Panel } from 'bee-panel';
 import Drawer from 'bee-drawer';
-import Clipboard from 'bee-clipboard'; 
+import Clipboard from 'bee-clipboard';
 import './demo.scss'
 
 
 
 import Demo1 from "./demolist/Demo1";
-var DemoArray = [{"example":<Demo1 />,"title":" 应用组件名称","code":"/**\n *\n * @title 应用组件名称\n * @description 应用组件描述\n *\n */\n\nimport React, { Component } from 'react';\nimport Temp from '../../src/index';\nclass Demo1 extends Component {\n    render () {\n        return (\n            <div className=\"demoPadding\">\n                <Temp >tools测试代码</Temp>\n            </div>\n        )\n    }\n}\n\n\n","desc":" 应用组件描述"}]
+var DemoArray = [{"example":<Demo1 />,"title":" 应用组件名称","code":"/**\n *\n * @title 应用组件名称22\n * @description 应用组件描述\n *\n */\n\nimport React, { Component } from 'react';\nimport Temp from '../../src/index';\nclass Demo1 extends Component {\n    render () {\n        return (\n            <div className=\"demoPadding\">\n                <Temp >tools测试代码</Temp>\n            </div>\n        )\n    }\n}\n\n\n","desc":" 应用组件描述"}]
 
 
 class Demo extends Component {
@@ -43,15 +43,15 @@ class Demo extends Component {
             <Panel header={header}>
                 {example}
             </Panel>
-           
+
             <Drawer className='component-drawerc' title={title} show={this.state.open} placement='right' onClose={this.fCloseDrawer}>
-            <div className='component-code-copy'> JS代码 
+            <div className='component-code-copy'> JS代码
                 <Clipboard action="copy" text={code}/>
             </div>
             <pre className="pre-js">
                 <code className="hljs javascript">{ code }</code>
             </pre >
-            {!!scss_code ?<div className='component-code-copy copy-css'> SCSS代码 
+            {!!scss_code ?<div className='component-code-copy copy-css'> SCSS代码
                 <Clipboard action="copy" text={scss_code}/>
             </div>:null }
                 { !!scss_code ? <pre className="pre-css">

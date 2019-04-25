@@ -157,7 +157,6 @@ class Demo1 extends Component {
     manualRowMove: true, // false 当值为true时，行可拖拽至指定行
     // dropdownMenu: ['filter_by_condition', 'filter_action_bar'],
     multiColumnSorting: true, // 表头排序，升或降序
-
     dropdownMenu: true, // https://handsontable.com/docs/7.0.2/demo-dropdown-menu.html
   };
 

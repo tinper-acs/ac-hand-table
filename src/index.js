@@ -38,9 +38,9 @@ class AcHandTable extends React.Component {
     this.onHandsonTable(container, tempObj);
 
     //  去掉 license
-    let hotDisplay = document.getElementById('hot-display-license-info');
-    const newDoc = document.createElement('span');
-    hotDisplay.parentNode.replaceChild(newDoc, hotDisplay);
+    // let hotDisplay = document.getElementById('hot-display-license-info');
+    // const newDoc = document.createElement('span');
+    // hotDisplay.parentNode.replaceChild(newDoc, hotDisplay);
 
     // 添加 mousedown
     Handsontable.dom.addEvent(container, 'mousedown', function (event) {
@@ -74,7 +74,9 @@ class AcHandTable extends React.Component {
 
 
   dealData = () => {
-    let { multiSelect, colHeaders, columns, data, dropdownMenu, rowStyle } = this.props;
+    let { multiSelect, colHeaders, columns, data, dropdownMenu, rowStyle, licenseKey } = this.props;
+
+    // 添加 License key
 
     // 添加 多选框
     if (multiSelect) {
@@ -141,9 +143,10 @@ class AcHandTable extends React.Component {
         }
       }
     }
-
-
-    return { ...this.props };
+    return {
+      ...this.props,
+      licenseKey: licenseKey ? licenseKey : 'non-commercial-and-evaluation',
+    };
   };
 
 

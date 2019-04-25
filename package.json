@@ -1,19 +1,19 @@
 {
   "name": "ac-hand-table",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clear": "rimraf dist",
     "clear:gh-pages": "rimraf ghpages",
-    "build": "npm run clear && webpack --config config/webpack.config.prod.js",
+    "build": "webpack --config config/webpack.config.prod.js",
     "dev": "webpack-dev-server --config config/webpack.config.dev.js",
     "lint": "eslint --ext .js --ext .jsx src/",
     "lint-fix": "eslint --fix --ext .js --ext .jsx src/",
     "precommit": "npm run lint",
     "es": "rm -rf es && babel src -d es --no-comments",
-    "deploy": "npm run clear:gh-pages && webpack --config config/webpack.config.ghpages.js"
+    "deploy": "webpack --config config/webpack.config.ghpages.js"
   },
   "bugs": {
     "url": "https://github.com/tinper-acs/ac-hand-table/issues"
@@ -70,7 +70,6 @@
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-hot-loader": "^4.3.4",
-    "rimraf": "^2.6.2",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.22.1",
     "tinper-bee": "latest",

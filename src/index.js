@@ -37,6 +37,9 @@ class AcHandTable extends React.Component {
     } = this.props;
 
     const container = document.getElementById(id);
+
+
+
     // 数据处理满足 handsontable 格式
     const tempObj = this.dealData(this.props);
     this.onHandsonTable(container, tempObj);

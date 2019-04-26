@@ -7,13 +7,17 @@
 
 import React, { Component } from 'react';
 import AcHandTable from '../../src/index';
+import Handsontable from 'handsontable';
 
 class Demo1 extends Component {
   data = [
     {
       id: 1,
       year: '',
-      name: { firstName: '张', lastName: '小贝' },
+      name: {
+        firstName: '张',
+        lastName: '小贝'
+      },
       color: 'yellow',
       num: 19,
       price: 500000,
@@ -24,7 +28,10 @@ class Demo1 extends Component {
     {
       id: 2,
       year: 2018,
-      name: { firstName: '李', lastName: '小贝' },
+      name: {
+        firstName: '李',
+        lastName: '小贝'
+      },
       color: 'green',
       num: 10,
       price: 500000,
@@ -35,7 +42,10 @@ class Demo1 extends Component {
     {
       id: 3,
       year: 2017,
-      name: { firstName: '王', lastName: '小维' },
+      name: {
+        firstName: '王',
+        lastName: '小维'
+      },
       color: 'black',
       num: 20,
       price: 500000,
@@ -46,7 +56,10 @@ class Demo1 extends Component {
     {
       id: 4,
       year: 2016,
-      name: { firstName: '孙', lastName: '大熊' },
+      name: {
+        firstName: '孙',
+        lastName: '大熊'
+      },
       color: 'purple',
       num: 8,
       price: 500000,
@@ -57,12 +70,36 @@ class Demo1 extends Component {
 
 
   manufacturerData = [
-    { name: 'BMW', country: 'Germany', owner: 'Bayerische Motoren Werke AG' },
-    { name: 'Chrysler', country: 'USA', owner: 'Chrysler Group LLC' },
-    { name: 'Nissan', country: 'Japan', owner: 'Nissan Motor Company Ltd' },
-    { name: 'Suzuki', country: 'Japan', owner: 'Suzuki Motor Corporation' },
-    { name: 'Toyota', country: 'Japan', owner: 'Toyota Motor Corporation' },
-    { name: 'Volvo', country: 'Sweden', owner: 'Zhejiang Geely Holding Group' },
+    {
+      name: 'BMW',
+      country: 'Germany',
+      owner: 'Bayerische Motoren Werke AG'
+    },
+    {
+      name: 'Chrysler',
+      country: 'USA',
+      owner: 'Chrysler Group LLC'
+    },
+    {
+      name: 'Nissan',
+      country: 'Japan',
+      owner: 'Nissan Motor Company Ltd'
+    },
+    {
+      name: 'Suzuki',
+      country: 'Japan',
+      owner: 'Suzuki Motor Corporation'
+    },
+    {
+      name: 'Toyota',
+      country: 'Japan',
+      owner: 'Toyota Motor Corporation'
+    },
+    {
+      name: 'Volvo',
+      country: 'Sweden',
+      owner: 'Zhejiang Geely Holding Group'
+    },
   ];
 
   config = {
@@ -73,13 +110,18 @@ class Demo1 extends Component {
     allowInsertRow: false,
     activeHeaderClassName: 'currentRow',
 
+    afterChangesObserved: (changes, source) => {
+      // [[row, prop, oldVal, newVal], ...]
+
+      console.log('hanges, source', changes, source);
+      // return false;
+    },
     // 行样式
     rowStyle(row) {
       if (row % 2 === 0) {
         return { backgroundColor: '#CEC' };
       }
     },
-
     columns: [
       {
         data: 'year',
@@ -110,8 +152,9 @@ class Demo1 extends Component {
       {
         data: 'color',
         type: 'autocomplete',
-        source: ['yellow', 'red', 'green', 'blue', 'gray', 'black', 'white', 'purple', 'lime', 'olive', 'cyan'],
-        strict: false,
+        source: function (query, process) {
+          process(['yellow', 'red', 'green', 'blue', 'gray', 'black', 'white', 'purple', 'lime', 'olive', 'cyan']);
+        },
       },
       {
         type: 'numeric',
@@ -148,6 +191,7 @@ class Demo1 extends Component {
       },
     ],
 
+
     // 使用自定义列头
     rowHeaders: true, // false/数组 //当值为true时显示行头，当值为数组时，行头为数组的值
     filters: true, // 表头过滤
@@ -176,6 +220,7 @@ class Demo1 extends Component {
   // 自定义表头 https://handsontable.com/docs/7.0.2/demo-custom-renderers.html
   // 行过滤  https://handsontable.com/docs/7.0.2/demo-filtering.html
   // 字体颜色 https://handsontable.com/docs/7.0.2/demo-conditional-formatting.html
+  // 修改source https://handsontable.com/docs/7.0.2/Core.html#setDataAtRowProp
 
   getData = () => {
     const updateData = this.child.getData();
@@ -183,12 +228,11 @@ class Demo1 extends Component {
   };
 
 
-  getCheckboxData=()=>{
+  getCheckboxData = () => {
     const data = this.child.getCheckbox();
-    console.log("data",data)
+    console.log('data', data);
 
-  }
-
+  };
 
 
   render() {
@@ -199,10 +243,12 @@ class Demo1 extends Component {
         <AcHandTable
           {...this.config}
           id="example"
-                // 设置ref属性
+          // 设置ref属性
           onRef={(ref) => {
             this.child = ref;
           }}
+
+
           // 多选框选中
           multiSelect
         />

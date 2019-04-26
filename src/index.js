@@ -4,9 +4,6 @@
  */
 import React from 'react';
 import Handsontable from 'handsontable';
-import { getCheckbox } from './utils';
-
-
 import 'handsontable/languages/zh-CN';
 import 'handsontable/languages/en-US';
 import 'handsontable/languages/zh-TW';

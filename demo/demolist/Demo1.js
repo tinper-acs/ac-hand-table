@@ -148,7 +148,6 @@ class Demo1 extends Component {
         type: 'text', // 表格类型
         strict: false,
       },
-
       {
         data: 'color',
         type: 'autocomplete',

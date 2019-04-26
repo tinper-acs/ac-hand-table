@@ -1,17 +1,20 @@
-/* eslint-disable import/first */
+/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types */
 /**
  * Created by ranyanchuan on 2018/3/11.
  */
 import React from 'react';
-import styles from './index.less';
 import Handsontable from 'handsontable';
+import { getCheckbox } from './utils';
+
+
 import 'handsontable/languages/zh-CN';
 import 'handsontable/languages/en-US';
 import 'handsontable/languages/zh-TW';
 import 'handsontable/dist/handsontable.full.css';
 
-class AcHandTable extends React.Component {
+import styles from './index.less';
 
+class AcHandTable extends React.Component {
   state = {};
 
   hot = null;
@@ -24,13 +27,14 @@ class AcHandTable extends React.Component {
   };
 
   componentDidMount() {
-
     // 在父组件上绑定子组件方法
     this.props.onRef(this);
 
     const _this = this;
 
-    let { id, data, colHeaders, rowStyle } = this.props;
+    let {
+      id, data, colHeaders, rowStyle,
+    } = this.props;
 
     const container = document.getElementById(id);
     // 数据处理满足 handsontable 格式
@@ -43,29 +47,25 @@ class AcHandTable extends React.Component {
     // hotDisplay.parentNode.replaceChild(newDoc, hotDisplay);
 
     // 添加 mousedown
-    Handsontable.dom.addEvent(container, 'mousedown', function (event) {
-      if (event.target.nodeName === 'INPUT' && event.target.className == 'multiSelectChecker') {
+    Handsontable.dom.addEvent(container, 'mousedown', (event) => {
+      if (event.target.nodeName === 'INPUT' && event.target.className === 'multiSelectChecker') {
         event.stopPropagation();
       }
     });
 
     // 添加 mouseup
-    Handsontable.dom.addEvent(container, 'mouseup', function (event) {
+    Handsontable.dom.addEvent(container, 'mouseup', (event) => {
       // 多选操作
-      if (event.target.nodeName === 'INPUT' && event.target.className == 'multiSelectChecker') {
+      if (event.target.nodeName === 'INPUT' && event.target.className === 'multiSelectChecker') {
         let checked = !event.target.checked;
         // hot2.render();
         event.stopPropagation();
         if (checked) {
-          colHeaders[0] = `<input type='checkbox' class='multiSelectChecker' checked />`;
-          data.map((item) => {
-            return item['checkbox_status'] = true;
-          });
+          colHeaders[0] = '<input type=\'checkbox\' class=\'multiSelectChecker\' checked />';
+          data.map(item => item.checkbox_status = true);
         } else {
-          colHeaders[0] = `<input type='checkbox' class='multiSelectChecker' />`;
-          data.map((item) => {
-            return item['checkbox_status'] = false;
-          });
+          colHeaders[0] = '<input type=\'checkbox\' class=\'multiSelectChecker\' />';
+          data.map(item => item.checkbox_status = false);
         }
         _this.hot.render();
       }
@@ -74,13 +74,15 @@ class AcHandTable extends React.Component {
 
 
   dealData = () => {
-    let { multiSelect, colHeaders, columns, data, dropdownMenu, rowStyle, licenseKey } = this.props;
+    let {
+      multiSelect, colHeaders, columns, data, dropdownMenu, rowStyle, licenseKey,
+    } = this.props;
 
     // 添加 License key
 
     // 添加 多选框
     if (multiSelect) {
-      const checkedHeader = `<input type='checkbox' class='multiSelectChecker' />`;
+      const checkedHeader = '<input type=\'checkbox\' class=\'multiSelectChecker\' />';
       let className = 'htCenter htMiddle ';
       if (dropdownMenu) {
         className += 'menuCheckbox';
@@ -102,7 +104,6 @@ class AcHandTable extends React.Component {
         // 添加样式
         if (!renderer) {
           column.renderer = function (instance, td, row, col, prop, value) {
-
             switch (type) {
               case 'date':
                 Handsontable.renderers.DateRenderer.apply(this, arguments);
@@ -145,7 +146,7 @@ class AcHandTable extends React.Component {
     }
     return {
       ...this.props,
-      licenseKey: licenseKey ? licenseKey : 'non-commercial-and-evaluation',
+      licenseKey: licenseKey || 'non-commercial-and-evaluation',
     };
   };
 
@@ -157,11 +158,25 @@ class AcHandTable extends React.Component {
   };
 
 
-  render() {
+  // 获取选中的数据
+  getCheckbox = () => {
+    let result = [];
+    let { data } = this.props;
+    if (data && Array.isArray(data)) {
+      for (const item of data) {
+        if (item.checkbox_status) {
+          result.push(item);
+        }
+      }
+    }
+    return result;
+  };
 
+
+  render() {
     const { id } = this.props;
     return (
-      <div id={id}></div>
+      <div id={id}/>
     );
   }
 }

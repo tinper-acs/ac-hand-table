@@ -177,15 +177,25 @@ class Demo1 extends Component {
   // 行过滤  https://handsontable.com/docs/7.0.2/demo-filtering.html
   // 字体颜色 https://handsontable.com/docs/7.0.2/demo-conditional-formatting.html
 
-  goData = () => {
+  getData = () => {
     const updateData = this.child.getData();
     console.log('updateData', updateData);
   };
 
 
+  getCheckboxData=()=>{
+    const data = this.child.getCheckbox();
+    console.log("data",data)
+
+  }
+
+
+
   render() {
     return (
       <div className="demoPadding">
+        <button onClick={this.getData}>数据</button>
+        <button onClick={this.getCheckboxData}>多选框</button>
         <AcHandTable
           {...this.config}
           id="example"

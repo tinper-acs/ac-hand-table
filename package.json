@@ -1,6 +1,6 @@
 {
   "name": "ac-hand-table",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "lint": "eslint --ext .js --ext .jsx src/",
     "lint-fix": "eslint --fix --ext .js --ext .jsx src/",
     "precommit": "npm run lint",
-    "es": "rm -rf es && babel src -d es --no-comments",
+    "dist": "rm -rf dist && babel src -d dist --no-comments",
     "deploy": "webpack --config config/webpack.config.ghpages.js"
   },
   "bugs": {

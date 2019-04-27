@@ -93,12 +93,11 @@ export default Demo;
 ```
 
 ## API
-
-table相关API参考[这里](http://bee.tinper.org/bee-table#bee-table),下面是Grid扩充的API
-
+### AcHandTable
 |参数|说明|类型|默认值|
 |:--|:---:|:--:|---:|
-|paginationObj|表格分页，具体参考[分页API](http://bee.tinper.org/bee-pagination#bee-pagination)|Object|{activePage: 1, total: 0,items:1}
+|id|组件唯一id|string|‘id’|
+|data|表格数据数据|array|[]|
 |rowHeaders|是否显示行头序号|boolean|true|
 |multiSelect|是否含有多选框|boolean|true|
 |manualColumnResize|是否列宽可以拖动|boolean|true|
@@ -106,11 +105,21 @@ table相关API参考[这里](http://bee.tinper.org/bee-table#bee-table),下面�
 |manualRowResize|是否行高可以拖动|boolean|true|
 |manualRowMove|是否行可以交换|boolean|true|
 |multiColumnSorting|是否列可以排序|boolean|true|
-|sheetName【excel】| 设置导出excel 的sheet的名称 | string | -- |
-|sheetIsRowFilter【excel】| 是否要设置数据的行高 | boolean | false |
-|sheetHeader【excel】| 设置导出excel 的Head的高度 | Object | eg:{{height:30, //设置高度ifshow:false //是否显示}} |
-|resetColumns|重置columns|function|this.refs.grid.resetColumns(columns)|
-|exportData|要导出的数据源|array	|-|
+
+
+### Column
+|参数|说明|类型|默认值|
+|:--|:---:|:--:|---:|
+|id|组件唯一id|string|‘id’|
+|data|表格数据数据|array|[]|
+|rowHeaders|是否显示行头序号|boolean|true|
+|multiSelect|是否含有多选框|boolean|true|
+|manualColumnResize|是否列宽可以拖动|boolean|true|
+|manualColumnMove|是否列可以交换|boolean|true|
+|manualRowResize|是否行高可以拖动|boolean|true|
+|manualRowMove|是否行可以交换|boolean|true|
+|multiColumnSorting|是否列可以排序|boolean|true|
+
 
 #### 开发调试
 

@@ -36,7 +36,6 @@ class AcHandTable extends React.Component {
     const container = document.getElementById(id);
 
 
-
     // 数据处理满足 handsontable 格式
     const tempObj = this.dealData(this.props);
     this.onHandsonTable(container, tempObj);
@@ -75,10 +74,12 @@ class AcHandTable extends React.Component {
 
   dealData = () => {
     let {
-      multiSelect, colHeaders, columns, data, dropdownMenu, rowStyle, licenseKey,
+      colHeaders, columns, data, dropdownMenu, rowStyle, licenseKey,
+      multiSelect = true, // 行多选框
+      manualColumnResize = true, // 添加列拖拽
+      multiColumnSorting = true, // 表头排序，升或降序
+      rowHeaders=true, // 显示行头序号,
     } = this.props;
-
-    // 添加 License key
 
     // 添加 多选框
     if (multiSelect) {
@@ -146,7 +147,10 @@ class AcHandTable extends React.Component {
     }
     return {
       ...this.props,
-      licenseKey: licenseKey || 'non-commercial-and-evaluation',
+      licenseKey: licenseKey || 'non-commercial-and-evaluation', // 添加 License key
+      manualColumnResize,
+      multiColumnSorting,
+      rowHeaders,
     };
   };
 

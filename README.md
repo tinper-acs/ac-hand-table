@@ -1,11 +1,14 @@
 ## ac-hand-table
-ac-hand-table是基于handsontable的适用于react框架的电子表格，它提供了数据绑定，数据验证，行过滤，列排序，表格多选，表格样式，表头交互，表头拖拽，
-行高拖拽，行交换等操作
 ---
+ac-hand-table 是基于 `handsontable` 的适用于 React 框架的电子表格，它提供了数据绑定、数据验证、行过滤、列排序、表格多选、表格样式、表头交互、表头拖拽、行高拖拽、行交换等操作
 
-ac-tools init 时模版文件，用于react组件开发的模版
+## 安装
 
-<b>开始之前确保安装了 ac-tools的全局包</b>
+使用 npm 安装最新版本
+
+```
+npm install ac-hand-table
+```
 
 ### 目录结构
 

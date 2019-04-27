@@ -107,8 +107,6 @@ export default Demo;
 |manualColumnMove|是否列可以交换|boolean|true|
 |manualRowResize|是否行高可以拖动|boolean|true|
 |manualRowMove|是否行可以交换|boolean|true|
-
-
 |fixedColumnsLeft|列左固定|number|-|
 |fixedColumnsRight|列右固定|number|-|
 |fixedRowsBottom|行头固定|number|-|
@@ -116,8 +114,9 @@ export default Demo;
 |manualColumnFreeze|是否开启固定列|boolean|true|
 |copyPaste|是否可以复制粘贴|boolean|true|
 |customBorders|是否开启边框设置|boolean|true|
-
-
+|copyable|是否开启键盘复制|boolean|true|
+|allowInsertColumn|是否开启插入列|boolean|true|
+|allowInsertRow|是否开启插入行|boolean|true|
 |multiColumnSorting|是否列可以排序|boolean|true|
 |dropdownMenu|表上下文下拉菜单|`boolean` 或 `array` ["具有一定意义的字符串，见下表 dropdownMenu contextMenu"] |false|
 |contextMenu|行上下文下拉菜单|`boolean` 或 `array` [ "具有一定意义的字符串，见下表 dropdownMenu contextMenu"] |false|

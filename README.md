@@ -95,25 +95,28 @@ export default Demo;
 ## API
 ### AcHandTable
 |参数|说明|类型|默认值|
-|:--|:---:|:--:|---:|
+|:--|:---|--:|---:|
 |id|组件唯一id|string|-|
 |data|表格数据数据|array|[]|
 |columns|列的配置表，具体配置见下表|array|[]|
 |language|表格语言|`zh-CN` `en-US` `zh-TW`|'zh-CN'|
-|rowHeaders|是否显示行头序号|boolean|true|
-|colWidths|列宽|number `100`或 string `100px`或 array `[100,200]`或 func `(index)=>{}`|-|
+|rowHeaders|表头信息|`boolean` `array` `function` (index)=>{}|true|
+|colWidths|列宽|`number` 100或 `string` '100px'或 `array` [100,200]或 `func` (index)=>{}|-|
 |multiSelect|是否含有多选框|boolean|true|
 |manualColumnResize|是否列宽可以拖动|boolean|true|
 |manualColumnMove|是否列可以交换|boolean|true|
 |manualRowResize|是否行高可以拖动|boolean|true|
 |manualRowMove|是否行可以交换|boolean|true|
 |multiColumnSorting|是否列可以排序|boolean|true|
-
-
+|dropdownMenu|表头下拉菜单|`boolean` 或 `array` ["row_above", "row_below"] |false|
+|filters|表头下拉菜单中是否启动过滤器|boolean|false|
+|stretchH|表宽度不等于所有列宽的计算总和时，列宽设置|`none` `all` `last`|'none'|
+|rowStyle|行设置样式|func|-|
+|activeHeaderClassName|选中列标题样式|strig|-|
 
 ### Column
 |参数|说明|类型|默认值|
-|:--|:---:|:--:|---:|
+|:--|:---|:--|:--|
 |data|列的键,支持'date.xx'|string|-|
 |data|表格数据数据|array|[]|
 |type|数据类型 `text` `numeric` `date` `time` `checkbox`  `select` `dropdown` `autocomplete` `password` |string|true|
@@ -133,7 +136,7 @@ export default Demo;
 
 ### multiColumnSorting
 |参数|说明|类型|默认值|
-|:--|:---:|:--:|---:|
+|:--|:---|:--|:--|
 |data|列的键,支持'date.xx'|string|-|
 |data|表格数据数据|array|[]|
 

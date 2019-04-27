@@ -123,18 +123,18 @@ export default Demo;
 |col_left|插入列左侧操作|-|	
 |col_right|插入列右侧操作|-|	
 |---------|	分隔器	|-|
-|remove_row|	删除行动作	|-|
-|remove_col|	删除列操作|-|	
-|clear_column|	清除列值操作	|-|
-|undo|	撤消操作|	undoRedo已开启|-|
-|redo|	重做动作|	undoRedo已开启|
-|make_read_only|	进行只读操作|-|	
-|alignment|	对齐动作|-|	
-|cut|	削减行动|copyPaste打开|
-|copy|	复制动作|	copyPaste打开|
-|freeze_column|	冻结列动作|	插件ManualColumnFreeze已打开|
-|unfreeze_column|	解冻列操作|	插件ManualColumnFreeze已打开|
-|borders|	自定义边框操作|	插件CustomBorders已打开|
+|remove_row|删除行动作	|-|
+|remove_col|删除列操作|-|	
+|clear_column|清除列值操作	|-|
+|undo|撤消操作|undoRedo已开启|-|
+|redo|重做动作|undoRedo已开启|
+|make_read_only|进行只读操作|-|	
+|alignment|	对齐操作|-|	
+|cut|剪切操作|copyPaste打开|
+|copy|复制操作|copyPaste打开|
+|freeze_column|锁定列操作|	manualColumnFreeze已开启|
+|unfreeze_column|解锁列操作|	manualColumnFreeze已开启|
+|borders|自定义边框操作|	customBorders已开启|
 
 ### Column
 |参数|说明|类型|默认值|

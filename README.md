@@ -22,7 +22,7 @@ const data = [
       firstName: '张',
       lastName: '小贝',
     },
-    num: 19,
+    level: 19,
     date: '2018-07-02',
   },
   {
@@ -31,8 +31,7 @@ const data = [
       firstName: '李',
       lastName: '小贝',
     },
-    num: 10,
-    price: 500000,
+    level: 10,
     date: '2018-07-02',
   },
   {
@@ -41,7 +40,7 @@ const data = [
       firstName: '王',
       lastName: '小维',
     },
-    num: 20,
+    level: 20,
     date: '2018-07-02',
   },
   {
@@ -50,7 +49,7 @@ const data = [
       firstName: '孙',
       lastName: '大熊',
     },
-    num: 8,
+    level: 8,
     date: '2018-07-02',
   },
 ];

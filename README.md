@@ -1,5 +1,4 @@
 ## ac-hand-table
----
 ac-hand-table 是基于 `handsontable` 的适用于 React 框架的电子表格，它提供了数据绑定、数据验证、行过滤、列排序、表格多选、表格样式、表头交互、表头拖拽、行高拖拽、行交换等操作
 
 ## 安装
@@ -10,77 +9,86 @@ ac-hand-table 是基于 `handsontable` 的适用于 React 框架的电子表格�
 npm install ac-hand-table
 ```
 
-### 目录结构
+## 使用方法
+```js
+import AcHandTable from 'ac-hand-table';
+import 'ac-hand-table/dist/index.css';
 
-```bash
-.
-├── config
-│   ├── webpack.base.js
-│   ├── webpack.config.dev.js       # 开发环境配置
-│   ├── webpack.config.ghpages.js   # 打包放到github.io环境配置
-│   ├── webpack.config.prod.js      # 发布组件环境配置
-├── demo
-│   ├── demolist
-│   │   └── Demo1.js                # 实例1，调用src中的组件，进行展示
-│   ├── demo.scss                   # demo中需要的基础样式
-│   ├── index-demo-base.js          # demo模版文件
-│   └── index.js                    # ac-tools sample生成的文件
-├── package.json
-├── docs
-│   ├── demolist
-│   │   └── Demo1.js                # 实例1，调用src中的组件，进行展示
-│   ├── demo.scss                   # demo中需要的基础样式
-│   ├── index-demo-base.js          # demo模版文件
-│   └── index.js                    # ac-tools sample生成的文件
-├── ghpages                         # 实例打包文件
-├── mock                            # mock数据
-├── src
-│   ├── assets                      # ac-tools md需要的静态文件
-│   ├── index.js                    # 组件js逻辑
-|   └── index.less                  # 组件样式
-├── static                          # 模版静态文件
-├── .babelrc
-├── .editorconfig                   # 给编辑器的规范
-├── .eslitrc                        # 代码规范(采用airbnb规范，默认不打开的，在webpack.config.dev.js 中注释部分放开就启用)
-├── .package.json
-└── .postcss.config.js
+
+const data = [
+  {
+    id: 1,
+    name: {
+      firstName: '张',
+      lastName: '小贝',
+    },
+    num: 19,
+    date: '2018-07-02',
+  },
+  {
+    id: 2,
+    name: {
+      firstName: '李',
+      lastName: '小贝',
+    },
+    num: 10,
+    price: 500000,
+    date: '2018-07-02',
+  },
+  {
+    id: 3,
+    name: {
+      firstName: '王',
+      lastName: '小维',
+    },
+    num: 20,
+    date: '2018-07-02',
+  },
+  {
+    id: 4,
+    name: {
+      firstName: '孙',
+      lastName: '大熊',
+    },
+    num: 8,
+    date: '2018-07-02',
+  },
+];
+
+
+class Demo extends Component {
+
+  columns = [
+    { data: 'name.firstName' }, // 对象文本类型
+    { data: 'name.lastName' },
+    {
+      data: 'level',
+      type: 'numeric', // 数字类型
+    },
+    {
+      data: 'date',
+      type: 'date', // 日期类型
+      dateFormat: 'YYYY-MM-DD', // 日期格式
+      correctFormat: true, // 当前值是否格式化
+      defaultDate: '1900-01-01', // 默认值
+    },
+  ];
+
+
+  render() {
+    return (
+      <AcHandTable
+        id="example" // 组件id
+        onRef={(ref) => { // 设置ref属性 调用子组件方法
+          this.child = ref;
+        }}
+        colHeaders={['姓', '名', '等级', '日期']} // 表格表头
+        data={data} // 表体数据
+        columns={this.columns} // 列属性设置
+      />
+    );
+  }
+}
+
+export default Demo;
 ```
-
-### 常用命令
-
-将 demo合并到demolist的实例中
-
-```
-ac-tools sample
-```
-
-启动开发环境
-
-```
-npm run dev
-```
-
-实例代码打包
-
-```
-npm run deploy
-```
-
-将markdown 文件转为静态文件，并上传github.io网站
-
-```
-ac-tools md
-```
-
-生成组件
-
-```
-npm run build
-```
-
-上传ynpm或者npm
-
-```
-ynpm publish      # npm publish
-```
-

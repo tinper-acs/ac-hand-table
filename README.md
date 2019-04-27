@@ -101,10 +101,10 @@ table相关API参考[这里](http://bee.tinper.org/bee-table#bee-table),下面�
 |paginationObj|表格分页，具体参考[分页API](http://bee.tinper.org/bee-pagination#bee-pagination)|Object|{activePage: 1, total: 0,items:1}
 |rowHeaders|是否显示行头序号|boolean|true|
 |multiSelect|是否含有多选框|boolean|true|
-|manualColumnResize|是否表头宽可以拖动|boolean|true|
-|manualColumnMove|是否表头可以交换|boolean|true|
+|manualColumnResize|是否列宽可以拖动|boolean|true|
+|manualColumnMove|是否列可以交换|boolean|true|
 |manualRowResize|是否行高可以拖动|boolean|true|
-|manualRowMove|是否行交换|boolean|true|
+|manualRowMove|是否行可以交换|boolean|true|
 |multiColumnSorting|是否列可以排序|boolean|true|
 |sheetName【excel】| 设置导出excel 的sheet的名称 | string | -- |
 |sheetIsRowFilter【excel】| 是否要设置数据的行高 | boolean | false |

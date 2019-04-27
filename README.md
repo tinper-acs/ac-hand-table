@@ -29,18 +29,16 @@ ac-tools init 时模版文件，用于react组件开发的模版
 │   ├── index-demo-base.js          # demo模版文件
 │   └── index.js                    # ac-tools sample生成的文件
 ├── ghpages                         # 实例打包文件
-├── mock                            # mock数据 
+├── mock                            # mock数据
 ├── src
 │   ├── assets                      # ac-tools md需要的静态文件
-│   ├── temp                        
-│   │   └── index.js                # 组件js逻辑 
-│   │   └── style.scss  			   # 组件样式
-│   └── index.js                    # 组件出口
+│   ├── index.js                    # 组件js逻辑
+|   └── index.less                  # 组件样式
 ├── static                          # 模版静态文件
-├── .babelrc    
-├── .editorconfig                   # 给编辑器的规范  
-├── .eslitrc                        # 代码规范(采用airbnb规范，默认不打开的，在webpack.config.dev.js 中注释部分放开就启用)                      
-├── .package.json                  
+├── .babelrc
+├── .editorconfig                   # 给编辑器的规范
+├── .eslitrc                        # 代码规范(采用airbnb规范，默认不打开的，在webpack.config.dev.js 中注释部分放开就启用)
+├── .package.json
 └── .postcss.config.js
 ```
 
@@ -49,7 +47,7 @@ ac-tools init 时模版文件，用于react组件开发的模版
 将 demo合并到demolist的实例中
 
 ```
-ac-tools sample 
+ac-tools sample
 ```
 
 启动开发环境

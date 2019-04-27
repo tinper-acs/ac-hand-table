@@ -150,7 +150,6 @@ export default Demo;
 |参数|说明|类型|默认值|
 |:--|:---|:--|:--|
 |data|列的键,支持'date.xx'|string|-|
-|data|表格数据数据|array|[]|
 |type|数据类型 `text` `numeric` `date` `time` `checkbox`  `select` `dropdown` `autocomplete` `password` |string|true|
 |readOnly|是否数据仅可读|boolean|false|
 |editor|是否数据可以编辑|boolean|true|

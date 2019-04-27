@@ -99,8 +99,8 @@ export default Demo;
 |id|组件唯一id|string|-|
 |data|表格数据数据|array|[]|
 |columns|列的配置表，具体配置见下表|array|[]|
-|language|表格语言|`zh-CN` `en-US` `zh-TW`|'zh-CN'|
-|rowHeaders|表头信息|`boolean` `array` `function` (index)=>{}|true|
+|language|表格语言|'zh-CN'或 'en-US'或 'zh-TW'|'zh-CN'|
+|rowHeaders|表头信息|`boolean`或 `array`或 `function` (index)=>{}|true|
 |colWidths|列宽|`number` 100或 `string` '100px'或 `array` [100,200]或 `func` (index)=>{}|-|
 |multiSelect|是否含有多选框|boolean|true|
 |manualColumnResize|是否列宽可以拖动|boolean|true|
@@ -111,7 +111,7 @@ export default Demo;
 |dropdownMenu|表上下文下拉菜单|`boolean` 或 `array` ["具有一定意义的字符串，见下表 dropdownMenu contextMenu"] |false|
 |contextMenu|行上下文下拉菜单|`boolean` 或 `array` [ "具有一定意义的字符串，见下表 dropdownMenu contextMenu"] |false|
 |filters|表头下拉菜单中是否启动过滤器|boolean|false|
-|stretchH|表宽度不等于所有列宽的计算总和时，列宽设置|`none` `all` `last`|'none'|
+|stretchH|表宽度不等于所有列宽的计算总和时，列宽设置|'none'或 'all' 或'last'|'none'|
 |rowStyle|行设置样式|func|-|
 |activeHeaderClassName|选中列标题样式|strig|-|
 
@@ -150,7 +150,7 @@ export default Demo;
 |dateFormat|日期格式|string|-|
 |correctFormat|当前日期是否格式化|boolean|true|
 |defaultDate|默认日期|string|-|
-|source|数据类型 autocomplete或 dropdown数据源|`array` `func` (query,callback)=>{}|''|
+|source|数据类型 'autocomplete' 或 'dropdown' 数据源|`array` `func` (query,callback)=>{}|''|
 |numericFormat|数字类型格式化|object|-|
 |multiColumnSorting|打开多列排序|boolean 或 object|false|
 

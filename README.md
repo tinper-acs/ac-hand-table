@@ -145,6 +145,7 @@ export default Demo;
 |freeze_column|锁定列操作|	manualColumnFreeze已开启|
 |unfreeze_column|解锁列操作|	manualColumnFreeze已开启|
 |borders|自定义边框操作|	customBorders已开启|
+|allowEmpty|是否日期可以值为空|boolean|true|
 
 ### Column
 |参数|说明|类型|默认值|
@@ -162,9 +163,9 @@ export default Demo;
 |source|数据类型 'autocomplete' 或 'dropdown' 数据源|`array` `func` (query,callback)=>{}|''|
 |numericFormat|数字类型格式化|object|-|
 |multiColumnSorting|打开多列排序|boolean 或 object|false|
-
 |validator|数据校验方法|func|-|
 |allowInvalid|数据校验失败是否可以操作其他表格|boolean|true|
+|allowEmpty|是否日期可以值为空|boolean|true|
 
 ### multiColumnSorting
 |参数|说明|类型|默认值|

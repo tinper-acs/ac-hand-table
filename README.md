@@ -108,11 +108,18 @@ export default Demo;
 |manualRowResize|是否行高可以拖动|boolean|true|
 |manualRowMove|是否行可以交换|boolean|true|
 |multiColumnSorting|是否列可以排序|boolean|true|
-|dropdownMenu|表头下拉菜单|`boolean` 或 `array` ["row_above", "row_below"] |false|
+|dropdownMenu|表上下文下拉菜单|`boolean` 或 `array` ["row_above", "row_below"] |false|
+|contextMenu|行上下文下拉菜单|`boolean` 或 `array` ["row_above", "具有一定意义的字符串，见下表"] |false|
 |filters|表头下拉菜单中是否启动过滤器|boolean|false|
 |stretchH|表宽度不等于所有列宽的计算总和时，列宽设置|`none` `all` `last`|'none'|
 |rowStyle|行设置样式|func|-|
 |activeHeaderClassName|选中列标题样式|strig|-|
+
+### contextMenu
+|键|说明|额外条件|
+|:--|:---|:--|
+|row_above|在选中行上方插入行|-|
+|row_below|在选中行下方插入行|-|
 
 ### Column
 |参数|说明|类型|默认值|
@@ -123,14 +130,14 @@ export default Demo;
 |readOnly|是否数据仅可读|boolean|false|
 |editor|是否数据可以编辑|boolean|true|
 |strict|是否输入到单元格的值区分大小写|boolean|false|
-|placeholder|单元格占位文字|string|''|
-|tableClassName|表格样式类名|string|''|
-|dateFormat|日期格式|string|''|
+|placeholder|单元格占位文字|string|-|
+|tableClassName|表格样式类名|string|-|
+|dateFormat|日期格式|string|-|
 |correctFormat|当前日期是否格式化|boolean|true|
-|defaultDate|默认日期|string|''|
+|defaultDate|默认日期|string|-|
 |source|数据类型 autocomplete或 dropdown数据源|`array` `func` (query,callback)=>{}|''|
 |numericFormat|数字类型格式化|object|-|
-|multiColumnSorting|打开多列排序|boolean 或 object|undefined|
+|multiColumnSorting|打开多列排序|boolean 或 object|false|
 
 ### multiColumnSorting
 |参数|说明|类型|默认值|
@@ -146,7 +153,7 @@ export default Demo;
 |参数|说明|类型|默认值|
 |:--|:---|:--|:--|
 |pattern|数字模式 [具体参考](http://numbrojs.com/old-format.html)|string|-|
-|culture|货币处理 [具体参考](http://numbrojs.com/languages.html#supported-languages)|string|[]|
+|culture|货币处理 [具体参考](http://numbrojs.com/languages.html#supported-languages)|string|-|
 
 
 

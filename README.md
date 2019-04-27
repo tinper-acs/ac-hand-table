@@ -108,18 +108,33 @@ export default Demo;
 |manualRowResize|是否行高可以拖动|boolean|true|
 |manualRowMove|是否行可以交换|boolean|true|
 |multiColumnSorting|是否列可以排序|boolean|true|
-|dropdownMenu|表上下文下拉菜单|`boolean` 或 `array` ["row_above", "row_below"] |false|
-|contextMenu|行上下文下拉菜单|`boolean` 或 `array` ["row_above", "具有一定意义的字符串，见下表"] |false|
+|dropdownMenu|表上下文下拉菜单|`boolean` 或 `array` ["具有一定意义的字符串，见下表 dropdownMenu contextMenu"] |false|
+|contextMenu|行上下文下拉菜单|`boolean` 或 `array` [ "具有一定意义的字符串，见下表 dropdownMenu contextMenu"] |false|
 |filters|表头下拉菜单中是否启动过滤器|boolean|false|
 |stretchH|表宽度不等于所有列宽的计算总和时，列宽设置|`none` `all` `last`|'none'|
 |rowStyle|行设置样式|func|-|
 |activeHeaderClassName|选中列标题样式|strig|-|
 
-### contextMenu
+### dropdownMenu contextMenu
 |键|说明|额外条件|
 |:--|:---|:--|
 |row_above|在选中行上方插入行|-|
 |row_below|在选中行下方插入行|-|
+|col_left|插入列左侧操作|-|	
+|col_right|插入列右侧操作|-|	
+|---------|	分隔器	|-|
+|remove_row|	删除行动作	|-|
+|remove_col|	删除列操作|-|	
+|clear_column|	清除列值操作	|-|
+|undo|	撤消操作|	undoRedo已开启|-|
+|redo|	重做动作|	undoRedo已开启|
+|make_read_only|	进行只读操作|-|	
+|alignment|	对齐动作|-|	
+|cut|	削减行动|copyPaste打开|
+|copy|	复制动作|	copyPaste打开|
+|freeze_column|	冻结列动作|	插件ManualColumnFreeze已打开|
+|unfreeze_column|	解冻列操作|	插件ManualColumnFreeze已打开|
+|borders|	自定义边框操作|	插件CustomBorders已打开|
 
 ### Column
 |参数|说明|类型|默认值|

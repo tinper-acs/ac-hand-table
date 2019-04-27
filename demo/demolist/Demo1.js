@@ -42,20 +42,27 @@ const data = [
       firstName: '孙',
       lastName: '大熊',
     },
-    level: 8,
+    level: 'EEE',
     date: '2018-07-02',
   },
 ];
 
 
 class Demo extends Component {
-
   columns = [
     { data: 'name.firstName' }, // 对象文本类型
-    { data: 'name.lastName' },
+    {
+      data: 'name.lastName',
+      validator: (value, callback) => {
+        callback(!!value);
+      },
+      allowInvalid: true,
+      strict: true,
+    },
     {
       data: 'level',
       type: 'numeric', // 数字类型
+      allowInvalid: true,
     },
     {
       data: 'date',
@@ -63,22 +70,35 @@ class Demo extends Component {
       dateFormat: 'YYYY-MM-DD', // 日期格式
       correctFormat: true, // 当前值是否格式化
       defaultDate: '1900-01-01', // 默认值
+      allowInvalid: true, // 不容许日期为空
     },
   ];
+
+  getData = () => {
+    // 获取数据
+    this.child.getData((data) => {
+      console.log('data', data);
+    });
+  };
 
 
   render() {
     return (
-      <AcHandTable
-        id="example" // 组件id
-        onRef={(ref) => { // 设置ref属性 调用子组件方法
-          this.child = ref;
-        }}
-        colHeaders={['姓', '名', '等级', '日期']} // 表格表头
-        data={data} // 表体数据
-        columns={this.columns} // 列属性设置
+      <div>
 
-      />
+        <button onClick={this.getData}>数据</button>
+        <AcHandTable
+          id="example" // 组件id
+          onRef={(ref) => { // 设置ref属性 调用子组件方法
+            this.child = ref;
+          }}
+          colHeaders={['姓', '名', '等级', '日期']} // 表格表头
+          data={data} // 表体数据
+          columns={this.columns} // 列属性设置
+        />
+
+      </div>
+
     );
   }
 }

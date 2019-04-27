@@ -109,13 +109,6 @@ class Demo1 extends Component {
     currentRowClassName: 'currentRow',
     allowInsertRow: false,
     activeHeaderClassName: 'currentRow',
-
-    afterChangesObserved: (changes, source) => {
-      // [[row, prop, oldVal, newVal], ...]
-
-      console.log('hanges, source', changes, source);
-      // return false;
-    },
     // 行样式
     rowStyle(row) {
       if (row % 2 === 0) {
@@ -137,10 +130,6 @@ class Demo1 extends Component {
         readOnly: true, // 只读
         editor: false, // 不可编辑
         strict: false,
-        multiColumnSorting: { // 不用排序
-          indicator: false,
-          headerAction: false,
-        },
       },
 
       {
@@ -193,14 +182,18 @@ class Demo1 extends Component {
 
     // 使用自定义列头
     rowHeaders: true, // false/数组 //当值为true时显示行头，当值为数组时，行头为数组的值
-    filters: true, // 表头过滤
+    // filters: true, // 表头过滤
     manualColumnResize: true, // 表格表头是否可以拖动 false时禁止拖动
     manualRowResize: true, // 当值为true时，允许拖动，当为false时禁止拖动
     manualColumnMove: true, // false 当值为true时，列可拖拽移动到指定列
     manualRowMove: true, // false 当值为true时，行可拖拽至指定行
     // dropdownMenu: ['filter_by_condition', 'filter_action_bar'],
-    multiColumnSorting: true, // 表头排序，升或降序
+    // multiColumnSorting: true, // 表头排序，升或降序
     dropdownMenu: true, // https://handsontable.com/docs/7.0.2/demo-dropdown-menu.html
+    multiColumnSorting: { // 开启多排序
+      indicator: false,
+      headerAction: false,
+    },
   };
 
   // 表头固定，隐藏 https://handsontable.com/docs/7.0.2/frameworks-wrapper-for-react-simple-examples.html
@@ -220,6 +213,8 @@ class Demo1 extends Component {
   // 行过滤  https://handsontable.com/docs/7.0.2/demo-filtering.html
   // 字体颜色 https://handsontable.com/docs/7.0.2/demo-conditional-formatting.html
   // 修改source https://handsontable.com/docs/7.0.2/Core.html#setDataAtRowProp
+  // 多表头排序 https://handsontable.com/docs/7.0.2/demo-multicolumn-sorting.html?_ga=2.191899690.1268697177.1556262588-926607838.1555489392
+  // dropmenu contextMenu https://handsontable.com/docs/7.0.2/demo-context-menu.html
 
   getData = () => {
     const updateData = this.child.getData();

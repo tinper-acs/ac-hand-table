@@ -21,6 +21,8 @@ class AcHandTable extends React.Component {
     this.hot = new Handsontable(container, {
       ...data,
     });
+
+
   };
 
   componentDidMount() {
@@ -74,15 +76,25 @@ class AcHandTable extends React.Component {
 
   dealData = () => {
     let {
-      colHeaders, columns, data, dropdownMenu, rowStyle, licenseKey,
+      colHeaders, columns, data, rowStyle, licenseKey,
       multiSelect = true, // 行多选框
       manualColumnResize = true, // 添加列拖拽
       multiColumnSorting = true, // 表头排序，升或降序
-      rowHeaders=true, // 显示行头序号,
+      rowHeaders = true, // 显示行头序号,
+      language = 'zh-CN', // 表格语言
+      stretchH = 'last', // 最后列宽
+      dropdownMenu = true, // 表头下拉
+      contextMenu = true, // 行表头上下文菜单
+      manualColumnFreeze = true, // 是否开启固定列
+      copyPaste = true, // 是否可以复制粘贴
+      customBorders = true, // 是否开启边框设置
+      copyable = true, // 是否开启键盘复制
+      allowInsertColumn = false, // 是否开启插入列
+      allowInsertRow = true, // 是否开启插入行
     } = this.props;
 
     // 添加 多选框
-    if (multiSelect) {
+    if (multiSelect && colHeaders && Array.isArray(colHeaders) && colHeaders.length > 0) {
       const checkedHeader = '<input type=\'checkbox\' class=\'multiSelectChecker\' />';
       let className = 'htCenter htMiddle ';
       if (dropdownMenu) {
@@ -151,14 +163,31 @@ class AcHandTable extends React.Component {
       manualColumnResize,
       multiColumnSorting,
       rowHeaders,
+      language,
+      stretchH,
+      dropdownMenu,
+      contextMenu,
+      manualColumnFreeze,
+      copyPaste,
+      customBorders,
+      copyable,
+      allowInsertColumn,
+      allowInsertRow,
+      allowEmpty: false,
     };
   };
 
 
   // 将修改后的数据返回
-  getData = () => {
-    let { data } = this.props;
-    return data;
+  getData = (callback) => {
+    this.hot.validateCells((valid) => {
+      let result = [];
+      if (valid) {
+        let { data } = this.props;
+        result = data;
+      }
+      callback(result);
+    });
   };
 
 

@@ -166,6 +166,8 @@ export default Demo;
 |validator|数据校验方法|func|-|
 |allowInvalid|数据校验失败是否可以操作其他表格|boolean|true|
 |allowEmpty|是否日期可以值为空|boolean|true|
+|validator|自定义验证方法|func|-|
+
 
 ### multiColumnSorting
 |参数|说明|类型|默认值|

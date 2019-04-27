@@ -163,6 +163,9 @@ export default Demo;
 |numericFormat|数字类型格式化|object|-|
 |multiColumnSorting|打开多列排序|boolean 或 object|false|
 
+|validator|数据校验方法|func|-|
+|allowInvalid|数据校验失败是否可以操作其他表格|boolean|true|
+
 ### multiColumnSorting
 |参数|说明|类型|默认值|
 |:--|:---|:--|:--|

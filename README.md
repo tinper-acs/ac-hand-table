@@ -130,17 +130,17 @@ export default Demo;
 |defaultDate|默认日期|string|''|
 |source|数据类型 autocomplete或 dropdown数据源|`array` `func` (query,callback)=>{}|''|
 |numericFormat|数字类型格式化|object|-|
-
-
-
-
 |multiColumnSorting|打开多列排序|boolean 或 object|undefined|
 
 ### multiColumnSorting
 |参数|说明|类型|默认值|
 |:--|:---|:--|:--|
-|data|列的键,支持'date.xx'|string|-|
-|data|表格数据数据|array|[]|
+|initialConfig|某些列初始排序状态|object|-|
+|indicator|是否显示排序顺序指示符(小箭头)|boolean|true|
+|sortEmptyCells|是否空单元格应该参与排序|boolean|true|
+|headerAction|是否单击标题应该对表进行排序|boolean|true|
+|compareFunctionFactory|自定义比较函数|(sortOrder, columnMeta)=>{}|-|
+
 
 ### numericFormat
 |参数|说明|类型|默认值|

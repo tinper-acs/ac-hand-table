@@ -95,7 +95,7 @@ export default Demo;
 ## API
 ### AcHandTable
 |参数|说明|类型|默认值|
-|:--|:---|--:|---:|
+|:--|:---|:--|:--|
 |id|组件唯一id|string|-|
 |data|表格数据数据|array|[]|
 |columns|列的配置表，具体配置见下表|array|[]|
@@ -128,6 +128,8 @@ export default Demo;
 |dateFormat|日期格式|string|''|
 |correctFormat|当前日期是否格式化|boolean|true|
 |defaultDate|默认日期|string|''|
+|source|数据类型 autocomplete或 dropdown数据源|`array` `func` (query,callback)=>{}|''|
+|numericFormat|数字类型格式化|object|-|
 
 
 
@@ -139,6 +141,12 @@ export default Demo;
 |:--|:---|:--|:--|
 |data|列的键,支持'date.xx'|string|-|
 |data|表格数据数据|array|[]|
+
+### numericFormat
+|参数|说明|类型|默认值|
+|:--|:---|:--|:--|
+|pattern|数字模式 [具体参考](http://numbrojs.com/old-format.html)|string|-|
+|culture|货币处理 [具体参考](http://numbrojs.com/languages.html#supported-languages)|string|[]|
 
 
 

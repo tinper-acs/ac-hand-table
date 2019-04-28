@@ -178,10 +178,9 @@ export default Demo;
 |source|数据类型 'autocomplete' 或 'dropdown' 数据源|`array` `func` (query,callback)=>{}|''|
 |numericFormat|数字类型格式化|object|-|
 |multiColumnSorting|打开多列排序|boolean 或 object|false|
-|validator|数据校验方法|func|-|
 |allowInvalid|数据校验失败是否可以操作其他表格|boolean|true|
 |allowEmpty|是否日期可以值为空|boolean|true|
-|validator|自定义验证方法|func|-|
+|validator|自定义验证方法|`func` (value,callback)=>{}|-|
 
 
 ### multiColumnSorting

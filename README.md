@@ -72,6 +72,19 @@ class Demo extends Component {
       defaultDate: '1900-01-01', // 默认值
     },
   ];
+  
+  // 获取多选框选中数据
+   getCheckbox = () => {
+    const data=this.child.getCheckbox();
+    console.log("data",data)
+  };
+  
+  // 获取验证通过后数据
+   getData = () => {
+    this.child.getData((data) => {
+      console.log('data', data);
+    });
+  };
 
 
   render() {
@@ -124,6 +137,8 @@ export default Demo;
 |stretchH|表宽度不等于所有列宽的计算总和时，列宽设置|'none'或 'all' 或'last'|'none'|
 |rowStyle|行设置样式|func|-|
 |activeHeaderClassName|选中列标题样式|strig|-|
+|onRef|设置ref属性调用子组件方法|onRef={ref => this.child = ref}|-|
+
 
 ### dropdownMenu contextMenu
 |键|说明|额外条件|
@@ -185,7 +200,24 @@ export default Demo;
 |pattern|数字模式 [具体参考](http://numbrojs.com/old-format.html)|string|-|
 |culture|货币处理 [具体参考](http://numbrojs.com/languages.html#supported-languages)|string|-|
 
+### 获取表格里的数据
+```js
+ getData = () => {
+    // 获取数据
+    this.child.getData((data) => {
+      console.log('data', data);
+    });
+  };
+```
 
+### 获取多选框选中
+```js
+ getCheckbox = () => {
+    // 获取数据
+    const data=this.child.getCheckbox();
+    console.log("data",data)
+  };
+```
 
 #### 开发调试
 

@@ -8,7 +8,6 @@ import 'handsontable/languages/zh-CN';
 import 'handsontable/languages/en-US';
 import 'handsontable/languages/zh-TW';
 import 'handsontable/dist/handsontable.full.css';
-
 import styles from './index.less';
 
 class AcHandTable extends React.Component {
@@ -16,36 +15,31 @@ class AcHandTable extends React.Component {
 
   hot = null;
 
-
-  onHandsonTable = (container, data) => {
-    this.hot = new Handsontable(container, {
-      ...data,
-    });
-
-
-  };
-
   componentDidMount() {
     // 在父组件上绑定子组件方法
     this.props.onRef(this);
+    this.init();
+  }
 
+  componentWillReceiveProps(nextProps) {
+    // 更新数据
+    const { data } = nextProps;
+    if (data && data !== this.props.data) {
+      this.hot.loadData(nextProps.data);
+    }
+  }
+
+  init = () => {
     const _this = this;
-
     let {
       id, data, colHeaders, rowStyle,
     } = this.props;
 
     const container = document.getElementById(id);
 
-
     // 数据处理满足 handsontable 格式
     const tempObj = this.dealData(this.props);
     this.onHandsonTable(container, tempObj);
-
-    //  去掉 license
-    // let hotDisplay = document.getElementById('hot-display-license-info');
-    // const newDoc = document.createElement('span');
-    // hotDisplay.parentNode.replaceChild(newDoc, hotDisplay);
 
     // 添加 mousedown
     Handsontable.dom.addEvent(container, 'mousedown', (event) => {
@@ -71,9 +65,16 @@ class AcHandTable extends React.Component {
         _this.hot.render();
       }
     });
-  }
+  };
 
+  // 初始化tabel
+  onHandsonTable = (container, data) => {
+    this.hot = new Handsontable(container, {
+      ...data,
+    });
+  };
 
+  // 数据转换
   dealData = () => {
     let {
       colHeaders, columns, data, rowStyle, licenseKey,
@@ -181,7 +182,7 @@ class AcHandTable extends React.Component {
   // 将修改后的数据返回
   getData = (callback) => {
     this.hot.validateCells((valid) => {
-      let result = [];
+      let result = null;
       if (valid) {
         let { data } = this.props;
         result = data;

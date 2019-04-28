@@ -49,6 +49,15 @@ const data = [
 
 
 class Demo extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      handData: [],
+    };
+  }
+
+
   columns = [
     { data: 'name.firstName' }, // 对象文本类型
     {
@@ -81,19 +90,31 @@ class Demo extends Component {
     });
   };
 
+  getUpdate = () => {
+    this.setState({ handData: data });
+  };
+
+  getCheckbox=()=>{
+    const data =this.child.getCheckbox();
+    console.log("data",data)
+  }
+
 
   render() {
+    const { handData } = this.state;
     return (
       <div>
 
         <button onClick={this.getData}>数据</button>
+        <button onClick={this.getUpdate}>更新</button>
+        <button onClick={this.getCheckbox}>多选</button>
         <AcHandTable
           id="example" // 组件id
           onRef={(ref) => { // 设置ref属性 调用子组件方法
             this.child = ref;
           }}
           colHeaders={['姓', '名', '等级', '日期']} // 表格表头
-          data={data} // 表体数据
+          data={handData} // 表体数据
           columns={this.columns} // 列属性设置
         />
 

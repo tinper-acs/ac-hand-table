@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import AcHandTable from '../../src/index';
 
 class Demo2 extends Component {
+
   data = [
     {
       id: 1,

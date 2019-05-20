@@ -6,7 +6,8 @@
  */
 
 import React, { Component } from 'react';
-import AcHandTable from '../../src/index';
+import AcHandTable from '../../dist/index';
+import '../../dist/index.css';
 
 const data = [
   {
@@ -53,7 +54,7 @@ class Demo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      handData: [],
+      handData: data,
     };
   }
 
@@ -94,10 +95,10 @@ class Demo extends Component {
     this.setState({ handData: data });
   };
 
-  getCheckbox=()=>{
-    const data =this.child.getCheckbox();
-    console.log("data",data)
-  }
+  getCheckbox = () => {
+    const data = this.child.getCheckbox();
+    console.log('data', data);
+  };
 
 
   render() {

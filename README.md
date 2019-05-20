@@ -72,13 +72,13 @@ class Demo extends Component {
       defaultDate: '1900-01-01', // 默认值
     },
   ];
-  
+
   // 获取多选框选中数据
    getCheckbox = () => {
     const data=this.child.getCheckbox();
     console.log("data",data)
   };
-  
+
   // 获取验证通过后数据
    getData = () => {
     this.child.getData((data) => {
@@ -145,16 +145,16 @@ export default Demo;
 |:--|:---|:--|
 |row_above|在选中行上方插入行|-|
 |row_below|在选中行下方插入行|-|
-|col_left|插入列左侧操作|-|	
-|col_right|插入列右侧操作|-|	
+|col_left|插入列左侧操作|-|
+|col_right|插入列右侧操作|-|
 |---------|	分隔器	|-|
 |remove_row|删除行动作	|-|
-|remove_col|删除列操作|-|	
+|remove_col|删除列操作|-|
 |clear_column|清除列值操作	|-|
 |undo|撤消操作|undoRedo已开启|-|
 |redo|重做动作|undoRedo已开启|
-|make_read_only|进行只读操作|-|	
-|alignment|	对齐操作|-|	
+|make_read_only|进行只读操作|-|
+|alignment|	对齐操作|-|
 |cut|剪切操作|copyPaste打开|
 |copy|复制操作|copyPaste打开|
 |freeze_column|锁定列操作|	manualColumnFreeze已开启|
@@ -216,6 +216,16 @@ export default Demo;
     const data=this.child.getCheckbox();
     console.log("data",data)
   };
+```
+#### 日期国际化
+```js
+i18n: {
+      previousMonth: 'Previous Month',
+      nextMonth: 'Next Month',
+      months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+      weekdays: ['日', '一', '二', '三', '四', '五', '六'],
+      weekdaysShort: ['日', '一', '二', '三', '四', '五', '六']
+        },
 ```
 
 #### 开发调试

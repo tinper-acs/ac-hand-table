@@ -17,7 +17,9 @@ class AcHandTable extends React.Component {
 
   componentDidMount() {
     // 在父组件上绑定子组件方法
-    this.props.onRef(this);
+    if (this.props.onRef) {
+      this.props.onRef(this);
+    }
     this.init();
   }
 

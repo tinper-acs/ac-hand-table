@@ -8,7 +8,7 @@ import 'handsontable/languages/zh-CN';
 import 'handsontable/languages/en-US';
 import 'handsontable/languages/zh-TW';
 import 'handsontable/dist/handsontable.full.css';
-import styles from './index.less';
+import './index.less';
 
 class AcHandTable extends React.Component {
   state = {};

@@ -31,7 +31,6 @@ class Demo2 extends Component {
     },
   ];
 
-
   columns = [
     {
       data: 'name',
@@ -57,7 +56,6 @@ class Demo2 extends Component {
     },
 
   ];
-
 
 
   getData = () => {

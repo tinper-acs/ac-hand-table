@@ -96,6 +96,29 @@ class AcHandTable extends React.Component {
       allowInsertRow = true, // 是否开启插入行
     } = this.props;
 
+    console.log('columns', columns);
+
+    // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
+
+    if (columns && columns.length > 0) {
+      for (const [index, column] of columns.entries()) {
+        const { type, source, data } = column;
+        let sourceArray = [];
+        if (type === 'select' && source) {
+          sourceArray = source.map(item => item.value);
+        }
+        this.setState({ [data]: source });
+        if (sourceArray.length > 0) {
+          columns[index].selectOptions = sourceArray;
+          delete columns[index].type;
+          columns[index].editor = 'select';
+        }
+      }
+    }
+
+    console.log('xxxx', columns);
+
+
     // 添加 多选框
     if (multiSelect && colHeaders && Array.isArray(colHeaders) && colHeaders.length > 0) {
       const checkedHeader = '<input type=\'checkbox\' class=\'multiSelectChecker\' />';
@@ -120,6 +143,7 @@ class AcHandTable extends React.Component {
         // 添加样式
         if (!renderer) {
           column.renderer = function (instance, td, row, col, prop, value) {
+
             switch (type) {
               case 'date':
                 Handsontable.renderers.DateRenderer.apply(this, arguments);
@@ -176,6 +200,7 @@ class AcHandTable extends React.Component {
       copyable,
       allowInsertColumn,
       allowInsertRow,
+      columns,
       allowEmpty: false,
     };
   };

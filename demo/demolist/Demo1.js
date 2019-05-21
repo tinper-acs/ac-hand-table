@@ -6,8 +6,8 @@
  */
 
 import React, { Component } from 'react';
-import AcHandTable from '../../dist/index';
-import '../../dist/index.css';
+import AcHandTable from '../../src/index';
+import '../../src/index.less';
 
 const data = [
   {

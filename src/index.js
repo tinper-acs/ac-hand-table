@@ -1,9 +1,13 @@
-/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types */
+/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof */
 /**
  * Created by ranyanchuan on 2018/3/11.
  */
 import React from 'react';
 import Handsontable from 'handsontable';
+
+
+import { deepClone, changeSelectKey2Value, changeSelectValue2Key } from './utils';
+
 import 'handsontable/languages/zh-CN';
 import 'handsontable/languages/en-US';
 import 'handsontable/languages/zh-TW';
@@ -36,6 +40,7 @@ class AcHandTable extends React.Component {
     let {
       id, data, colHeaders, rowStyle,
     } = this.props;
+
 
     const container = document.getElementById(id);
 
@@ -96,27 +101,30 @@ class AcHandTable extends React.Component {
       allowInsertRow = true, // 是否开启插入行
     } = this.props;
 
-    console.log('columns', columns);
 
     // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
-
     if (columns && columns.length > 0) {
       for (const [index, column] of columns.entries()) {
-        const { type, source, data } = column;
+        const { type, source, data: columnData } = column;
+
         let sourceArray = [];
-        if (type === 'select' && source) {
+
+        if (type === 'select' && Array.isArray(source) && source.length > 0 && (typeof source[0]) === 'object') {
+          // 更新source 数据
           sourceArray = source.map(item => item.value);
+          // 更新data 数据
+          data.map((item) => {
+            item[columnData] = changeSelectKey2Value(item[columnData], source);
+            return item;
+          });
+          this.setState({ [columnData]: source });
         }
-        this.setState({ [data]: source });
-        if (sourceArray.length > 0) {
-          columns[index].selectOptions = sourceArray;
-          delete columns[index].type;
-          columns[index].editor = 'select';
-        }
+        // 修改select 属性
+        columns[index].selectOptions = sourceArray.length > 0 ? sourceArray : source;
+        delete columns[index].type;
+        columns[index].editor = 'select';
       }
     }
-
-    console.log('xxxx', columns);
 
 
     // 添加 多选框
@@ -143,7 +151,6 @@ class AcHandTable extends React.Component {
         // 添加样式
         if (!renderer) {
           column.renderer = function (instance, td, row, col, prop, value) {
-
             switch (type) {
               case 'date':
                 Handsontable.renderers.DateRenderer.apply(this, arguments);
@@ -211,8 +218,19 @@ class AcHandTable extends React.Component {
     this.hot.validateCells((valid) => {
       let result = null;
       if (valid) {
-        let { data } = this.props;
-        result = data;
+        const { data } = this.props;
+        const cloneData = deepClone(data);
+
+        // 将选择框中的 value 转换为 key
+        result = cloneData.map((item) => {
+          for (const key in item) {
+            const stateValue = this.state[key];
+            if (stateValue) {
+              item[key] = changeSelectValue2Key(item[key], stateValue);
+            }
+          }
+          return item;
+        });
       }
       callback(result);
     });

@@ -59,16 +59,29 @@ class Demo2 extends Component {
   ];
 
 
+
+  getData = () => {
+    // 获取数据
+    this.child.getData((data) => {
+      console.log('data', data);
+    });
+  };
+
+
   render() {
     return (
       <div className="demoPadding">
+
+
+        <button onClick={this.getData}>数据</button>
+
         <AcHandTable
           id="example2" // 组件id
           onRef={(ref) => { // 设置ref属性 调用子组件方法
             this.child = ref;
           }}
           colHeaders={['姓名', '性别', '生日']} // 表格表头
-          data={this.date} // 表体数据
+          data={this.data} // 表体数据
           columns={this.columns} // 列属性设置
         />
 

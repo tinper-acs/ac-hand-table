@@ -29,9 +29,19 @@ class AcHandTable extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     // 更新数据
-    const { data } = nextProps;
+    const data = deepClone(nextProps.data);// 表体数据
     if (data && data !== this.props.data) {
-      this.hot.loadData(nextProps.data);
+      // 更新数据
+      const newData = data.map((item) => {
+        for (const key in item) {
+          const stateValue = this.state[key];
+          if (stateValue) {
+            item[key] = changeSelectKey2Value(item[key], stateValue);
+          }
+        }
+        return item;
+      });
+      this.hot.loadData(newData);
     }
   }
 
@@ -102,30 +112,9 @@ class AcHandTable extends React.Component {
     } = this.props;
 
 
-    // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
-    if (columns && columns.length > 0) {
-      for (const [index, column] of columns.entries()) {
-        const { type, source, data: columnData } = column;
-
-        let sourceArray = [];
-
-        if (type === 'select' && Array.isArray(source) && source.length > 0 && (typeof source[0]) === 'object') {
-          // 更新source 数据
-          sourceArray = source.map(item => item.value);
-          // 更新data 数据
-          data.map((item) => {
-            item[columnData] = changeSelectKey2Value(item[columnData], source);
-            return item;
-          });
-          this.setState({ [columnData]: source });
-        }
-        // 修改select 属性
-        columns[index].selectOptions = sourceArray.length > 0 ? sourceArray : source;
-        delete columns[index].type;
-        columns[index].editor = 'select';
-      }
-    }
-
+    const { data: newData, columns: newColumns } = this.dealSelectData(data, columns);
+    data = newData;
+    columns = newColumns;
 
     // 添加 多选框
     if (multiSelect && colHeaders && Array.isArray(colHeaders) && colHeaders.length > 0) {
@@ -209,6 +198,41 @@ class AcHandTable extends React.Component {
       allowInsertRow,
       columns,
       allowEmpty: false,
+      data,
+    };
+  };
+
+
+  dealSelectData = (data, columns) => {
+    // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
+    if (columns && columns.length > 0) {
+      for (const [index, column] of columns.entries()) {
+        const { type, source, data: columnData } = column;
+
+        let sourceArray = [];
+
+        if (type === 'select' && Array.isArray(source) && source.length > 0 && (typeof source[0]) === 'object') {
+          // 更新source 数据
+          sourceArray = source.map(item => item.value);
+          // 更新data 数据
+          data.map((item) => {
+            item[columnData] = changeSelectKey2Value(item[columnData], source);
+            return item;
+          });
+          this.setState({ [columnData]: source });
+        }
+        // 修改select 属性
+        if (type === 'select') {
+          columns[index].selectOptions = sourceArray.length > 0 ? sourceArray : source;
+          delete columns[index].type;
+          // delete columns[index].source;
+          columns[index].editor = 'select';
+        }
+      }
+    }
+    return {
+      data,
+      columns,
     };
   };
 

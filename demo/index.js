@@ -11,12 +11,12 @@ import Demo1 from './demolist/Demo1';
 import Demo2 from './demolist/Demo2';
 
 var DemoArray = [
-  {
-    'example': <Demo1/>,
-    'title': ' 应用组件名称',
-    'code': '/**\n *\n * @title 应用组件名称22\n * @description 应用组件描述\n *\n */\n\nimport React, { Component } from \'react\';\nimport Temp from \'../../src/index\';\nclass Demo1 extends Component {\n    render () {\n        return (\n            <div className="demoPadding">\n                <Temp >tools测试代码</Temp>\n            </div>\n        )\n    }\n}\n\n\n',
-    'desc': ' 应用组件描述'
-  },
+  // {
+  //   'example': <Demo1/>,
+  //   'title': ' 应用组件名称',
+  //   'code': '/**\n *\n * @title 应用组件名称22\n * @description 应用组件描述\n *\n */\n\nimport React, { Component } from \'react\';\nimport Temp from \'../../src/index\';\nclass Demo1 extends Component {\n    render () {\n        return (\n            <div className="demoPadding">\n                <Temp >tools测试代码</Temp>\n            </div>\n        )\n    }\n}\n\n\n',
+  //   'desc': ' 应用组件描述'
+  // },
   {
     'example': <Demo2/>,
     'title': ' 应用组件名称',

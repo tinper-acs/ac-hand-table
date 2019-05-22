@@ -8,28 +8,37 @@
 import React, { Component } from 'react';
 import AcHandTable from '../../src/index';
 
+
+const data = [
+  {
+    id: 1,
+    name: '张三',
+    gender: '1',
+    date: '2018-07-02',
+  },
+  {
+    id: 2,
+    name: '李四',
+    gender: '0',
+    date: '2018-07-02',
+  },
+  {
+    id: 3,
+    name: '王五',
+    gender: '1',
+    date: '2018-07-02',
+  },
+];
+
 class Demo2 extends Component {
 
-  data = [
-    {
-      id: 1,
-      name: '张三',
-      gender: 'male',
-      date: '2018-07-02',
-    },
-    {
-      id: 2,
-      name: '李四',
-      gender: 'male',
-      date: '2018-07-02',
-    },
-    {
-      id: 3,
-      name: '王五',
-      gender: 'female',
-      date: '2018-07-02',
-    },
-  ];
+  constructor(props) {
+    super(props);
+    this.state = {
+      delRows: [],
+      handData: data,
+    };
+  }
 
   columns = [
     {
@@ -40,11 +49,11 @@ class Demo2 extends Component {
       data: 'gender',
       type: 'select', // 表格类型
       source: [{
-        value: '男',
-        key: 'male',
+        value: '是',
+        key: '1',
       }, {
-        value: '女',
-        key: 'female',
+        value: '否',
+        key: '0',
       }],
     },
     {
@@ -56,6 +65,20 @@ class Demo2 extends Component {
     },
 
   ];
+
+  add = () => {
+    const temp = {
+      id: 5,
+      name: '张三xxx',
+      gender: '1',
+      date: '2018-07-02',
+    };
+    const { handData } = this.state;
+    handData.push(temp);
+    this.setState({ handData });
+
+
+  };
 
 
   getData = () => {
@@ -70,8 +93,8 @@ class Demo2 extends Component {
     return (
       <div className="demoPadding">
 
-
         <button onClick={this.getData}>数据</button>
+        <button onClick={this.add}>添加</button>
 
         <AcHandTable
           id="example2" // 组件id
@@ -79,7 +102,7 @@ class Demo2 extends Component {
             this.child = ref;
           }}
           colHeaders={['姓名', '性别', '生日']} // 表格表头
-          data={this.data} // 表体数据
+          data={this.state.handData} // 表体数据
           columns={this.columns} // 列属性设置
         />
 

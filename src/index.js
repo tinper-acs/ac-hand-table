@@ -6,7 +6,7 @@ import React from 'react';
 import Handsontable from 'handsontable';
 
 
-import {deepClone, changeSelectKey2Value, changeSelectValue2Key} from './utils';
+import { deepClone, changeSelectKey2Value, changeSelectValue2Key } from './utils';
 
 import 'handsontable/languages/zh-CN';
 import 'handsontable/languages/en-US';
@@ -34,10 +34,10 @@ class AcHandTable extends React.Component {
 
   componentWillReceiveProps(nextProps) {
 
-    const {columns} = nextProps;// 表体数据
+    const { columns } = nextProps;// 表体数据
     // 更新数据
-    let {data} = this.dealSelectData(nextProps.data, columns);
-    this.setState({data});
+    let { data } = this.dealSelectData(nextProps.data, columns);
+    this.setState({ data });
     this.hot.loadData(data);
 
   }
@@ -51,7 +51,7 @@ class AcHandTable extends React.Component {
     // 对 this.props 处理，添加默认值、checkbox等
     const tempObj = this.dealData(this.props);
 
-    let {id, data, colHeaders} = tempObj;
+    let { id, data, colHeaders } = tempObj;
 
     // 将 信息交有 handsontable 组件处理
     const container = document.getElementById(id);
@@ -114,7 +114,7 @@ class AcHandTable extends React.Component {
     } = this.props;
 
 
-    let {data, columns} = this.dealSelectData(this.state.data, this.props.columns);
+    let { data, columns } = this.dealSelectData(this.state.data, this.props.columns);
 
 
     // 添加 多选框
@@ -137,7 +137,7 @@ class AcHandTable extends React.Component {
     // 添加行样式
     if (columns && columns.length > 0 && rowStyle) {
       for (const column of columns) {
-        const {renderer, type} = column;
+        const { renderer, type } = column;
         // 添加样式
         if (!renderer) {
           column.renderer = function (instance, td, row, col, prop, value) {
@@ -211,7 +211,7 @@ class AcHandTable extends React.Component {
     // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
     if (columns && columns.length > 0) {
       for (const [index, column] of columns.entries()) {
-        const {type, source, data: columnData, editor} = column;
+        const { type, source, data: columnData, editor } = column;
 
         let sourceArray = [];
 
@@ -245,7 +245,7 @@ class AcHandTable extends React.Component {
     this.hot.validateCells((valid) => {
       let result = null;
       if (valid) {
-        const {columns} = this.props;
+        const { columns } = this.props;
         result = changeSelectValue2Key(deepClone(this.state.data), columns);
       }
       callback(result);
@@ -259,7 +259,7 @@ class AcHandTable extends React.Component {
   // 获取选中的数据
   getCheckbox = () => {
     let result = [];
-    let {data} = this.props;
+    let { data } = this.state;
     if (data && Array.isArray(data)) {
       for (const item of data) {
         if (item.checkbox_status) {
@@ -267,12 +267,13 @@ class AcHandTable extends React.Component {
         }
       }
     }
-    return result;
+    const { columns } = this.props;
+    return changeSelectValue2Key(deepClone(result), columns);
   };
 
 
   render() {
-    const {id} = this.props;
+    const { id } = this.props;
     return (
       <div id={id}/>
     );

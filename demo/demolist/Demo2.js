@@ -89,11 +89,19 @@ class Demo2 extends Component {
   };
 
 
+  getCheck=()=>{
+    const data = this.child.getCheckbox();
+    console.log('data', data);
+  }
+
+
+  
   render() {
     return (
       <div className="demoPadding">
 
-        <button onClick={this.getData}>数据</button>
+        <button onClick={this.getData}>提交</button>
+        <button onClick={this.getCheck}>选中</button>
         <button onClick={this.add}>添加</button>
 
         <AcHandTable

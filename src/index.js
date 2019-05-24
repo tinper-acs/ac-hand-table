@@ -1,4 +1,4 @@
-/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof */
+/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes */
 /**
  * Created by ranyanchuan on 2018/3/11.
  */
@@ -6,7 +6,7 @@ import React from 'react';
 import Handsontable from 'handsontable';
 
 
-import { deepClone, changeSelectKey2Value, changeSelectValue2Key } from './utils';
+import {deepClone, changeSelectKey2Value, changeSelectValue2Key} from './utils';
 
 import 'handsontable/languages/zh-CN';
 import 'handsontable/languages/en-US';
@@ -15,7 +15,11 @@ import 'handsontable/dist/handsontable.full.css';
 import './index.less';
 
 class AcHandTable extends React.Component {
-  state = {};
+
+  state = {
+    data: this.props.data,
+  };
+
 
   hot = null;
 
@@ -27,35 +31,30 @@ class AcHandTable extends React.Component {
     this.init();
   }
 
+
   componentWillReceiveProps(nextProps) {
+
+    const {columns} = nextProps;// 表体数据
     // 更新数据
-    const data = deepClone(nextProps.data);// 表体数据
-    if (data && data !== this.props.data) {
-      // 更新数据
-      const newData = data.map((item) => {
-        for (const key in item) {
-          const stateValue = this.state[key];
-          if (stateValue) {
-            item[key] = changeSelectKey2Value(item[key], stateValue);
-          }
-        }
-        return item;
-      });
-      this.hot.loadData(newData);
-    }
+    let {data} = this.dealSelectData(nextProps.data, columns);
+    this.setState({data});
+    this.hot.loadData(data);
+
   }
 
+
   init = () => {
+
+
     const _this = this;
-    let {
-      id, data, colHeaders, rowStyle,
-    } = this.props;
 
-
-    const container = document.getElementById(id);
-
-    // 数据处理满足 handsontable 格式
+    // 对 this.props 处理，添加默认值、checkbox等
     const tempObj = this.dealData(this.props);
+
+    let {id, data, colHeaders} = tempObj;
+
+    // 将 信息交有 handsontable 组件处理
+    const container = document.getElementById(id);
     this.onHandsonTable(container, tempObj);
 
     // 添加 mousedown
@@ -65,24 +64,25 @@ class AcHandTable extends React.Component {
       }
     });
 
-    // 添加 mouseup
+    // 添加 mouseup 全选
     Handsontable.dom.addEvent(container, 'mouseup', (event) => {
       // 多选操作
       if (event.target.nodeName === 'INPUT' && event.target.className === 'multiSelectChecker') {
         let checked = !event.target.checked;
-        // hot2.render();
         event.stopPropagation();
         if (checked) {
-          colHeaders[0] = '<input type=\'checkbox\' class=\'multiSelectChecker\' checked />';
-          data.map(item => item.checkbox_status = true);
+          colHeaders[0] = `<input type='checkbox' class='multiSelectChecker' checked />`;
+          this.state.data.map(item => item.checkbox_status = true);
         } else {
-          colHeaders[0] = '<input type=\'checkbox\' class=\'multiSelectChecker\' />';
-          data.map(item => item.checkbox_status = false);
+          colHeaders[0] = `<input type='checkbox' class='multiSelectChecker' />`;
+          this.state.data.map(item => item.checkbox_status = false);
         }
-        _this.hot.render();
+        this.hot.render();
       }
     });
+
   };
+
 
   // 初始化tabel
   onHandsonTable = (container, data) => {
@@ -91,10 +91,12 @@ class AcHandTable extends React.Component {
     });
   };
 
+
   // 数据转换
   dealData = () => {
+
     let {
-      colHeaders, columns, data, rowStyle, licenseKey,
+      colHeaders, rowStyle, licenseKey,
       multiSelect = true, // 行多选框
       manualColumnResize = true, // 添加列拖拽
       multiColumnSorting = true, // 表头排序，升或降序
@@ -112,13 +114,12 @@ class AcHandTable extends React.Component {
     } = this.props;
 
 
-    const { data: newData, columns: newColumns } = this.dealSelectData(data, columns);
-    data = newData;
-    columns = newColumns;
+    let {data, columns} = this.dealSelectData(this.state.data, this.props.columns);
+
 
     // 添加 多选框
     if (multiSelect && colHeaders && Array.isArray(colHeaders) && colHeaders.length > 0) {
-      const checkedHeader = '<input type=\'checkbox\' class=\'multiSelectChecker\' />';
+      const checkedHeader = `<input type='checkbox' class='multiSelectChecker' />`;
       let className = 'htCenter htMiddle ';
       if (dropdownMenu) {
         className += 'menuCheckbox';
@@ -136,7 +137,7 @@ class AcHandTable extends React.Component {
     // 添加行样式
     if (columns && columns.length > 0 && rowStyle) {
       for (const column of columns) {
-        const { renderer, data, type } = column;
+        const {renderer, type} = column;
         // 添加样式
         if (!renderer) {
           column.renderer = function (instance, td, row, col, prop, value) {
@@ -180,6 +181,8 @@ class AcHandTable extends React.Component {
         }
       }
     }
+
+
     return {
       ...this.props,
       licenseKey: licenseKey || 'non-commercial-and-evaluation', // 添加 License key
@@ -203,23 +206,23 @@ class AcHandTable extends React.Component {
   };
 
 
+  // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
   dealSelectData = (data, columns) => {
     // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
     if (columns && columns.length > 0) {
       for (const [index, column] of columns.entries()) {
-        const { type, source, data: columnData } = column;
+        const {type, source, data: columnData, editor} = column;
 
         let sourceArray = [];
 
-        if (type === 'select' && Array.isArray(source) && source.length > 0 && (typeof source[0]) === 'object') {
+        if ((type === 'select' || editor === 'select') && Array.isArray(source) && source.length > 0 && (typeof source[0]) === 'object') {
           // 更新source 数据
           sourceArray = source.map(item => item.value);
           // 更新data 数据
           data.map((item) => {
-            item[columnData] = changeSelectKey2Value(item[columnData], source);
+            item[columnData] = changeSelectKey2Value((item[columnData]).toString(), source);
             return item;
           });
-          this.setState({ [columnData]: source });
         }
         // 修改select 属性
         if (type === 'select') {
@@ -242,29 +245,21 @@ class AcHandTable extends React.Component {
     this.hot.validateCells((valid) => {
       let result = null;
       if (valid) {
-        const { data } = this.props;
-        const cloneData = deepClone(data);
-
-        // 将选择框中的 value 转换为 key
-        result = cloneData.map((item) => {
-          for (const key in item) {
-            const stateValue = this.state[key];
-            if (stateValue) {
-              item[key] = changeSelectValue2Key(item[key], stateValue);
-            }
-          }
-          return item;
-        });
+        const {columns} = this.props;
+        result = changeSelectValue2Key(deepClone(this.state.data), columns);
       }
       callback(result);
     });
   };
 
 
+  // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
+
+
   // 获取选中的数据
   getCheckbox = () => {
     let result = [];
-    let { data } = this.props;
+    let {data} = this.props;
     if (data && Array.isArray(data)) {
       for (const item of data) {
         if (item.checkbox_status) {
@@ -277,7 +272,7 @@ class AcHandTable extends React.Component {
 
 
   render() {
-    const { id } = this.props;
+    const {id} = this.props;
     return (
       <div id={id}/>
     );

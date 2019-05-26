@@ -183,3 +183,10 @@ export function getDelRows(state, physicalRows, rowKey) {
   }
   return delDataList;
 }
+
+// 数组对象深度copy
+export function arrayObjctClone(array) {
+  return array.map((item) => {
+    return { ...item };
+  });
+}

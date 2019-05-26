@@ -59,10 +59,10 @@ class Demo2 extends Component {
       data: 'gender',
       type: 'select', // 表格类型
       source: [{
-        value: '是',
+        value: '男',
         key: '1',
       }, {
-        value: '否',
+        value: '女',
         key: '0',
       }],
     },

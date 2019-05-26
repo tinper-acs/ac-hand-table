@@ -1,6 +1,6 @@
 {
   "name": "ac-hand-table",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -88,6 +88,7 @@
     "prop-types": "^15.6.0"
   },
   "dependencies": {
+    "bee-button": "^2.0.11",
     "handsontable": "7.0.2"
   }
 }

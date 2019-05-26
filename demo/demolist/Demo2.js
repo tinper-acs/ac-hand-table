@@ -1,13 +1,16 @@
 /**
  *
  * @title AcHandTable
- * @description 表格支持多选，数据格式化，行样式
+ * @description 设置行样式、表格添加行、删除多选选中行、获取验证通过后数据、获取多选选中的数据、获取被修改后的数据、获取被格式化的数据、获取新增加的数据和获取删除的数据
  *
  */
 
 import React, { Component } from 'react';
+import Button from 'bee-button';
+// 引入 AcHandTable 组件
 import AcHandTable from '../../src/index';
 
+import 'bee-button/build/Button.css';
 
 const data = [
   {
@@ -15,23 +18,25 @@ const data = [
     name: '张三',
     gender: '1',
     date: '2018-07-02',
+    money: 10000,
   },
   {
     id: 2,
     name: '李四',
     gender: '0',
     date: '2018-07-02',
+    money: 10000,
   },
   {
     id: 3,
     name: '王五',
     gender: '1',
     date: '2018-07-02',
+    money: 10000,
   },
 ];
 
 class Demo2 extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -44,6 +49,11 @@ class Demo2 extends Component {
     {
       data: 'name',
       type: 'text',
+      validator: (value, callback) => {
+        callback(!!value);
+      },
+      allowInvalid: true,
+      strict: true,
     },
     {
       data: 'gender',
@@ -62,56 +72,97 @@ class Demo2 extends Component {
       dateFormat: 'YYYY-MM-DD', // 日期格式
       correctFormat: true, //  当前值是否格式化
       defaultDate: '1900-01-01', // 默认值
+      allowInvalid: true, // 不容许日期为空
+    },
+    {
+      data: 'money',
+      type: 'numeric', // 资薪
+      allowInvalid: true,
     },
 
   ];
 
-  add = () => {
-    const temp = {
-      id: 5,
-      name: '张三xxx',
-      gender: '1',
-      date: '2018-07-02',
-    };
-    const { handData } = this.state;
-    handData.push(temp);
-    this.setState({ handData });
-
-
+  // 设置行样式
+  setStyle = (rowIndex) => {
+    let style = { 'background-color': '#fff' };
+    if (rowIndex % 2 === 0) {
+      style = { 'background-color': '#3fc8c1' };
+    }
+    return style;
   };
 
+  // 表格添加行
+  onInsertRowData = () => {
+    this.child.onInsertRowData();
+  };
 
+  // 删除多选选中的行
+  onDelRowCheck = () => {
+    this.child.onDelRowCheck();
+  };
+
+  // 获取验证通过后数据
   getData = () => {
-    // 获取数据
     this.child.getData((data) => {
       console.log('data', data);
     });
   };
 
+  // 获取多选选中的数据
+  getCheckData = () => {
+    const checkboxData = this.child.getCheckbox();
+    console.log('checkboxData', checkboxData);
+  };
 
-  getCheck=()=>{
-    const data = this.child.getCheckbox();
-    console.log('data', data);
-  }
+  // 获取被修改后的数据
+  getUpdateData = () => {
+    const updateData = this.child.getUpdateData();
+    console.log('updateData', updateData);
+  };
+
+  // 获取被格式化的数据
+  getFormatData = () => {
+    const formatData = this.child.getFormatData();
+    console.log('formatData', formatData);
+  };
+
+  // 获取新增加的数据
+  getAddRowData = () => {
+    const addRowDate = this.child.getAddRowData();
+    console.log('addRowDate', addRowDate);
+  };
+
+  // 获取删除的数据
+  getDelRowData = () => {
+    const delRowData = this.child.getDelRowData();
+    console.log('delRowData', delRowData);
+  };
 
 
-  
   render() {
     return (
       <div className="demoPadding">
-
-        <button onClick={this.getData}>提交</button>
-        <button onClick={this.getCheck}>选中</button>
-        <button onClick={this.add}>添加</button>
-
+        <div style={{ marginBottom: '15px' }}>
+          <Button colors="primary" onClick={this.onInsertRowData} size="sm"> 增行 </Button>
+          <Button colors="danger" onClick={this.onDelRowCheck} size="sm">删除选中行</Button>
+          <Button colors="primary" onClick={this.getData} size="sm"> 获取验证数据</Button>
+          <Button colors="primary" onClick={this.getCheckData} size="sm"> 获取选中行 </Button>
+          <Button colors="primary" onClick={this.getUpdateData} size="sm">获取修改行 </Button>
+          <Button colors="primary" onClick={this.getAddRowData} size="sm">获取新增加行</Button>
+          <Button colors="primary" onClick={this.getDelRowData} size="sm">获取删除行</Button>
+          <Button colors="primary" onClick={this.getFormatData} size="sm">格式化数据 </Button>
+        </div>
         <AcHandTable
           id="example2" // 组件id
           onRef={(ref) => { // 设置ref属性 调用子组件方法
             this.child = ref;
           }}
-          colHeaders={['姓名', '性别', '生日']} // 表格表头
+          colHeaders={['姓名', '性别', '日期', '资薪']} // 表格表头
           data={this.state.handData} // 表体数据
           columns={this.columns} // 列属性设置
+          // 设置行样式
+          rowStyle={this.setStyle}
+
         />
 
       </div>

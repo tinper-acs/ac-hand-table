@@ -208,15 +208,74 @@ export default Demo;
     });
   };
 ```
-
-### 获取多选框选中
+### 表格添加行
 ```js
- getCheckbox = () => {
-    // 获取数据
-    const data=this.child.getCheckbox();
-    console.log("data",data)
+  onInsertRowData = () => {
+    this.child.onInsertRowData();
   };
 ```
+
+### 删除多选选中的行
+```js
+
+ onDelRowCheck = () => {
+     this.child.onDelRowCheck();
+  };
+
+```
+### 获取验证通过后数据
+```js
+
+  getData = (callback) => {
+    this.child.getData((data) => {
+      console.log('data', data);
+    });
+  };
+
+```
+
+###  获取多选选中的数据
+```js
+
+ getCheckData = () => {
+     const checkboxData = this.child.getCheckbox();
+     console.log('checkboxData', checkboxData);
+ };
+
+```
+
+### 获取被修改后的数据
+```js
+  getUpdateData = () => {
+    const updateData = this.child.getUpdateData();
+    console.log('updateData', updateData);
+  };
+```
+
+### 获取被格式化的数据
+```js
+  getFormatData = () => {
+    const formatData = this.child.getFormatData();
+    console.log('formatData', formatData);
+  };
+```
+
+### 获取新增加的数据
+```js
+  getAddRowData = () => {
+    const addRowDate = this.child.getAddRowData();
+    console.log('addRowDate', addRowDate);
+  };
+```
+
+### 获取删除的数据
+```js
+  getDelRowData = () => {
+    const delRowData = this.child.getDelRowData();
+    console.log('delRowData', delRowData);
+  };
+```
+
 #### 日期国际化
 ```js
 i18n: {

@@ -1,4 +1,4 @@
-/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes */
+/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks */
 /**
  * Created by ranyanchuan on 2018/3/11.
  */
@@ -6,7 +6,15 @@ import React from 'react';
 import Handsontable from 'handsontable';
 
 
-import { deepClone, changeSelectKey2Value, changeSelectValue2Key } from './utils';
+import {
+  getCheckboxActive,
+  getCheckDelArray,
+  getDelRows,
+  getUpdateActive,
+  getAddRowActive,
+  changeSelectValue2Key,
+  dealSelectData,
+} from './utils';
 
 import 'handsontable/languages/zh-CN';
 import 'handsontable/languages/en-US';
@@ -18,6 +26,7 @@ class AcHandTable extends React.Component {
 
   state = {
     data: this.props.data,
+    delDataList: [],
   };
 
 
@@ -35,9 +44,10 @@ class AcHandTable extends React.Component {
   componentWillReceiveProps(nextProps) {
 
     const { columns } = nextProps;// 表体数据
-    // 更新数据
-    let { data } = this.dealSelectData(nextProps.data, columns);
+    // 处理下拉值 将[{key:'',value:''}] 转换成 [""], dealSelectData
+    let { data } = dealSelectData(nextProps.data, columns);
     this.setState({ data });
+    // 更新数据
     this.hot.loadData(data);
 
   }
@@ -45,13 +55,9 @@ class AcHandTable extends React.Component {
 
   init = () => {
 
-
-    const _this = this;
-
     // 对 this.props 处理，添加默认值、checkbox等
-    const tempObj = this.dealData(this.props);
-
-    let { id, data, colHeaders } = tempObj;
+    const tempObj = this.dealData();
+    let { id, colHeaders } = tempObj;
 
     // 将 信息交有 handsontable 组件处理
     const container = document.getElementById(id);
@@ -86,8 +92,28 @@ class AcHandTable extends React.Component {
 
   // 初始化tabel
   onHandsonTable = (container, data) => {
+    const _this = this;
     this.hot = new Handsontable(container, {
       ...data,
+      afterChange(changes, source) { // 表格被修改后执行
+        if (source === 'edit' && (changes[0][2] !== changes[0][3])) { // 表格被修改
+          const { data } = _this.state;
+          data[changes[0][0]].update_status = true;
+          _this.setState({ data });
+        }
+      },
+      // afterCreateRow: function (index, amount) {  // 添加行后执行
+      //     console.log("index, amount", index, amount)
+      //     const {data} = _this.state;
+      //     data[index].add_status = true;
+      //     _this.setState({data});
+      // },
+      // todo 页面render 依旧保留上一次的数据
+      beforeRemoveRow(index, amount, physicalRows, source) {
+        const { rowKey } = _this.props;
+        const delDataList = getDelRows(_this.state, physicalRows, rowKey);
+        _this.setState({ delDataList });
+      },
     });
   };
 
@@ -96,26 +122,14 @@ class AcHandTable extends React.Component {
   dealData = () => {
 
     let {
-      colHeaders, rowStyle, licenseKey,
+      colHeaders, rowStyle,
       multiSelect = true, // 行多选框
-      manualColumnResize = true, // 添加列拖拽
-      multiColumnSorting = true, // 表头排序，升或降序
-      rowHeaders = true, // 显示行头序号,
-      language = 'zh-CN', // 表格语言
-      stretchH = 'last', // 最后列宽
       dropdownMenu = true, // 表头下拉
-      contextMenu = true, // 行表头上下文菜单
-      manualColumnFreeze = true, // 是否开启固定列
-      copyPaste = true, // 是否可以复制粘贴
-      customBorders = true, // 是否开启边框设置
-      copyable = true, // 是否开启键盘复制
-      allowInsertColumn = false, // 是否开启插入列
-      allowInsertRow = true, // 是否开启插入行
+
     } = this.props;
 
-
-    let { data, columns } = this.dealSelectData(this.state.data, this.props.columns);
-
+    // 处理下拉值 将[{key:'',value:''}] 转换成 [""], dealSelectData
+    let { data, columns } = dealSelectData(this.state.data, this.props.columns);
 
     // 添加 多选框
     if (multiSelect && colHeaders && Array.isArray(colHeaders) && colHeaders.length > 0) {
@@ -184,58 +198,29 @@ class AcHandTable extends React.Component {
 
 
     return {
-      ...this.props,
-      licenseKey: licenseKey || 'non-commercial-and-evaluation', // 添加 License key
-      manualColumnResize,
-      multiColumnSorting,
-      rowHeaders,
-      language,
-      stretchH,
-      dropdownMenu,
-      contextMenu,
-      manualColumnFreeze,
-      copyPaste,
-      customBorders,
-      copyable,
-      allowInsertColumn,
-      allowInsertRow,
-      columns,
+
+      licenseKey: 'non-commercial-and-evaluation', // 添加 License key
+      manualColumnResize: true, // 添加列拖拽
+      multiColumnSorting: true, // 表头排序，升或降序
+      rowHeaders: true, // 显示行头序号,
+      language: 'zh-CN', // 表格语言
+      stretchH: 'last', // 最后列宽
+      contextMenu: true, // 行表头上下文菜单
+      manualColumnFreeze: true, // 是否开启固定列
+      copyPaste: true, // 是否可以复制粘贴
+      customBorders: true, // 是否开启边框设置
+      copyable: true, // 是否开启键盘复制
+      allowInsertColumn: false, // 是否开启插入列
+      allowInsertRow: true, // 是否开启插入行
       allowEmpty: false,
-      data,
-    };
-  };
+      multiSelect: true, // 行多选框
+      dropdownMenu: true, // 表头下拉
 
+      ...this.props,
 
-  // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
-  dealSelectData = (data, columns) => {
-    // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
-    if (columns && columns.length > 0) {
-      for (const [index, column] of columns.entries()) {
-        const { type, source, data: columnData, editor } = column;
-
-        let sourceArray = [];
-
-        if ((type === 'select' || editor === 'select') && Array.isArray(source) && source.length > 0 && (typeof source[0]) === 'object') {
-          // 更新source 数据
-          sourceArray = source.map(item => item.value);
-          // 更新data 数据
-          data.map((item) => {
-            item[columnData] = changeSelectKey2Value((item[columnData]).toString(), source);
-            return item;
-          });
-        }
-        // 修改select 属性
-        if (type === 'select') {
-          columns[index].selectOptions = sourceArray.length > 0 ? sourceArray : source;
-          delete columns[index].type;
-          // delete columns[index].source;
-          columns[index].editor = 'select';
-        }
-      }
-    }
-    return {
-      data,
       columns,
+      data,
+
     };
   };
 
@@ -246,36 +231,67 @@ class AcHandTable extends React.Component {
       let result = null;
       if (valid) {
         const { columns } = this.props;
-        result = changeSelectValue2Key(deepClone(this.state.data), columns);
+        result = changeSelectValue2Key(this.state.data, columns); // 回写下拉框值
       }
       callback(result);
     });
   };
 
 
-  // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
+  // 插入行数据
+  onInsertRowData = (number = 0) => {
+    this.hot.alter('insert_row', number);
+  };
 
 
-  // 获取选中的数据
+  // 获取多选选中的数据
   getCheckbox = () => {
-    let result = [];
-    let { data } = this.state;
-    if (data && Array.isArray(data)) {
-      for (const item of data) {
-        if (item.checkbox_status) {
-          result.push(item);
-        }
-      }
-    }
+    // 获取选中的数据
+    const result = getCheckboxActive(this.state.data);
     const { columns } = this.props;
-    return changeSelectValue2Key(deepClone(result), columns);
+    return changeSelectValue2Key(result, columns); // 回写下拉框值
+  };
+
+  // 返回格式化后数据
+  getFormatData = () => {
+    const { columns } = this.props;
+    return changeSelectValue2Key(this.state.data, columns); // 回写下拉框值
+  };
+
+  // 返回被修改过的数据
+  getUpdateData = () => {
+    const { columns, rowKey } = this.props;
+    const result = getUpdateActive(this.state.data, rowKey);
+    return changeSelectValue2Key(result, columns); // 回写下拉框值
+  };
+
+
+  // 返回被删除的数据
+  getDelRowData = () => {
+    const { delDataList } = this.state;
+    const { columns } = this.props;
+    return changeSelectValue2Key(delDataList, columns); // 回写下拉框值
+  };
+
+
+  // 添加行数据方法
+  getAddRowData = () => {
+    const { columns, rowKey } = this.props;
+    const result = getAddRowActive(this.state.data, rowKey);
+    return changeSelectValue2Key(result, columns); // 回写下拉框值
+  };
+
+  // 删除选中行方法
+  onDelRowCheck = () => {
+    this.hot.alter('remove_row', getCheckDelArray(this.state.data));
   };
 
 
   render() {
     const { id } = this.props;
+
     return (
-      <div id={id}/>
+      <div id={id} />
     );
   }
 }

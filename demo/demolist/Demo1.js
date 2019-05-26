@@ -1,11 +1,14 @@
+/* eslint-disable no-return-assign */
 /**
  *
  * @title AcHandTable
- * @description 表格支持多选，数据格式化，行样式
+ * @description 基础表格展示
  *
  */
 
 import React, { Component } from 'react';
+
+// 引入 AcHandTable 组件
 import AcHandTable from '../../src/index';
 import '../../src/index.less';
 
@@ -43,7 +46,7 @@ const data = [
       firstName: '孙',
       lastName: '大熊',
     },
-    level: 'EEE',
+    level: 20,
     date: '2018-07-02',
   },
 ];
@@ -61,59 +64,25 @@ class Demo extends Component {
 
   columns = [
     { data: 'name.firstName' }, // 对象文本类型
-    {
-      data: 'name.lastName',
-      validator: (value, callback) => {
-        callback(!!value);
-      },
-      allowInvalid: true,
-      strict: true,
-    },
+    { data: 'name.lastName' },
     {
       data: 'level',
       type: 'numeric', // 数字类型
-      allowInvalid: true,
     },
     {
       data: 'date',
       type: 'date', // 日期类型
-      dateFormat: 'YYYY-MM-DD', // 日期格式
-      correctFormat: true, // 当前值是否格式化
-      defaultDate: '1900-01-01', // 默认值
-      allowInvalid: true, // 不容许日期为空
     },
   ];
-
-  getData = () => {
-    // 获取数据
-    this.child.getData((data) => {
-      console.log('data', data);
-    });
-  };
-
-  getUpdate = () => {
-    this.setState({ handData: data });
-  };
-
-  getCheckbox = () => {
-    const data = this.child.getCheckbox();
-    console.log('data', data);
-  };
 
 
   render() {
     const { handData } = this.state;
     return (
       <div>
-
-        <button onClick={this.getData}>数据</button>
-        <button onClick={this.getUpdate}>更新</button>
-        <button onClick={this.getCheckbox}>多选</button>
         <AcHandTable
           id="example" // 组件id
-          onRef={(ref) => { // 设置ref属性 调用子组件方法
-            this.child = ref;
-          }}
+          onRef={ref => this.child = ref} // 设置ref属性 调用子组件方法
           colHeaders={['姓', '名', '等级', '日期']} // 表格表头
           data={handData} // 表体数据
           columns={this.columns} // 列属性设置

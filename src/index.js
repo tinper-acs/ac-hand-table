@@ -1,10 +1,11 @@
-/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks */
+/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks,react/no-unused-state */
 /**
  * Created by ranyanchuan on 2018/3/11.
  */
 import React from 'react';
 import Handsontable from 'handsontable';
 
+import RefMultipleTable from './RefMultipleTable.js';
 
 import {
   getCheckboxActive,
@@ -13,7 +14,7 @@ import {
   getUpdateActive,
   getAddRowActive,
   changeSelectValue2Key,
-  dealSelectData,
+  customRenderData,
 } from './utils';
 
 import 'handsontable/languages/zh-CN';
@@ -25,8 +26,14 @@ import './index.less';
 class AcHandTable extends React.Component {
 
   state = {
+
     data: this.props.data,
     delDataList: [],
+    refMultipleTable: {}, // 表格参照
+    currentRow: 0, // 选中当前参照行
+    currentCol: 0, // 选中当前参照例
+    currentKey: '', // 选中当前参照key
+
   };
 
 
@@ -45,7 +52,7 @@ class AcHandTable extends React.Component {
 
     const { columns } = nextProps;// 表体数据
     // 处理下拉值 将[{key:'',value:''}] 转换成 [""], dealSelectData
-    let { data } = dealSelectData(nextProps.data, columns);
+    let { data } = customRenderData(nextProps.data, columns, this.coverRenderer);
     this.setState({ data });
     // 更新数据
     this.hot.loadData(data);
@@ -101,7 +108,16 @@ class AcHandTable extends React.Component {
           data[changes[0][0]].update_status = true;
           _this.setState({ data });
         }
+
+        console.log(changes, source);
+
       },
+
+      // 用于解决参照
+      beforeAutofill(start, end, data) {
+        console.log('start,end,data', start, end, data);
+      },
+
       // afterCreateRow: function (index, amount) {  // 添加行后执行
       //     console.log("index, amount", index, amount)
       //     const {data} = _this.state;
@@ -118,6 +134,38 @@ class AcHandTable extends React.Component {
   };
 
 
+  coverRenderer = (instance, td, row, col, prop, value, cellProperties) => {
+
+    const _this = this;
+
+    const { columns } = _this.props;
+    Handsontable.dom.empty(td); // 清空td
+
+    let createDiv = document.createElement('div');
+    createDiv.innerText = value;
+
+    // 添加 mousedown 事件
+    Handsontable.dom.addEvent(createDiv, 'mousedown', (e) => {
+      e.preventDefault(); // prevent selection quirk
+    });
+
+    // 添加 mouseup 事件
+    Handsontable.dom.addEvent(createDiv, 'dblclick', (e) => {
+      e.preventDefault(); // prevent selection quirk
+      let { refMultipleTable } = columns[col];
+      refMultipleTable.showModal = true;
+      _this.setState({
+        refMultipleTable,
+        currentRow: row,
+        currentCol: col,
+        currentKey: prop,
+      });
+    });
+    td.appendChild(createDiv);
+    return td;
+  };
+
+
   // 数据转换
   dealData = () => {
 
@@ -125,11 +173,12 @@ class AcHandTable extends React.Component {
       colHeaders, rowStyle,
       multiSelect = true, // 行多选框
       dropdownMenu = true, // 表头下拉
-
     } = this.props;
 
-    // 处理下拉值 将[{key:'',value:''}] 转换成 [""], dealSelectData
-    let { data, columns } = dealSelectData(this.state.data, this.props.columns);
+    // 1.处理下拉值 将[{key:'',value:''}] 转换成 [""],
+    // 2.处理表格参照,
+
+    let { data, columns } = customRenderData(this.state.data, this.props.columns, this.coverRenderer);
 
     // 添加 多选框
     if (multiSelect && colHeaders && Array.isArray(colHeaders) && colHeaders.length > 0) {
@@ -286,12 +335,31 @@ class AcHandTable extends React.Component {
     this.hot.alter('remove_row', getCheckDelArray(this.state.data));
   };
 
+  onSaveRef = (item) => {
+    const _this = this;
+    const { name, refpk } = item[0];
+    let { currentRow, currentCol, currentKey, data } = _this.state;
+    data[currentRow][currentKey] = name;
+    data[currentRow][currentKey + '_code'] = refpk;
+
+    _this.setState({
+      data,
+      refMultipleTable: {},
+    });
+    // 重新加载数据
+    this.hot.loadData(data);
+
+  };
+
 
   render() {
     const { id } = this.props;
-
+    const { refMultipleTable, } = this.state;
     return (
-      <div id={id} />
+      <div>
+        <div id={id}/>
+        <RefMultipleTable {...refMultipleTable} onSaveRef={this.onSaveRef}/>
+      </div>
     );
   }
 }

@@ -44,7 +44,7 @@ export function getSelectValue2Key(value, array) {
 
 
 // 处理下拉值 将[{key:'',value:''}] 转换成 [""]
-export function dealSelectData(data, columns) {
+export function customRenderData(data, columns, coverRenderer) {
   // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
   if (columns && columns.length > 0) {
     for (const [index, column] of columns.entries()) {
@@ -70,6 +70,13 @@ export function dealSelectData(data, columns) {
         // delete columns[index].source;
         columns[index].editor = 'select';
       }
+
+      // 修改表参照属性
+      if (type === 'refMultipleTable') {
+        delete columns[index].type;
+        columns[index].renderer = coverRenderer;
+      }
+
     }
   }
   return {

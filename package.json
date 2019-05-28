@@ -89,6 +89,7 @@
   },
   "dependencies": {
     "bee-button": "^2.0.11",
-    "handsontable": "7.0.2"
+    "handsontable": "7.0.2",
+    "ref-multiple-table": "^2.0.4"
   }
 }

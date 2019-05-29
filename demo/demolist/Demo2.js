@@ -6,11 +6,11 @@
  */
 
 import React, { Component } from 'react';
-import Button from 'bee-button';
+import { FormControl, Button } from 'tinper-bee';
+
 // 引入 AcHandTable 组件
 import AcHandTable from '../../src/index';
 
-import 'bee-button/build/Button.css';
 
 const data = [
   {
@@ -285,8 +285,12 @@ class Demo2 extends Component {
 
 
   render() {
+
+    const { handData } = this.state;
+
     return (
       <div className="demoPadding">
+
         <div style={{ marginBottom: '15px' }}>
           <Button colors="primary" onClick={this.onInsertRowData} size="sm"> 增行 </Button>
           <Button colors="danger" onClick={this.onDelRowCheck} size="sm">删除选中行</Button>
@@ -303,7 +307,7 @@ class Demo2 extends Component {
             this.child = ref;
           }}
           colHeaders={['姓名', '性别', '日期', '资薪', '表格参照-人员']} // 表格表头
-          data={this.state.handData} // 表体数据
+          data={handData} // 表体数据
           columns={this.columns} // 列属性设置
           // 设置行样式
           rowStyle={this.setStyle}

@@ -74,7 +74,9 @@ export function customRenderData(data, columns, coverRenderer) {
       // 修改表参照属性
       if (type === 'refMultipleTable') {
         delete columns[index].type;
-        columns[index].renderer = coverRenderer;
+        columns[index].renderer = coverRenderer; // 自定义参照
+        columns[index].isRef = true; // 参照标识
+        columns[index].editor = false; // 禁止编辑
       }
 
     }

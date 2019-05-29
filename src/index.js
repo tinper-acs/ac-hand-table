@@ -1,4 +1,4 @@
-/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks,react/no-unused-state */
+/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks,react/no-unused-state,prefer-template */
 /**
  * Created by ranyanchuan on 2018/3/11.
  */
@@ -108,15 +108,34 @@ class AcHandTable extends React.Component {
           data[changes[0][0]].update_status = true;
           _this.setState({ data });
         }
-
-        console.log(changes, source);
+        console.log('xxxx', changes, source);
 
       },
 
       // 用于拖拽 解决参照
-      beforeAutofill(start, end, data) {
-        console.log('start,end,data', start, end, data);
-        debugger
+      beforeAutofill(start, end, text) {
+        const { columns } = _this.props;
+        const { data } = _this.state;
+        const { row, col } = start;
+        const column = columns[col];
+        const { isRef, data: key } = column;
+        if (isRef) {
+
+          const { row: endRow } = end;
+
+          const totalRow = endRow > row ? row - 1 : row + 1; // 原始数据目标行
+          // 获取原始数据
+          const code = data[totalRow][key + '_code'];
+          const value = data[totalRow][key];
+
+          for (let i = row; i <= endRow; i++) {
+            data[i][key + '_code'] = code;
+            data[i][key] = value;
+          }
+          _this.setState({ data });
+        }
+
+
       },
 
       // afterCreateRow: function (index, amount) {  // 添加行后执行
@@ -125,6 +144,7 @@ class AcHandTable extends React.Component {
       //     data[index].add_status = true;
       //     _this.setState({data});
       // },
+
       // todo 页面render 依旧保留上一次的数据
       beforeRemoveRow(index, amount, physicalRows, source) {
         const { rowKey } = _this.props;
@@ -143,7 +163,8 @@ class AcHandTable extends React.Component {
     Handsontable.dom.empty(td); // 清空td
 
     let createDiv = document.createElement('div');
-    createDiv.innerText = value;
+    createDiv.innerHTML = value || '\&nbsp;\&nbsp';
+    createDiv.style.width = '100%';
 
     // 添加 mousedown 事件
     Handsontable.dom.addEvent(createDiv, 'mousedown', (e) => {
@@ -266,10 +287,12 @@ class AcHandTable extends React.Component {
       multiSelect: true, // 行多选框
       dropdownMenu: true, // 表头下拉
 
+
       ...this.props,
 
       columns,
       data,
+      fillHandle: 'vertical', // 默认只能横向 为了解决参照问题
 
     };
   };
@@ -355,7 +378,7 @@ class AcHandTable extends React.Component {
 
   render() {
     const { id } = this.props;
-    const { refMultipleTable, } = this.state;
+    const { refMultipleTable } = this.state;
     return (
       <div>
         <div id={id}/>

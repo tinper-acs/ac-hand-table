@@ -59,7 +59,7 @@ export function customRenderData(data, columns, coverRenderer) {
         sourceArray = source.map(item => item.value);
         // 更新data 数据
         data.map((item) => {
-          item[columnData] = item[columnData] ? changeSelectKey2Value((item[columnData]).toString(), source) : '';
+          item[columnData] = item[columnData] ? changeSelectKey2Value((item[columnData]).toString(), source) : item[columnData];
           return item;
         });
       }
@@ -91,9 +91,9 @@ export function changeSelectValue2Key(data, columns) {
   // 深度拷贝数组对象
   const result = data.map((item) => {
     const temp = { ...item }; // 深度拷贝
-    for (const key in item) {
-      temp[key] = item[key] || ''; // 对 null undefined NaN 处理
-    }
+    // for (const key in item) {
+    //   temp[key] = item[key] || ''; // 对 null undefined NaN 处理
+    // }
     return temp;
   });
 
@@ -110,7 +110,7 @@ export function changeSelectValue2Key(data, columns) {
         sourceArray = source.map(item => item.value);
         // 更新data 数据
         result.map((item) => {
-          item[columnData] = item[columnData] ? getSelectValue2Key((item[columnData]).toString(), source) : '';
+          item[columnData] = item[columnData] ? getSelectValue2Key((item[columnData]).toString(), source) : item[columnData];
           return item;
         });
       }

@@ -38,7 +38,7 @@ const data = [
   {
     id: 3,
     name: '王五',
-    gender: '1',
+    gender: null,
     date: '2018-07-02',
     money: 10000,
     staff: '李白',

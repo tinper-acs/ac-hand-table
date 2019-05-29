@@ -113,9 +113,10 @@ class AcHandTable extends React.Component {
 
       },
 
-      // 用于解决参照
+      // 用于拖拽 解决参照
       beforeAutofill(start, end, data) {
         console.log('start,end,data', start, end, data);
+        debugger
       },
 
       // afterCreateRow: function (index, amount) {  // 添加行后执行

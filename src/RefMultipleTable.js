@@ -19,6 +19,7 @@ class RefMultipleTable extends Component {
 
   render() {
     const { showModal } = this.props;
+
     return (showModal ?
         <RefMultipleTableBaseUI
           {...this.props}

@@ -171,6 +171,7 @@ class AcHandTable extends React.Component {
     // 添加 mouseup 事件
     Handsontable.dom.addEvent(createDiv, 'dblclick', (e) => {
       e.preventDefault(); // prevent selection quirk
+      console.log("0000")
       let { refMultipleTable } = columns[col];
       refMultipleTable.showModal = true;
       _this.setState({

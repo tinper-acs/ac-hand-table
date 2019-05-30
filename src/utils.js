@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-restricted-syntax,no-use-before-define */
 
 // 数组深克隆
 // export function deepClone(source) {
@@ -18,12 +18,11 @@ export function deepClone(data) {
 
 // select 下拉key 转换 value
 export function changeSelectKey2Value(key, array) {
-  if (!key) {
-    return '';
-  }
-  for (const item of array) {
-    if (item.key && item.key === key) {
-      return item.value;
+  if (key === 0 || key) {
+    for (const item of array) {
+      if ((item.key === 0 || item.key) && item.key === key) {
+        return item.value;
+      }
     }
   }
   return key;
@@ -31,12 +30,11 @@ export function changeSelectKey2Value(key, array) {
 
 // select 下拉 value 转换 key
 export function getSelectValue2Key(value, array) {
-  if (!value) {
-    return '';
-  }
-  for (const item of array) {
-    if (item.value && item.value === value) {
-      return item.key;
+  if (value === 0 || value) {
+    for (const item of array) {
+      if ((item.value === 0 || item.value) && item.value === value) {
+        return item.key;
+      }
     }
   }
   return value;
@@ -59,7 +57,7 @@ export function customRenderData(data, columns, coverRenderer) {
         sourceArray = source.map(item => item.value);
         // 更新data 数据
         data.map((item) => {
-          item[columnData] = item[columnData] ? changeSelectKey2Value((item[columnData]).toString(), source) : item[columnData];
+          item[columnData] = (item[columnData] === 0 || item[columnData]) ? changeSelectKey2Value(item[columnData], source) : item[columnData];
           return item;
         });
       }
@@ -78,7 +76,6 @@ export function customRenderData(data, columns, coverRenderer) {
         columns[index].isRef = true; // 参照标识
         columns[index].editor = false; // 禁止编辑
       }
-
     }
   }
   return {
@@ -91,13 +88,7 @@ export function customRenderData(data, columns, coverRenderer) {
 export function changeSelectValue2Key(data, columns) {
   // 处理下拉值 将[{key:'',value:''}] 转换成 [""],
   // 深度拷贝数组对象
-  const result = data.map((item) => {
-    const temp = { ...item }; // 深度拷贝
-    // for (const key in item) {
-    //   temp[key] = item[key] || ''; // 对 null undefined NaN 处理
-    // }
-    return temp;
-  });
+  const result = arrayObjctClone(data); // 深度拷贝
 
   if (columns && columns.length > 0) {
     for (const [index, column] of columns.entries()) {
@@ -112,7 +103,7 @@ export function changeSelectValue2Key(data, columns) {
         sourceArray = source.map(item => item.value);
         // 更新data 数据
         result.map((item) => {
-          item[columnData] = item[columnData] ? getSelectValue2Key((item[columnData]).toString(), source) : item[columnData];
+          item[columnData] = (item[columnData] === 0 || item[columnData]) ? getSelectValue2Key(item[columnData], source) : item[columnData];
           return item;
         });
       }
@@ -195,7 +186,5 @@ export function getDelRows(state, physicalRows, rowKey) {
 
 // 数组对象深度copy
 export function arrayObjctClone(array) {
-  return array.map((item) => {
-    return { ...item };
-  });
+  return array.map(item => ({ ...item }));
 }

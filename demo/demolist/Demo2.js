@@ -27,13 +27,11 @@ const data = [
   {
     id: 2,
     name: '李四',
-    gender: '0',
+    gender: 0,
     date: '2018-07-02',
     money: 10000,
     staff_code: '',
     staff: '李白',
-
-
   },
   {
     id: 3,
@@ -200,7 +198,7 @@ class Demo2 extends Component {
         key: '1',
       }, {
         value: '女',
-        key: '0',
+        key: 0,
       }],
     },
     {

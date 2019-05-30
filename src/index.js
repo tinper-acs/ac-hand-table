@@ -108,8 +108,6 @@ class AcHandTable extends React.Component {
           data[changes[0][0]].update_status = true;
           _this.setState({ data });
         }
-        console.log('xxxx', changes, source);
-
       },
 
       // 用于拖拽 解决参照
@@ -134,7 +132,6 @@ class AcHandTable extends React.Component {
           }
           _this.setState({ data });
         }
-
 
       },
 

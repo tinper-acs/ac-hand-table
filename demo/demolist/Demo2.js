@@ -220,6 +220,21 @@ class Demo2 extends Component {
       refMultipleTable: {
         columnsData,
         tableData,
+        refSearch: (value) => {
+          return [{
+            rownum_: 10,
+            code: 'bpm02',
+            name: '张二',
+            mobile: '18788888888',
+            refcode: 'bpm02',
+            refpk: 'c97b59e2-9fa3-44d7-93b0-1be52f7aa550',
+            id: 'c97b59e2-9fa3-44d7-93b0-1be52f7aa550',
+            refname: '张二',
+            email: 'bpm02@qq.com',
+            key: 'c97b59e2-9fa3-44d7-93b0-1be52f7aa550',
+          }];
+        }
+
       }
     },
 

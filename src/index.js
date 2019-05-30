@@ -156,7 +156,7 @@ class AcHandTable extends React.Component {
 
     const _this = this;
 
-    const { columns } = _this.props;
+    const { columns, rowStyle } = _this.props;
     Handsontable.dom.empty(td); // 清空td
 
     let createDiv = document.createElement('div');
@@ -181,7 +181,18 @@ class AcHandTable extends React.Component {
       });
     });
     td.appendChild(createDiv);
+
+    // 添加样式
+    const styles = rowStyle(row + 1, col, prop);
+    if (styles) {
+      // 修改行样式
+      for (const style in styles) {
+        td.style[style] = styles[style];
+      }
+    }
+
     return td;
+
   };
 
 
@@ -356,6 +367,7 @@ class AcHandTable extends React.Component {
     this.hot.alter('remove_row', getCheckDelArray(this.state.data));
   };
 
+  // 参照保存
   onSaveRef = (item) => {
     const _this = this;
     const { name, refpk } = item[0];
@@ -369,7 +381,25 @@ class AcHandTable extends React.Component {
     });
     // 重新加载数据
     this.hot.loadData(data);
+  };
 
+  // 参照取消
+  onCancelRef = () => {
+    this.setState({
+      refMultipleTable: {},
+    });
+  };
+
+
+  // 表格简单搜索
+  onSearchRef = (value) => {
+    const { refMultipleTable } = this.state;
+    const { refSearch } = refMultipleTable;
+    const tableData = refSearch(value);
+
+    // todo 分页处理
+    refMultipleTable.tableData = tableData;
+    this.setState({ refMultipleTable });
   };
 
 
@@ -379,7 +409,12 @@ class AcHandTable extends React.Component {
     return (
       <div>
         <div id={id}/>
-        <RefMultipleTable {...refMultipleTable} onSaveRef={this.onSaveRef}/>
+        <RefMultipleTable
+          {...refMultipleTable}
+          onSave={this.onSaveRef}
+          onCancel={this.onCancelRef}
+          miniSearchFunc={this.onSearchRef}
+        />
       </div>
     );
   }

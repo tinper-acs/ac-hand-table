@@ -192,7 +192,7 @@ class AcHandTable extends React.Component {
     td.appendChild(createDiv);
 
     // 添加样式
-    const styles = rowStyle(row + 1, col, prop);
+    const styles = rowStyle && rowStyle(row + 1, col, prop);
     if (styles) {
       // 修改行样式
       for (const style in styles) {
@@ -377,12 +377,15 @@ class AcHandTable extends React.Component {
   // 参照保存
   onSaveRef = (item) => {
     const _this = this;
-    const { name, refpk } = item[0];
-    let {
-      currentRow, currentCol, currentKey, data,
-    } = _this.state;
-    data[currentRow][currentKey] = name;
-    data[currentRow][currentKey + '_code'] = refpk;
+
+    let { currentRow, currentKey, data } = _this.state;
+    // todo 多个值问题
+    if (item && Array.isArray(item) && item.length > 0) {
+      const { name, refpk } = item[0];
+      data[currentRow][currentKey] = name;
+      data[currentRow][currentKey + '_code'] = refpk;
+    }
+
 
     _this.setState({
       data,
@@ -401,10 +404,10 @@ class AcHandTable extends React.Component {
 
 
   // 表格简单搜索
-  onSearchRef = (value) => {
+  onSearchRef = (value, type) => {
 
-    const { refConfig } = this.state;
-    const { refSearch, currentRefType } = refConfig;
+    let { refConfig } = this.state;
+    const { currentRefType, refSearch } = refConfig;
 
     // todo 分页处理
     // 表格参照
@@ -415,10 +418,27 @@ class AcHandTable extends React.Component {
     if (currentRefType === 'refTreeWithInput') {
       refConfig.treeData = refSearch(value);
     }
+    // 树表参照
+    if (currentRefType === 'refTreeTableWithInput') {
+      const { treeData, tableData } = refSearch(value, type);
+      refConfig.treeData = treeData;
+      refConfig.tableData = tableData;
+    }
+    // 树表穿梭
+    if (currentRefType === 'refTreeTransferWithInput') {
+      refConfig.transferData = refSearch(value, type);
+    }
 
 
     this.setState({ refConfig });
 
+  };
+
+  // 穿梭框参照-设置目标key
+  setTargetKeys = (targetKeys) => {
+    let { refConfig } = this.state;
+    refConfig.targetKeys = targetKeys;
+    this.setState({ refConfig });
   };
 
 
@@ -427,7 +447,7 @@ class AcHandTable extends React.Component {
     const { refConfig } = this.state;
     return (
       <div>
-        <div id={id} />
+        <div id={id}/>
         {/* 表格 */}
         <RefMultipleTable
           {...refConfig}
@@ -447,14 +467,16 @@ class AcHandTable extends React.Component {
           {...refConfig}
           onSave={this.onSaveRef}
           onCancel={this.onCancelRef}
-          getRefTreeData={this.onSearchRef}
+          onTreeSearch={value => this.onSearchRef(value, 'tree')}
+          onTableSearch={value => this.onSearchRef(value, 'table')}
         />
         {/* 树穿梭 */}
         <RefTreeTransferWithInput
           {...refConfig}
           onSave={this.onSaveRef}
           onCancel={this.onCancelRef}
-          getRefTreeData={this.onSearchRef}
+          setTargetKeys={this.setTargetKeys}
+          handleTreeSelect={this.onSearchRef}
         />
 
       </div>

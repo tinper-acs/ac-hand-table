@@ -8,10 +8,12 @@ import './demo.scss';
 
 import Demo1 from './demolist/Demo1';
 import Demo2 from './demolist/Demo2';
+import Demo3 from './demolist/Demo3';
+import Demo4 from './demolist/Demo4';
 
 const DemoArray = [
   {
-    example: <Demo1 />,
+    example: <Demo1/>,
     title: ' 应用组件名称',
     code: '/* eslint-disable no-return-assign */\n'
       + '/**\n'
@@ -113,7 +115,7 @@ const DemoArray = [
     desc: ' 应用组件描述',
   },
   {
-    example: <Demo2 />,
+    example: <Demo2/>,
     title: ' 应用组件名称',
     code: `/**
  *
@@ -291,6 +293,18 @@ export default Demo2;
 `,
     desc: ' 应用组件描述',
   },
+  {
+    example: <Demo3/>,
+    title: ' 应用组件名称',
+    code: '',
+    desc: ' 应用组件描述',
+  },
+  {
+    example: <Demo4/>,
+    title: ' 应用组件名称',
+    code: '',
+    desc: ' 应用组件描述',
+  },
 ];
 
 
@@ -323,7 +337,7 @@ class Demo extends Component {
         <p>{desc}</p>
         <span className="component-code" onClick={this.handleClick}>
           {' '}
-查看源码
+          查看源码
           <i
             className="uf uf-arrow-right"
           />
@@ -345,8 +359,8 @@ class Demo extends Component {
         >
           <div className="component-code-copy">
             {' '}
-JS代码
-            <Clipboard action="copy" text={code} />
+            JS代码
+            <Clipboard action="copy" text={code}/>
           </div>
           <pre className="pre-js">
             <code className="hljs javascript">{code}</code>
@@ -354,8 +368,8 @@ JS代码
           {scss_code ? (
             <div className="component-code-copy copy-css">
               {' '}
-SCSS代码
-              <Clipboard action="copy" text={scss_code} />
+              SCSS代码
+              <Clipboard action="copy" text={scss_code}/>
             </div>
           ) : null}
           {scss_code ? (
@@ -392,4 +406,4 @@ class DemoGroup extends Component {
   }
 }
 
-ReactDOM.render(<DemoGroup />, document.getElementById('root'));
+ReactDOM.render(<DemoGroup/>, document.getElementById('root'));

@@ -91,8 +91,10 @@
     "prop-types": "^15.6.0"
   },
   "dependencies": {
-
     "handsontable": "7.0.2",
-    "ref-multiple-table": "^2.0.4"
+    "ref-multiple-table": "^2.0.4",
+    "ref-tree": "^2.0.9",
+    "ref-tree-table": "^2.0.6",
+    "ref-tree-transfer": "^2.0.6"
   }
 }

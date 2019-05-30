@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-syntax,no-use-before-define */
+/* eslint-disable no-restricted-syntax,no-use-before-define,no-param-reassign */
 
 // 数组深克隆
 // export function deepClone(source) {
@@ -69,12 +69,13 @@ export function customRenderData(data, columns, coverRenderer) {
         columns[index].editor = 'select';
       }
 
-      // 修改表参照属性
-      if (type === 'refMultipleTable') {
+      // 修改参照属性
+      if (['refMultipleTable', 'refTreeWithInput', 'refTreeTableWithInput', 'refTreeTransferWithInput'].includes(type)) {
         delete columns[index].type;
         columns[index].renderer = coverRenderer; // 自定义参照
         columns[index].isRef = true; // 参照标识
         columns[index].editor = false; // 禁止编辑
+        columns[index].refType = type; // 参照类型
       }
     }
   }

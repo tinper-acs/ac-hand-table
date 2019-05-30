@@ -6,11 +6,11 @@
  *
  */
 import React, { Component } from 'react';
-import RefMultipleTableBaseUI from 'ref-multiple-table';
+import RefTreeTransferBaseUI from 'ref-tree-transfer';
+import 'ref-tree-transfer/lib/index.css';
 
-import 'ref-multiple-table/lib/index.css';
 
-class RefMultipleTable extends Component {
+class RefTreeTransferWithInput extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -19,12 +19,13 @@ class RefMultipleTable extends Component {
 
   render() {
     const { showModal, currentRefType } = this.props;
-    return (currentRefType === 'refMultipleTable' && showModal ?
-        <RefMultipleTableBaseUI
+
+    return (currentRefType === 'refTreeTransferWithInput' && showModal ?
+        <RefTreeTransferBaseUI
           {...this.props}
         /> : null
     );
   }
 }
 
-export default RefMultipleTable;
+export default RefTreeTransferWithInput;

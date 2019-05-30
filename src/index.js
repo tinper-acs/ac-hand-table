@@ -5,7 +5,10 @@
 import React from 'react';
 import Handsontable from 'handsontable';
 
-import RefMultipleTable from './RefMultipleTable.js';
+import RefMultipleTable from './RefMultipleTable.js'; // 表格参照
+import RefTreeWithInput from './RefTreeWithInput.js'; // 树参照
+import RefTreeTableWithInput from './RefTreeTableWithInput.js'; // 树表参照
+import RefTreeTransferWithInput from './RefTreeTransferWithInput.js'; // 树穿梭参照
 
 import {
   getCheckboxActive,
@@ -29,10 +32,11 @@ class AcHandTable extends React.Component {
 
     data: this.props.data,
     delDataList: [],
-    refMultipleTable: {}, // 表格参照
+    refTableConfig: {}, // 表格参照
     currentRow: 0, // 选中当前参照行
     currentCol: 0, // 选中当前参照例
     currentKey: '', // 选中当前参照key
+    currentRefType: '', // 获取当前参照类型
 
   };
 
@@ -102,6 +106,7 @@ class AcHandTable extends React.Component {
     const _this = this;
     this.hot = new Handsontable(container, {
       ...data,
+
       afterChange(changes, source) { // 表格被修改后执行
         if (source === 'edit' && (changes[0][2] !== changes[0][3])) { // 表格被修改
           const { data } = _this.state;
@@ -171,15 +176,18 @@ class AcHandTable extends React.Component {
     // 添加 mouseup 事件
     Handsontable.dom.addEvent(createDiv, 'dblclick', (e) => {
       e.preventDefault(); // prevent selection quirk
-      console.log("0000")
-      let { refMultipleTable } = columns[col];
-      refMultipleTable.showModal = true;
+      let { refConfig, refType } = columns[col];
+      refConfig.showModal = true;
+      refConfig.currentRefType = refType;
+
+      // 更新当前参照信息
       _this.setState({
-        refMultipleTable,
+        refConfig,
         currentRow: row,
         currentCol: col,
         currentKey: prop,
       });
+
     });
     td.appendChild(createDiv);
 
@@ -191,9 +199,7 @@ class AcHandTable extends React.Component {
         td.style[style] = styles[style];
       }
     }
-
     return td;
-
   };
 
 
@@ -372,13 +378,15 @@ class AcHandTable extends React.Component {
   onSaveRef = (item) => {
     const _this = this;
     const { name, refpk } = item[0];
-    let { currentRow, currentCol, currentKey, data } = _this.state;
+    let {
+      currentRow, currentCol, currentKey, data,
+    } = _this.state;
     data[currentRow][currentKey] = name;
     data[currentRow][currentKey + '_code'] = refpk;
 
     _this.setState({
       data,
-      refMultipleTable: {},
+      refConfig: {},
     });
     // 重新加载数据
     this.hot.loadData(data);
@@ -387,35 +395,68 @@ class AcHandTable extends React.Component {
   // 参照取消
   onCancelRef = () => {
     this.setState({
-      refMultipleTable: {},
+      refConfig: {},
     });
   };
 
 
   // 表格简单搜索
   onSearchRef = (value) => {
-    const { refMultipleTable } = this.state;
-    const { refSearch } = refMultipleTable;
-    const tableData = refSearch(value);
+
+    const { refConfig } = this.state;
+    const { refSearch, currentRefType } = refConfig;
 
     // todo 分页处理
-    refMultipleTable.tableData = tableData;
-    this.setState({ refMultipleTable });
+    // 表格参照
+    if (currentRefType === 'refMultipleTable') {
+      refConfig.tableData = refSearch(value);
+    }
+    // 树参照
+    if (currentRefType === 'refTreeWithInput') {
+      refConfig.treeData = refSearch(value);
+    }
+
+
+    this.setState({ refConfig });
+
   };
 
 
   render() {
     const { id } = this.props;
-    const { refMultipleTable } = this.state;
+    const { refConfig } = this.state;
     return (
       <div>
-        <div id={id}/>
+        <div id={id} />
+        {/* 表格 */}
         <RefMultipleTable
-          {...refMultipleTable}
+          {...refConfig}
           onSave={this.onSaveRef}
           onCancel={this.onCancelRef}
           miniSearchFunc={this.onSearchRef}
         />
+        {/* 树 */}
+        <RefTreeWithInput
+          {...refConfig}
+          onSave={this.onSaveRef}
+          onCancel={this.onCancelRef}
+          getRefTreeData={this.onSearchRef}
+        />
+        {/* 树表 */}
+        <RefTreeTableWithInput
+          {...refConfig}
+          onSave={this.onSaveRef}
+          onCancel={this.onCancelRef}
+          getRefTreeData={this.onSearchRef}
+        />
+        {/* 树穿梭 */}
+        <RefTreeTransferWithInput
+          {...refConfig}
+          onSave={this.onSaveRef}
+          onCancel={this.onCancelRef}
+          getRefTreeData={this.onSearchRef}
+        />
+
       </div>
     );
   }

@@ -9,7 +9,6 @@ import './demo.scss';
 import Demo1 from './demolist/Demo1';
 import Demo2 from './demolist/Demo2';
 import Demo3 from './demolist/Demo3';
-import Demo4 from './demolist/Demo4';
 
 const DemoArray = [
   {
@@ -118,7 +117,8 @@ export default Demo;
   {
     example: <Demo2/>,
     title: '表格常用方法',
-    code: `/**
+    code: `/* eslint-disable import/no-extraneous-dependencies */
+/**
  *
  * @title AcHandTable
  * @description 设置行样式、表格添加行、删除多选选中行、获取验证通过后数据、获取多选选中的数据、获取被修改后的数据、获取被格式化的数据、获取新增加的数据和获取删除的数据
@@ -126,11 +126,11 @@ export default Demo;
  */
 
 import React, { Component } from 'react';
-import { FormControl, Button } from 'tinper-bee';
+import { Button } from 'tinper-bee';
 
 // 引入 AcHandTable 组件
 import AcHandTable from '../../src/index';
-
+import '../../src/index.less';
 
 const data = [
   {
@@ -311,6 +311,7 @@ class Demo2 extends Component {
 }
 
 export default Demo2;
+
 `,
     desc: '设置行样式、表格添加行、删除多选选中行、获取验证通过后数据、获取多选选中的数据、获取被修改后的数据、获取被格式化的数据、获取新增加的数据和获取删除的数据',
   },
@@ -329,6 +330,7 @@ import { Button } from 'tinper-bee';
 
 // 引入 AcHandTable 组件
 import AcHandTable from '../../src/index';
+import '../../src/index.less';
 
 // 表格数据
 const data = [
@@ -1471,6 +1473,7 @@ class Demo3 extends Component {
 }
 
 export default Demo3;
+
 `,
     desc: ' 下拉搜索、表参照、树参照、表格参照、树穿梭参照',
   },

@@ -10,6 +10,7 @@ import { Button } from 'tinper-bee';
 
 // 引入 AcHandTable 组件
 import AcHandTable from '../../src/index';
+import '../../src/index.less';
 
 // 表格数据
 const data = [

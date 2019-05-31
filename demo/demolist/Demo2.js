@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /**
  *
  * @title AcHandTable
@@ -6,11 +7,11 @@
  */
 
 import React, { Component } from 'react';
-import { FormControl, Button } from 'tinper-bee';
+import { Button } from 'tinper-bee';
 
 // 引入 AcHandTable 组件
 import AcHandTable from '../../src/index';
-
+import '../../src/index.less';
 
 const data = [
   {

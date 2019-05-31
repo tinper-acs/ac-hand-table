@@ -1,4 +1,4 @@
-/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks,react/no-unused-state,prefer-template */
+/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks,react/no-unused-state,prefer-template,no-underscore-dangle */
 /**
  * Created by ranyanchuan on 2018/3/11.
  */
@@ -51,15 +51,17 @@ class AcHandTable extends React.Component {
     this.init();
   }
 
-
+  //
   componentWillReceiveProps(nextProps) {
 
     const { columns } = nextProps;// 表体数据
     // 处理下拉值 将[{key:'',value:''}] 转换成 [""], dealSelectData
-    let { data } = customRenderData(nextProps.data, columns, this.coverRenderer);
-    this.setState({ data });
-    // 更新数据
-    this.hot.loadData(data);
+    if (nextProps.data !== this.props.data) {
+      let { data } = customRenderData(nextProps.data, columns, this.coverRenderer);
+      this.setState({ data });
+      // 更新数据
+      this.hot.loadData(data);
+    }
 
   }
 
@@ -176,16 +178,21 @@ class AcHandTable extends React.Component {
     // 添加 mouseup 事件
     Handsontable.dom.addEvent(createDiv, 'dblclick', (e) => {
       e.preventDefault(); // prevent selection quirk
-      let { refConfig, refType } = columns[col];
+      let { refConfig, refType, refSource } = columns[col];
       refConfig.showModal = true;
       refConfig.currentRefType = refType;
 
-      // 更新当前参照信息
-      _this.setState({
-        refConfig,
-        currentRow: row,
-        currentCol: col,
-        currentKey: prop,
+      // 获取参照数据
+      refSource('', '', (data) => {
+        // 更新当前参照信息
+        const newConfig = { ...refConfig, ...data };
+        _this.setState({
+          refConfig: newConfig,
+          refSource: refSource,
+          currentRow: row,
+          currentCol: col,
+          currentKey: prop,
+        });
       });
 
     });
@@ -405,33 +412,16 @@ class AcHandTable extends React.Component {
 
   // 表格简单搜索
   onSearchRef = (value, type) => {
-
-    let { refConfig } = this.state;
-    const { currentRefType, refSearch } = refConfig;
-
-    // todo 分页处理
-    // 表格参照
-    if (currentRefType === 'refMultipleTable') {
-      refConfig.tableData = refSearch(value);
-    }
-    // 树参照
-    if (currentRefType === 'refTreeWithInput') {
-      refConfig.treeData = refSearch(value);
-    }
-    // 树表参照
-    if (currentRefType === 'refTreeTableWithInput') {
-      const { treeData, tableData } = refSearch(value, type);
-      refConfig.treeData = treeData;
-      refConfig.tableData = tableData;
-    }
-    // 树表穿梭
-    if (currentRefType === 'refTreeTransferWithInput') {
-      refConfig.transferData = refSearch(value, type);
-    }
-
-
-    this.setState({ refConfig });
-
+    const _this = this;
+    let { refConfig, refSource } = _this.state;
+    // 获取参照数据
+    refSource(value, type, (data) => {
+      // 更新当前参照信息
+      const newConfig = { ...refConfig, ...data };
+      _this.setState({
+        refConfig: newConfig,
+      });
+    });
   };
 
   // 穿梭框参照-设置目标key

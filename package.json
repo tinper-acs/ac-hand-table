@@ -92,6 +92,7 @@
   },
   "dependencies": {
     "handsontable": "7.0.2",
+    "ref-combobox": "^2.0.4",
     "ref-multiple-table": "^2.0.4",
     "ref-tree": "^2.0.9",
     "ref-tree-table": "^2.0.6",

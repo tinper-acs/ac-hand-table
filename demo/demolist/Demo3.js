@@ -11,16 +11,12 @@ import { FormControl, Button } from 'tinper-bee';
 // 引入 AcHandTable 组件
 import AcHandTable from '../../src/index';
 
-const op = {
-  displayField: '{refname}-{refcode}-jaja',
-  valueField: 'refcode',
-};
-
 // 表格数据
 const data = [
   {
     id: 1,
     code: '0000-0001',
+    autocomplete: 'xxxxx',
     staff: '杜甫',
     department: '用友集团',
     department_staff: '张一',
@@ -29,6 +25,7 @@ const data = [
   {
     id: 2,
     code: '0000-0002',
+    autocomplete: 'xxxxx',
     staff: '李白',
     department: '用友股份',
     department_staff: '',
@@ -38,6 +35,7 @@ const data = [
   {
     id: 3,
     code: '0000-0003',
+    autocomplete: 'xxxxx',
     staff: '白居易',
     department: '江西分公司',
     department_staff: '',
@@ -961,7 +959,7 @@ const refTreeTableSearch = {
   },
 };
 // 模拟穿梭选中搜索
-const transferTreeSelect= [
+const transferTreeSelect = [
   {
     rownum_: 1,
     login_name: '43',
@@ -992,7 +990,7 @@ const transferTreeSelect= [
     refname: '花48',
     key: '48',
     title: '花48-48',
-  },]
+  }];
 
 class Demo3 extends Component {
   constructor(props) {
@@ -1014,15 +1012,26 @@ class Demo3 extends Component {
       strict: true,
     },
     {
+      data: 'autocomplete',
+      type: 'autocomplete',  //下拉框
+      source: (params, callback) => {
+        callback(['xxxx', 'yyyyy', 'zzzz']);
+      },
+    },
+
+    {
       data: 'staff',
       type: 'refMultipleTable', // 表格
       refConfig: {
         columnsData: refTableData.columnsData,
-        tableData: refTableData.tableData,
-        refSearch: (value) => { // 表格简单搜索
-          console.log('refSearch--table', value);
-          return refTableSearch;
-        },
+      },
+      refSource: (value, type, callback) => { // 表格简单搜索
+        console.log('refSearch--table', value, type);
+        const result = { tableData: refTableData.tableData };
+        if (value) {
+          result.tableData = refTableSearch;
+        }
+        return callback(result);
       },
     },
     {
@@ -1030,45 +1039,64 @@ class Demo3 extends Component {
       type: 'refTreeWithInput', // 树参照
       refConfig: {
         treeData: refTreeData,
-        refSearch: (value) => {
-          console.log('value--tree', value);
-          return refTreeSearch;
-        },
+      },
+      refSource: (value, type, callback) => { // 表格简单搜索
+        console.log('refSearch--tree', value, type);
+        const result = { treeData: refTreeData };
+        if (value) {
+          result.treeData = refTreeSearch;
+        }
+        return callback(result);
       },
     },
     {
       data: 'department_staff',
       type: 'refTreeTableWithInput', // 树表参照
       refConfig: {
-        treeData: refTreeTableData.treeData,
         columnsData: refTreeTableData.columnsData,
-        tableData: refTreeTableData.tableData,
-        page: refTreeTableData.page,
-        refSearch: (value, type) => {
-          const { treeData: searchTree, tableData: searchTable } = refTreeTableSearch;
-          const result = { treeData: searchTree };
-          if (type === 'tree') { // 树搜索
-            result.tableData = [];
-          } else { // 表格搜索
-            result.tableData = searchTable;
-          }
-          return result;
-        },
+      },
+
+      refSource: (value, type, callback) => {
+        const { treeData: searchTree, tableData: searchTable } = refTreeTableSearch;
+        const result = {
+          tableData: refTreeTableData.tableData,
+          treeData: refTreeTableData.treeData,
+          page: refTreeTableData.page,
+        };
+
+        if (value && type === 'tree') { // 树搜索
+          result.tableData = [];
+          result.treeData = searchTree;
+        }
+
+        if (value && type === 'table') { // 表格搜索
+          result.tableData = searchTable;
+        }
+
+        return callback(result);
       },
     },
     {
       data: 'department_staff_transfer',
       type: 'refTreeTransferWithInput', // 树穿梭参照
       refConfig: {
-        ...op,
-        treeData: refTreeTransferData.treeData,
-        transferData: refTreeTransferData.transferData,
-        targetKeys: [],
-        refSearch: (value) => {
-          console.log('value--tree', value);
-          return transferTreeSelect;
-        },
+        displayField: '{refname}-{refcode}-jaja',
+        valueField: 'refcode',
       },
+      refSource: (value, type, callback) => {
+        const result = {
+          treeData: refTreeTransferData.treeData,
+          transferData: refTreeTransferData.transferData,
+          targetKeys: [],
+        };
+
+        if (value) { // 树点击选择
+          result.transferData = transferTreeSelect;
+        }
+        return callback(result);
+      },
+
+
     },
 
   ];
@@ -1111,7 +1139,7 @@ class Demo3 extends Component {
           onRef={(ref) => { // 设置ref属性 调用子组件方法
             this.child = ref;
           }}
-          colHeaders={['编码', '表格参照-人员', '树参照-部门', '树表参照-部门人员', '树穿梭-人员']} // 表格表头
+          colHeaders={['编码', '下拉搜索', '表格参照-人员', '树参照-部门', '树表参照-部门人员', '树穿梭-人员']} // 表格表头
           data={handData} // 表体数据
           columns={this.columns} // 列属性设置
 

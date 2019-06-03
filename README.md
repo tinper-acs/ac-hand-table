@@ -115,6 +115,8 @@ export default Demo;
 |language|表格语言|'zh-CN'或 'en-US'或 'zh-TW'|'zh-CN'|
 |rowHeaders|表头信息|`boolean`或 `array`或 `function` (index)=>{}|true|
 |colWidths|列宽|`number` 100或 `string` '100px'或 `array` [100,200]或 `func` (index)=>{}|-|
+|width|表格总宽度|'%' 或 'px'|-|
+|height|表格总高度|'%' 或 'px' 或 'auto'|-|
 |multiSelect|是否含有多选框|boolean|true|
 |manualColumnResize|是否列宽可以拖动|boolean|true|
 |manualColumnMove|是否列可以交换|boolean|true|
@@ -166,7 +168,7 @@ export default Demo;
 |参数|说明|类型|默认值|
 |:--|:---|:--|:--|
 |data|列的键,支持'date.xx'|string|-|
-|type|数据类型 `text` `numeric` `date` `time` `checkbox`  `select` `dropdown` `autocomplete` `password` |string|true|
+|type|数据类型 `text` `numeric` `date` `time` `checkbox`  `select` `dropdown` `autocomplete` `password` `refMultipleTable` `refTreeWithInput` `refTreeTableWithInput` `refTreeTransferWithInput`|string|true|
 |readOnly|是否数据仅可读|boolean|false|
 |editor|是否数据可以编辑|boolean|true|
 |strict|是否输入到单元格的值区分大小写|boolean|false|

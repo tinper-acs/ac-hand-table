@@ -291,6 +291,15 @@ export default Demo;
     console.log('delRowData', delRowData);
   };
 ```
+### 导出csv
+```js
+
+  onDownCsv = () => {
+    this.child.onExportCSV();
+  };
+
+```
+
 
 #### 日期国际化
 ```js

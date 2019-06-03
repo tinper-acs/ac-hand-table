@@ -155,6 +155,11 @@ class Demo2 extends Component {
     console.log('delRowData', delRowData);
   };
 
+  // 导出csv
+  onDownCsv = () => {
+    this.child.onExportCSV();
+  };
+
 
   render() {
     const { handData } = this.state;
@@ -171,6 +176,7 @@ class Demo2 extends Component {
           <Button colors="primary" onClick={this.getAddRowData} size="sm">获取新增加行</Button>
           <Button colors="primary" onClick={this.getDelRowData} size="sm">获取删除行</Button>
           <Button colors="primary" onClick={this.getFormatData} size="sm">格式化数据 </Button>
+          <Button colors="primary" onClick={this.onDownCsv} size="sm">导出csv </Button>
         </div>
 
         <AcHandTable
@@ -184,6 +190,9 @@ class Demo2 extends Component {
           // 设置行样式
           rowStyle={this.setStyle}
           rowKey="id" // 数组对象中唯一id 默认值为'id'
+          csvConfig={{
+            filename: '导出',
+          }}
         />
 
       </div>

@@ -201,6 +201,20 @@ export default Demo;
 |pattern|数字模式 [具体参考](http://numbrojs.com/old-format.html)|string|-|
 |culture|货币处理 [具体参考](http://numbrojs.com/languages.html#supported-languages)|string|-|
 
+### csvConfig
+|参数|说明|类型|默认值|
+|:--|:---|:--|:--|
+|filename|将导出文件名|string|`CSV_[YYYY]-[MM]-[DD]`|
+|exportHiddenRows|在导出的文件中包含隐藏的行|boolean|true|
+|exportHiddenColumns|在导出的文件中包含隐藏列|boolean|true|
+|columnHeaders|在导出的文件中包含列标题|boolean|true|
+|rowHeaders|在导出的文件中包含行标题|boolean|true|
+|columnDelimiter|列分隔符|string|','|
+|rowDelimiter|行分隔符|string|`\r\n`|
+|range|将导出到文件的单元格范围|[]|-|
+|mimeType|将导出文件类型|string|"text/csv"|
+
+
 ### 获取表格里的数据
 ```js
  getData = () => {

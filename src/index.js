@@ -217,6 +217,7 @@ class AcHandTable extends React.Component {
       colHeaders, rowStyle,
       multiSelect = true, // 行多选框
       dropdownMenu = true, // 表头下拉
+      csvConfig = {},
     } = this.props;
 
     // 1.处理下拉值 将[{key:'',value:''}] 转换成 [""],
@@ -289,6 +290,19 @@ class AcHandTable extends React.Component {
       }
     }
 
+    // csv 导出配置
+
+    const csvDefault = {
+      columnDelimiter: ',',
+      columnHeaders: true,
+      exportHiddenColumns: true,
+      exportHiddenRows: true,
+      fileExtension: 'csv',
+      filename: 'CSV_[YYYY]-[MM]-[DD]',
+      mimeType: 'text/csv',
+      rowDelimiter: '\r\n',
+      rowHeaders: true,
+    };
 
     return {
 
@@ -315,6 +329,7 @@ class AcHandTable extends React.Component {
       columns,
       data,
       fillHandle: 'vertical', // 默认只能横向 为了解决参照问题
+      csvConfig: {...csvDefault, ...csvConfig } // 导出csv 配置
 
     };
   };
@@ -429,6 +444,13 @@ class AcHandTable extends React.Component {
     let { refConfig } = this.state;
     refConfig.targetKeys = targetKeys;
     this.setState({ refConfig });
+  };
+
+  // 导出
+  onExportCSV = () => {
+    const { csvConfig } = this.props;
+    const exportPlugin = this.hot.getPlugin('exportFile');
+    exportPlugin.downloadFile('csv', csvConfig);
   };
 
 

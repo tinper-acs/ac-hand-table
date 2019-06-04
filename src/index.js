@@ -329,7 +329,7 @@ class AcHandTable extends React.Component {
       columns,
       data,
       fillHandle: 'vertical', // 默认只能横向 为了解决参照问题
-      csvConfig: {...csvDefault, ...csvConfig } // 导出csv 配置
+      csvConfig: { ...csvDefault, ...csvConfig } // 导出csv 配置
 
     };
   };
@@ -397,15 +397,19 @@ class AcHandTable extends React.Component {
   };
 
   // 参照保存
-  onSaveRef = (item) => {
+  onSaveRef = (params) => {
     const _this = this;
 
     let { currentRow, currentKey, data } = _this.state;
     // todo 多个值问题
-    if (item && Array.isArray(item) && item.length > 0) {
-      const { name, refpk } = item[0];
+
+    if (params && Array.isArray(params) && params.length > 0) {
+
+      const { name } = params[0];
       data[currentRow][currentKey] = name;
-      data[currentRow][currentKey + '_code'] = refpk;
+      for (const key in params[0]) {
+        data[currentRow][currentKey + '_' + key] = params[0][key];
+      }
     }
 
 

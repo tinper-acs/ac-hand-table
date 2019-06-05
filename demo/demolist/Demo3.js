@@ -1026,6 +1026,7 @@ class Demo3 extends Component {
       type: 'refMultipleTable', // 表格
       refConfig: {
         columnsData: refTableData.columnsData,
+        columnsKey: ['email', 'mobile'],
       },
       refSource: (value, type, callback) => { // 表格简单搜索
         console.log('refSearch--table', value, type);
@@ -1090,6 +1091,7 @@ class Demo3 extends Component {
           treeData: refTreeTransferData.treeData,
           transferData: refTreeTransferData.transferData,
           targetKeys: [],
+          columnsKey: ['title', 'refpk', 'name'],
         };
 
         if (value) { // 树点击选择

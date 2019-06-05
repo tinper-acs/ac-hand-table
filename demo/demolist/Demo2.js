@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /**
  *
- * @title AcHandTable
+ * @title 表格常用方法
  * @description 设置行样式、表格添加行、删除多选选中行、获取验证通过后数据、获取多选选中的数据、获取被修改后的数据、获取被格式化的数据、获取新增加的数据和获取删除的数据
  *
  */

@@ -1,6 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /**
  *
- * @title AcHandTable
+ * @title 表格参照
  * @description  下拉搜索、表参照、树参照、表格参照、树穿梭参照
  *
  */

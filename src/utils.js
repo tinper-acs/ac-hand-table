@@ -61,6 +61,7 @@ export function customRenderData(data, columns, coverRenderer) {
           return item;
         });
       }
+
       // 修改select 属性
       if (type === 'select') {
         columns[index].selectOptions = sourceArray.length > 0 ? sourceArray : source;
@@ -221,6 +222,18 @@ export function array2Obj(array, keyArray) {
   for (const item in temp) {
     result[item] = temp[item].join(',');
   }
-  debugger
+  return result;
+}
+
+
+// 根据数组合成对象
+export function arrayFindObj(array, key = 'name', value) {
+  let result = null;
+  for (const item of array) {
+    if (item[key] === value) {
+      result = item;
+      break;
+    }
+  }
   return result;
 }

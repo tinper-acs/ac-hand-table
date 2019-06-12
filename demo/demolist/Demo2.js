@@ -76,6 +76,9 @@ class Demo2 extends Component {
         console.log('rowData, rowNum', rowData, rowNum);
         this.setState({ changeRowNum: rowNum });
       },
+      onClick: (rowData, rowNum, value) => {
+        console.log('rowData, rowNum, value', rowData, rowNum, value);
+      }
     },
     {
       data: 'gender',

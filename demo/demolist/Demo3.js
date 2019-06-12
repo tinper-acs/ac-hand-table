@@ -1017,7 +1017,28 @@ class Demo3 extends Component {
       data: 'autocomplete',
       type: 'autocomplete',  //下拉框
       source: (params, callback) => {
-        callback(['xxxx', 'yyyyy', 'zzzz']);
+        callback(['xxxx', 'yyyyy', 'zzzz']); // 只支持数组
+      },
+      refSource: [ // 参照数据
+        {
+          id: '1',
+          code: '1',
+          name: 'xxxx',
+        }, {
+          id: '1',
+          code: '1',
+          name: 'yyyyy',
+        }, {
+          id: '1',
+          code: '1',
+          name: 'zzzz',
+        }],
+      autoConfig: {
+        refValue: 'name',
+        refPk: ['id', 'code'],
+      },
+      onChangeAuto: (value) => { // 下拉选中数据回调
+        console.log('value', value);
       },
     },
 

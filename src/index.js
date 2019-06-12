@@ -1,4 +1,4 @@
-/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks,react/no-unused-state,prefer-template,no-underscore-dangle,object-curly-newline */
+/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks,react/no-unused-state,prefer-template,no-underscore-dangle,object-curly-newline,no-unused-vars */
 /**
  * Created by ranyanchuan on 2018/3/11.
  */
@@ -20,6 +20,7 @@ import {
   customRenderData,
   getArrayObjByKey,
   array2Obj,
+  arrayFindObj,
 
 } from './utils';
 
@@ -125,8 +126,25 @@ class AcHandTable extends React.Component {
             data[rowNum].update_status = true;
             _this.setState({ data });
           }
+
           // 是否有回调
-          const { onChangeCell } = getArrayObjByKey(columns, name);
+          let { onChangeCell, type, refSource, autoConfig, onChangeAuto, data: currentKey } = getArrayObjByKey(columns, name);
+          if (type === 'autocomplete' && refSource) {
+            const { refValue, refPk } = autoConfig;
+            const currentAutoRow = arrayFindObj(refSource, refValue, newValue) || {};
+            data[rowNum][currentKey] = newValue;
+            for (const key of refPk) {
+              data[rowNum][currentKey + '_' + key] = currentAutoRow[key];
+            }
+            _this.setState({ data });
+
+            // 下拉回调change
+            if (onChangeAuto) {
+              onChangeAuto(currentAutoRow);
+            }
+
+          }
+
           if (onChangeCell) {
             const rowData = { ...data[rowNum] };
             onChangeCell(rowData, rowNum);
@@ -134,17 +152,16 @@ class AcHandTable extends React.Component {
         }
       },
 
-      // afterOnCellMouseOut(event, cell) {
-      //   const { row, col } = cell;
-      //   const { columns, data } = _this.props;
-      //   if (columns[col] && columns[col].onCellMouseDown) { // 返回鼠标 Down
-      //     const rowData = data[row];
-      //     columns[col].onCellMouseDown({
-      //       rowData,
-      //       rowNum: row,
-      //     });
-      //   }
-      // },
+      afterOnCellMouseDown(event, coords, td) {
+        const { row, col } = coords;
+        const { data } = _this.state;
+        const { columns } = _this.props;
+        const { onClick, data: columnKey } = columns[col];
+        if (onClick) {
+          onClick(data[row], col, data[row][columnKey]);
+        }
+      },
+
 
       // 用于拖拽 解决参照
       beforeAutofill(start, end, text) {
@@ -152,26 +169,42 @@ class AcHandTable extends React.Component {
         const { data, refConfig } = _this.state;
         const { row, col } = start;
         const column = columns[col];
-        const { isRef, data: currentKey } = column;
-        if (isRef) {
+        const { isRef, data: currentKey, autoConfig } = column;
+        if (isRef || autoConfig) {
 
           // 最后行
           const { row: endRow } = end;
-
           const originalRow = endRow > row ? row - 1 : row + 1; // 原始数据目标行
-          // 要返回key数组
-          const { columnsKey } = refConfig;
-          // 参照返回字段
-          const keyArray = columnsKey && columnsKey.length > 1 ? columnsKey : ['refname', 'refpk'];
-          for (let i = row; i <= endRow; i++) {
-            // 设置展示值
-            data[i][currentKey] = data[originalRow][currentKey];
-            // 返回参照多余字段用_链接
-            for (let i = 1; i < keyArray.length; i++) {
-              const key = keyArray[i];
-              data[i][currentKey + '_' + key] = data[originalRow][key];
-            }
 
+          if (isRef) {
+            // 要返回key数组
+            const { columnsKey } = refConfig;
+            // 参照返回字段
+            const keyArray = columnsKey && columnsKey.length > 1 ? columnsKey : ['refname', 'refpk'];
+            for (let i = row; i <= endRow; i++) {
+              // 设置展示值
+              data[i][currentKey] = data[originalRow][currentKey];
+              // 返回参照多余字段用_链接
+              for (let i = 1; i < keyArray.length; i++) {
+                const key = keyArray[i];
+                data[i][currentKey + '_' + key] = data[originalRow][key];
+              }
+
+            }
+          }
+
+          // 下拉值回调
+          if (autoConfig) {
+            const { refValue, refPk } = autoConfig;
+            for (let i = row; i <= endRow; i++) {
+              // 设置展示值
+              data[i][currentKey] = data[originalRow][currentKey];
+              // 返回参照多余字段用_链接
+              for (let i = 1; i < refPk.length; i++) {
+                const key = refPk[i];
+                data[i][currentKey + '_' + key] = data[originalRow][key];
+              }
+            }
           }
           _this.setState({ data });
         }

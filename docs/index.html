@@ -21,6 +21,7 @@
     <li class="sidebar-header-3"><a href="#achandtable">AcHandTable</a></li>
     <li class="sidebar-header-3"><a href="#dropdownmenu-contextmenu">dropdownMenu contextMenu</a></li>
     <li class="sidebar-header-3"><a href="#column">Column</a></li>
+    <li class="sidebar-header-3"><a href="#refconfig-[更多参考](http://bee.tinper.org/tinper-acs/)">refConfig [更多参考](http://bee.tinper.org/tinper-acs/)</a></li>
     <li class="sidebar-header-3"><a href="#multicolumnsorting">multiColumnSorting</a></li>
     <li class="sidebar-header-3"><a href="#numericformat">numericFormat</a></li>
     <li class="sidebar-header-3"><a href="#csvconfig">csvConfig</a></li>
@@ -125,19 +126,19 @@ import 'ac-hand-table/dist/index.css';
 <td style="text-align:left">manualColumnMove</td>
 <td style="text-align:left">是否列可以交换</td>
 <td style="text-align:left">boolean</td>
-<td style="text-align:left">true</td>
+<td style="text-align:left">false</td>
 </tr>
 <tr>
 <td style="text-align:left">manualRowResize</td>
 <td style="text-align:left">是否行高可以拖动</td>
 <td style="text-align:left">boolean</td>
-<td style="text-align:left">true</td>
+<td style="text-align:left">false</td>
 </tr>
 <tr>
 <td style="text-align:left">manualRowMove</td>
 <td style="text-align:left">是否行可以交换</td>
 <td style="text-align:left">boolean</td>
-<td style="text-align:left">true</td>
+<td style="text-align:left">false</td>
 </tr>
 <tr>
 <td style="text-align:left">fixedColumnsLeft</td>
@@ -458,6 +459,79 @@ import 'ac-hand-table/dist/index.css';
 <td style="text-align:left">validator</td>
 <td style="text-align:left">自定义验证方法</td>
 <td style="text-align:left"><code>func</code> (value,callback)=&gt;{}</td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">onClick</td>
+<td style="text-align:left">表格点击事件</td>
+<td style="text-align:left"><code>func</code> (rowData, rowNum, value)=&gt;{}</td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">onChangeCell</td>
+<td style="text-align:left">表格值变化事件</td>
+<td style="text-align:left"><code>func</code> (rowData, rowNum)=&gt;{}</td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">refSource</td>
+<td style="text-align:left">参照数据回调</td>
+<td style="text-align:left"><code>func</code> (value, type, callback)=&gt;{} &#39;type&#39;值为<code>auto</code> <code>tree</code> <code>table</code></td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">refOnChange</td>
+<td style="text-align:left">参照选中回调</td>
+<td style="text-align:left"><code>func</code> (refData, rowData, rowNum)=&gt;{}</td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">refConfig</td>
+<td style="text-align:left">参照配置</td>
+<td style="text-align:left">[&quot;见下表 refConfig&quot;]</td>
+<td style="text-align:left">-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="refconfig-[更多参考](http://bee.tinper.org/tinper-acs/)">refConfig <a href="http://bee.tinper.org/tinper-acs/">更多参考</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">columnsKey</td>
+<td style="text-align:left">获取参照选中对象的值，约定数组第一个为表格回写值</td>
+<td style="text-align:left">array</td>
+<td style="text-align:left">[&#39;refname&#39;,&#39;refcode&#39;]</td>
+</tr>
+<tr>
+<td style="text-align:left">columnsData</td>
+<td style="text-align:left">表头数据</td>
+<td style="text-align:left">array</td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">tableData</td>
+<td style="text-align:left">表体数据</td>
+<td style="text-align:left">array</td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">columnsData</td>
+<td style="text-align:left">表头数据</td>
+<td style="text-align:left">array</td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">treeData</td>
+<td style="text-align:left">树参照数据</td>
+<td style="text-align:left">array</td>
 <td style="text-align:left">-</td>
 </tr>
 </tbody>

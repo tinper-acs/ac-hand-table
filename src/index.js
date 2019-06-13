@@ -169,7 +169,7 @@ class AcHandTable extends React.Component {
         const { row, col } = coords;
         const { data } = _this.state;
         const { columns } = _this.props;
-        const { onClick, data: columnKey } = columns[col];
+        const { onClick, data: columnKey } = columns[col] || {};
         // 缓存行选中数据
         _this.setState({ rowDataCache: data[row] });
         if (onClick) {

@@ -1012,7 +1012,11 @@ class Demo3 extends Component {
       },
       allowInvalid: true,
       strict: true,
+      onClick: (rowData, rowNum, value) => {
+        console.log('rowData, rowNum, value', rowData, rowNum, value);
+      }
     },
+
     {
       data: 'autocomplete',
       type: 'autocomplete',  // 下拉框

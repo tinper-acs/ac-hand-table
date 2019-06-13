@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies,no-multi-spaces */
 /**
  *
  * @title 表格参照
@@ -1015,30 +1015,30 @@ class Demo3 extends Component {
     },
     {
       data: 'autocomplete',
-      type: 'autocomplete',  //下拉框
-      source: (params, callback) => {
-        callback(['xxxx', 'yyyyy', 'zzzz']); // 只支持数组
+      type: 'autocomplete',  // 下拉框
+      refSource: (value, type, callback) => {
+        const data = [
+          {
+            id: '1',
+            code: '1',
+            refname: 'xxxx',
+          }, {
+            id: '2',
+            code: '2',
+            refname: 'yyyyy',
+          }, {
+            id: '3',
+            code: '3',
+            refname: 'zzzz',
+          }];
+
+        return callback(data);
       },
-      refSource: [ // 参照数据
-        {
-          id: '1',
-          code: '1',
-          name: 'xxxx',
-        }, {
-          id: '1',
-          code: '1',
-          name: 'yyyyy',
-        }, {
-          id: '1',
-          code: '1',
-          name: 'zzzz',
-        }],
-      autoConfig: {
-        refValue: 'name',
-        refPk: ['id', 'code'],
+      refConfig: {
+        columnsKey: ['refname', 'id', 'code'], // 约定第一个为回写值,即表格中展示的数据
       },
-      onChangeAuto: (value) => { // 下拉选中数据回调
-        console.log('value', value);
+      refOnChange: (refData, rowData, rowNum) => { // 下拉选中数据回调
+        console.log('refData, rowData, rowNum', refData, rowData, rowNum);
       },
     },
 
@@ -1047,7 +1047,7 @@ class Demo3 extends Component {
       type: 'refMultipleTable', // 表格
       refConfig: {
         columnsData: refTableData.columnsData,
-        columnsKey: ['email', 'mobile'],
+        columnsKey: ['refname', 'email', 'mobile'], // 约定第一个为回写值
       },
       refSource: (value, type, callback) => { // 表格简单搜索
         console.log('refSearch--table', value, type);
@@ -1071,6 +1071,9 @@ class Demo3 extends Component {
           result.treeData = refTreeSearch;
         }
         return callback(result);
+      },
+      refOnChange: (refData, rowData, rowNum) => {  // 参照选中数据,表格行数据,表格行下标
+        console.log('refData, rowData, rowNum', refData, rowData, rowNum);
       },
     },
     {

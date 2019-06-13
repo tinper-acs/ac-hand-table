@@ -47,7 +47,7 @@ export function customRenderData(data, columns, coverRenderer) {
   if (columns && columns.length > 0) {
     for (const [index, column] of columns.entries()) {
       const {
-        type, source, data: columnData, editor,
+        type, source, data: columnData, editor, refSource, refConfig,
       } = column;
 
       let sourceArray = [];
@@ -61,6 +61,21 @@ export function customRenderData(data, columns, coverRenderer) {
           return item;
         });
       }
+
+      // 对下拉参照处理
+      if (type === 'autocomplete' && refSource) {
+        column.source = function (param, callback) {
+          refSource(param, 'auto', function (value) {
+            const { refValue = 'refname' } = refConfig;
+            // 将数据缓存到  cacheAutoData上
+            column.cacheAutoData = value;
+            const result = value.map(item => item[refValue]);
+            callback(result);
+          });
+        };
+        column.isRef = true;
+      }
+
 
       // 修改select 属性
       if (type === 'select') {

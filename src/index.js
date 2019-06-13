@@ -1,4 +1,4 @@
-/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks,react/no-unused-state,prefer-template,no-underscore-dangle,object-curly-newline,no-unused-vars */
+/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks,react/no-unused-state,prefer-template,no-underscore-dangle,object-curly-newline,no-unused-vars,prefer-destructuring */
 /**
  * Created by ranyanchuan on 2018/3/11.
  */
@@ -37,10 +37,14 @@ class AcHandTable extends React.Component {
     data: this.props.data,
     delDataList: [],
     refConfig: {}, // 参照配置
+    refOnChange: null, // 缓存参照选中数据的回调方法
+    autoCache: null, // 缓存自动下拉框值
+    rowDataCache: null, // 缓存选中行
     currentRow: 0, // 选中当前参照行
     currentCol: 0, // 选中当前参照例
     currentKey: '', // 选中当前参照key
     currentRefType: '', // 获取当前参照类型
+
 
   };
 
@@ -66,7 +70,6 @@ class AcHandTable extends React.Component {
       // 更新数据
       this.hot.loadData(data);
     }
-
   }
 
 
@@ -113,6 +116,7 @@ class AcHandTable extends React.Component {
     this.hot = new Handsontable(container, {
       ...data,
 
+
       afterChange(changes, source) { // 表格被修改后执行
 
 
@@ -128,21 +132,30 @@ class AcHandTable extends React.Component {
           }
 
           // 是否有回调
-          let { onChangeCell, type, refSource, autoConfig, onChangeAuto, data: currentKey } = getArrayObjByKey(columns, name);
+          let { onChangeCell, type, refSource, cacheAutoData, refConfig, refOnChange, data: currentKey } = getArrayObjByKey(columns, name);
+
+
+          // 下拉自动补全
           if (type === 'autocomplete' && refSource) {
-            const { refValue, refPk } = autoConfig;
-            const currentAutoRow = arrayFindObj(refSource, refValue, newValue) || {};
+            const { columnsKey = [] } = refConfig;
+
+            let refValue = 'refname';
+            if (columnsKey.length > 0) {
+              refValue = columnsKey[0];
+            }
+
+            const currentAutoRow = arrayFindObj(cacheAutoData, refValue, newValue) || {};
             data[rowNum][currentKey] = newValue;
-            for (const key of refPk) {
+            for (let i = 1; i < columnsKey.length; i++) {
+              const key = columnsKey[i];
               data[rowNum][currentKey + '_' + key] = currentAutoRow[key];
             }
             _this.setState({ data });
 
             // 下拉回调change
-            if (onChangeAuto) {
-              onChangeAuto(currentAutoRow);
+            if (refOnChange) {
+              refOnChange(currentAutoRow, data[rowNum], rowNum);
             }
-
           }
 
           if (onChangeCell) {
@@ -157,6 +170,8 @@ class AcHandTable extends React.Component {
         const { data } = _this.state;
         const { columns } = _this.props;
         const { onClick, data: columnKey } = columns[col];
+        // 缓存行选中数据
+        _this.setState({ rowDataCache: data[row] });
         if (onClick) {
           onClick(data[row], col, data[row][columnKey]);
         }
@@ -166,49 +181,31 @@ class AcHandTable extends React.Component {
       // 用于拖拽 解决参照
       beforeAutofill(start, end, text) {
         const { columns } = _this.props;
-        const { data, refConfig } = _this.state;
-        const { row, col } = start;
+        let { data, rowDataCache } = _this.state;
+
+        const { row, col } = start; // 开始行
+        const { row: endRow } = end;  // 最后行
+
         const column = columns[col];
-        const { isRef, data: currentKey, autoConfig } = column;
-        if (isRef || autoConfig) {
 
-          // 最后行
-          const { row: endRow } = end;
-          const originalRow = endRow > row ? row - 1 : row + 1; // 原始数据目标行
+        const { isRef, data: currentKey, refConfig } = column;
 
-          if (isRef) {
-            // 要返回key数组
-            const { columnsKey } = refConfig;
-            // 参照返回字段
-            const keyArray = columnsKey && columnsKey.length > 1 ? columnsKey : ['refname', 'refpk'];
-            for (let i = row; i <= endRow; i++) {
-              // 设置展示值
-              data[i][currentKey] = data[originalRow][currentKey];
-              // 返回参照多余字段用_链接
-              for (let i = 1; i < keyArray.length; i++) {
-                const key = keyArray[i];
-                data[i][currentKey + '_' + key] = data[originalRow][key];
-              }
 
+        if (isRef) {
+          const { columnsKey } = refConfig;
+          // 参照返回字段
+          const keyArray = columnsKey && columnsKey.length > 1 ? columnsKey : ['refname', 'refpk'];
+          for (let i = row; i <= endRow; i++) {
+            // 设置展示值
+            data[i][currentKey] = rowDataCache[currentKey];
+            // 返回参照多余字段用_链接
+            for (let j = 1; j < keyArray.length; j++) {
+              const key = currentKey + '_' + keyArray[j];
+              data[i][key] = rowDataCache[key];
             }
           }
-
-          // 下拉值回调
-          if (autoConfig) {
-            const { refValue, refPk } = autoConfig;
-            for (let i = row; i <= endRow; i++) {
-              // 设置展示值
-              data[i][currentKey] = data[originalRow][currentKey];
-              // 返回参照多余字段用_链接
-              for (let i = 1; i < refPk.length; i++) {
-                const key = refPk[i];
-                data[i][currentKey + '_' + key] = data[originalRow][key];
-              }
-            }
-          }
-          _this.setState({ data });
         }
-
+        _this.setState({ data });
       },
 
       // afterCreateRow: function (index, amount) {  // 添加行后执行
@@ -228,6 +225,7 @@ class AcHandTable extends React.Component {
   };
 
 
+  // 参照自定义表格
   coverRenderer = (instance, td, row, col, prop, value, cellProperties) => {
 
     const _this = this;
@@ -247,7 +245,7 @@ class AcHandTable extends React.Component {
     // 添加 mouseup 事件
     Handsontable.dom.addEvent(createDiv, 'dblclick', (e) => {
       e.preventDefault(); // prevent selection quirk
-      let { refConfig, refType, refSource } = columns[col];
+      let { refConfig, refType, refSource, refOnChange } = columns[col];
       refConfig.showModal = true;
       refConfig.currentRefType = refType;
 
@@ -258,6 +256,7 @@ class AcHandTable extends React.Component {
         _this.setState({
           refConfig: newConfig,
           refSource,
+          refOnChange,
           currentRow: row,
           currentCol: col,
           currentKey: prop,
@@ -270,8 +269,7 @@ class AcHandTable extends React.Component {
     // 添加样式
     const styles = rowStyle && rowStyle(row + 1, col, prop);
     if (styles) {
-      // 修改行样式
-      for (const style in styles) {
+      for (const style in styles) { // 修改行样式
         td.style[style] = styles[style];
       }
     }
@@ -392,7 +390,6 @@ class AcHandTable extends React.Component {
       multiSelect: true, // 行多选框
       dropdownMenu: true, // 表头下拉
 
-
       ...this.props,
 
       columns,
@@ -480,13 +477,15 @@ class AcHandTable extends React.Component {
     this.hot.alter('remove_row', getCheckDelArray(this.state.data));
   };
 
+
   // 参照保存
   onSaveRef = (params) => {
+
     const _this = this;
 
-    let { currentRow, currentKey, data, refConfig } = _this.state;
+    let { currentRow, currentKey, data, refConfig, refOnChange } = _this.state;
 
-
+    // 往行数据中添加参照的其他信息
     if (params && Array.isArray(params) && params.length > 0) {
       const { columnsKey } = refConfig;
       // 参照返回字段
@@ -501,18 +500,29 @@ class AcHandTable extends React.Component {
       }
     }
 
+
+    // 参照选中值回调
+    if (refOnChange) {
+      refOnChange(params, data[currentRow], currentRow); // 参照选中数据,表格行数据,表格行下标
+    }
+
+    // 更新值
     _this.setState({
       data,
-      refConfig: {},
+      refConfig: {}, // 重置缓存参照配置
+      refOnChange: null, // 重置缓存参照 onChange 事件
     });
+
     // 重新加载数据
     this.hot.loadData(data);
   };
 
+
   // 参照取消
   onCancelRef = () => {
     this.setState({
-      refConfig: {},
+      refConfig: {},// 重置缓存参照配置¬
+      refOnChange: null, // 重置缓存参照 onChange 事件
     });
   };
 
@@ -545,6 +555,11 @@ class AcHandTable extends React.Component {
     exportPlugin.downloadFile('csv', csvConfig);
   };
 
+  // auto 值处理
+  autoDataConversion = (data, key = 'name') => {
+    this.setState({ autoCache: data });
+    return data.map(item => item[key]);
+  };
 
   render() {
     const { id } = this.props;

@@ -94,6 +94,20 @@ import 'ac-hand-table/dist/index.css';
 |allowInvalid|数据校验失败是否可以操作其他表格|boolean|true|
 |allowEmpty|是否日期可以值为空|boolean|true|
 |validator|自定义验证方法|`func` (value,callback)=>{}|-|
+|onClick|表格点击事件|`func` (rowData, rowNum, value)=>{}|-|
+|onChangeCell|表格值变化事件|`func` (rowData, rowNum)=>{}|-|
+|refSource|参照数据回调|`func` (value, type, callback)=>{} 'type'值为`auto` `tree` `table`|-|
+|refOnChange|参照选中回调|`func` (refData, rowData, rowNum)=>{}|-|
+|refConfig|参照配置|["见下表 refConfig"]|-|
+
+### refConfig [更多参考](http://bee.tinper.org/tinper-acs/)
+|参数|说明|类型|默认值|
+|:--|:---|:--|:--|
+|columnsKey|获取参照选中对象的值，约定数组第一个为表格回写值|array|['refname','refcode']|
+|columnsData|表头数据|array|-|
+|tableData|表体数据|array|-|
+|columnsData|表头数据|array|-|
+|treeData|树参照数据|array|-|
 
 
 ### multiColumnSorting

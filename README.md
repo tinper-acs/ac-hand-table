@@ -30,9 +30,9 @@ import 'ac-hand-table/dist/index.css';
 |height|表格总高度|'%' 或 'px' 或 'auto'|-|
 |multiSelect|是否含有多选框|boolean|true|
 |manualColumnResize|是否列宽可以拖动|boolean|true|
-|manualColumnMove|是否列可以交换|boolean|true|
-|manualRowResize|是否行高可以拖动|boolean|true|
-|manualRowMove|是否行可以交换|boolean|true|
+|manualColumnMove|是否列可以交换|boolean|false|
+|manualRowResize|是否行高可以拖动|boolean|false|
+|manualRowMove|是否行可以交换|boolean|false|
 |fixedColumnsLeft|列左固定|number|-|
 |fixedColumnsRight|列右固定|number|-|
 |fixedRowsBottom|行头固定|number|-|

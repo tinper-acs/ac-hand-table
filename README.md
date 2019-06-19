@@ -44,8 +44,8 @@ import 'ac-hand-table/dist/index.css';
 |allowInsertColumn|是否开启插入列|boolean|true|
 |allowInsertRow|是否开启插入行|boolean|true|
 |multiColumnSorting|是否列可以排序|boolean|true|
-|dropdownMenu|表上下文下拉菜单|`boolean` 或 `array` ["具有一定意义的字符串，见下表 dropdownMenu contextMenu"]() |false|
-|contextMenu|行上下文下拉菜单|`boolean` 或 `array` [ "具有一定意义的字符串，见下表 dropdownMenu contextMenu"]() |false|
+|dropdownMenu|表上下文下拉菜单|`boolean` 或 `array` ["见下表 dropdownMenu contextMenu"]() |false|
+|contextMenu|行上下文下拉菜单|`boolean` 或 `array` [ "见下表 dropdownMenu contextMenu"]() |false|
 |filters|表头下拉菜单中是否启动过滤器|boolean|false|
 |stretchH|表宽度不等于所有列宽的计算总和时，列宽设置|'none'或 'all' 或'last'|'none'|
 |rowStyle|行设置样式|func|-|

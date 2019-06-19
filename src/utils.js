@@ -272,3 +272,19 @@ export function colFindSelectValue(cloObj, rowObj) {
   }
   return rowObj;
 }
+
+// 生成指定区间内的整数
+export function getBetweenNum(starNum, endNum, num = 1) {
+  let result = [];
+  for (let i = starNum; i <= endNum; i += num) {
+    result.push(i);
+  }
+  return result;
+}
+
+
+
+
+
+
+

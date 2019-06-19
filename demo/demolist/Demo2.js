@@ -201,6 +201,19 @@ class Demo2 extends Component {
     console.log('delRowData', delRowData);
   };
 
+  // 获取行选中数据
+  getSelectData = () => {
+    const selectData = this.child.getSelectData();
+    console.log('selectData', selectData);
+  };
+
+  // 删除行选中
+  onDelRowSelect = () => {
+    const onDelRowSelect = this.child.onDelRowSelect();
+    console.log('onDelRowSelect', onDelRowSelect);
+  };
+
+
   // 导出csv
   onDownCsv = () => {
     this.child.onExportCSV();
@@ -224,6 +237,11 @@ class Demo2 extends Component {
           <Button colors="primary" onClick={this.getDelRowData} size="sm">获取删除行</Button>
           <Button colors="primary" onClick={this.getFormatData} size="sm">格式化数据 </Button>
           <Button colors="primary" onClick={this.onDownCsv} size="sm">导出csv </Button>
+
+          <Button colors="primary" onClick={this.getSelectData} size="sm">获取选中行数据</Button>
+          <Button colors="primary" onClick={this.onDelRowSelect} size="sm">删除选中行数据</Button>
+
+
         </div>
 
         <AcHandTable

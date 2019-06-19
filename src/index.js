@@ -22,7 +22,7 @@ import {
   array2Obj,
   arrayFindObj,
   colFindSelectValue, // 插入select 类型，将key 转换成value
-
+  getBetweenNum, // 生成指定区间整数
 } from './utils';
 
 import 'handsontable/languages/zh-CN';
@@ -36,17 +36,17 @@ class AcHandTable extends React.Component {
   state = {
 
     data: this.props.data,
-    delDataList: [],
+    delDataList: [], // 删除数据
     refConfig: {}, // 参照配置
     refOnChange: null, // 缓存参照选中数据的回调方法
     autoCache: null, // 缓存自动下拉框值
-    rowDataCache: null, // 缓存选中行
+    rowDataCache: null, // 缓存选中行 checkbox
     currentRow: 0, // 选中当前参照行
     currentCol: 0, // 选中当前参照例
     currentKey: '', // 选中当前参照key
     currentRefType: '', // 获取当前参照类型
 
-
+    selectRowDataNum: [], // 选中行数据下标 select
   };
 
 
@@ -185,7 +185,7 @@ class AcHandTable extends React.Component {
         let { data, rowDataCache } = _this.state;
 
         const { row, col } = start; // 开始行
-        const { row: endRow } = end;  // 最后行
+        const { row: endRow } = end; // 最后行
 
         const column = columns[col];
 
@@ -215,6 +215,24 @@ class AcHandTable extends React.Component {
       //     data[index].add_status = true;
       //     _this.setState({data});
       // },
+
+      beforeKeyDown(event) {
+        // if (e.keyCode === 8 || e.keyCode == 46)
+        if (event.code === 'MetaLeft') { // 禁止表格行选中使用 ctr 多选
+          event.stopImmediatePropagation();
+        }
+
+      },
+
+      // 选中行
+      afterSelection(startRow, startCol, endRow, endCol) {
+        const { columns } = _this.props;
+        if (columns && (columns.length - 1 === endCol)) { // 只对选中整行处理
+          const selectRowDataNum = getBetweenNum(startRow, endRow);
+          _this.setState({ selectRowDataNum });
+        }
+      },
+
 
       // todo 页面render 依旧保留上一次的数据
       beforeRemoveRow(index, amount, physicalRows, source) {
@@ -479,9 +497,36 @@ class AcHandTable extends React.Component {
     return changeSelectValue2Key(result, columns); // 回写下拉框值
   };
 
-  // 删除选中行方法
+  // 删除选中行方法 checkbox
   onDelRowCheck = () => {
-    this.hot.alter('remove_row', getCheckDelArray(this.state.data));
+    const a = getCheckDelArray(this.state.data);
+    console.log('a', a);
+    this.hot.alter('remove_row', a);
+  };
+
+  // 删除选中行 selected
+  onDelRowSelect = () => {
+    const { selectRowDataNum } = this.state;
+    const result = selectRowDataNum.map(item => [item, item]);
+    this.hot.alter('remove_row', result);
+    return this.getSelectData();
+  };
+
+
+  // 获取选中行数据
+  getSelectData = () => {
+
+    const { selectRowDataNum, data } = this.state;
+    const { columns } = this.props;
+
+    const selectRowData = selectRowDataNum.map(item => data[item]);
+    const selectResult = changeSelectValue2Key(selectRowData, columns); // 回写下拉框值
+
+    return {
+      rowList: selectResult,
+      indexList: selectRowDataNum,
+    };
+
   };
 
 
@@ -528,7 +573,7 @@ class AcHandTable extends React.Component {
   // 参照取消
   onCancelRef = () => {
     this.setState({
-      refConfig: {},// 重置缓存参照配置¬
+      refConfig: {}, // 重置缓存参照配置¬
       refOnChange: null, // 重置缓存参照 onChange 事件
     });
   };

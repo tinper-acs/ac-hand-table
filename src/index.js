@@ -250,12 +250,11 @@ class AcHandTable extends React.Component {
       // 选中行
       afterSelection(startRow, startCol, endRow, endCol) {
         const { columns } = _this.props;
-        if (columns && (columns.length - 1 === endCol)) { // 只对选中整行处理
+        if (columns && (columns.length - 1 === endCol) && startCol === 0) { // 只对选中整行处理
           const selectRowDataNum = getBetweenNum(startRow, endRow);
           _this.setState({ selectRowDataNum });
         }
       },
-
 
       // todo 页面render 依旧保留上一次的数据
       beforeRemoveRow(index, amount, physicalRows, source) {

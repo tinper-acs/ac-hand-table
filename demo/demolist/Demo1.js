@@ -70,7 +70,6 @@ class Demo extends Component {
       type: 'numeric', // 数字类型
       readOnly: true // 只读
     },
-
     {
       data: 'date',
       type: 'date', // 日期类型

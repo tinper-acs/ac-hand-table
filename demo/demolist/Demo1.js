@@ -68,7 +68,9 @@ class Demo extends Component {
     {
       data: 'level',
       type: 'numeric', // 数字类型
+      readOnly: true // 只读
     },
+
     {
       data: 'date',
       type: 'date', // 日期类型
@@ -86,7 +88,11 @@ class Demo extends Component {
           colHeaders={['姓', '名', '等级', '日期']} // 表格表头
           data={handData} // 表体数据
           columns={this.columns} // 列属性设置
-          manualRowMove={true} // 行移动
+          fillHandle={{
+            // enable plugin in vertical direction and with autoInsertRow as false
+            autoInsertRow: false,
+            direction: 'vertical'
+          }}
         />
 
       </div>

@@ -431,12 +431,13 @@ class AcHandTable extends React.Component {
       allowEmpty: false,
       multiSelect: true, // 行多选框
       dropdownMenu: true, // 表头下拉
+      fillHandle: 'vertical', // 默认只能横向 为了解决参照问题
 
       ...this.props,
 
       columns,
       data,
-      fillHandle: 'vertical', // 默认只能横向 为了解决参照问题
+
       csvConfig: { ...csvDefault, ...csvConfig }, // 导出csv 配置
 
     };

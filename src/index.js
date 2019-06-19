@@ -21,6 +21,7 @@ import {
   getArrayObjByKey,
   array2Obj,
   arrayFindObj,
+  colFindSelectValue, // 插入select 类型，将key 转换成value
 
 } from './utils';
 
@@ -416,10 +417,16 @@ class AcHandTable extends React.Component {
 
   // 插入行数据
   onInsertRowData = (number = 0, source) => {
-    this.hot.alter('insert_row', number);
+    const { data } = this.state;
+    const { columns } = this.props;
+    let placeIndex = 0;
+    if (number === -1) {
+      placeIndex = data.length;
+    }
+    this.hot.alter('insert_row', placeIndex);
     if (source && Object.prototype.toString.call(source === '[Object Object]')) {
-      const { data } = this.state;
-      data[number] = source;
+      // 对下拉数据进行转换
+      data[placeIndex] = colFindSelectValue(columns, source);
       this.setState({ data });
       this.hot.render();
     }

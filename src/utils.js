@@ -252,3 +252,23 @@ export function arrayFindObj(array, key = 'name', value) {
   }
   return result;
 }
+
+
+// 插入行数据时，将select中的 key 可以转换成value
+
+export function colFindSelectValue(cloObj, rowObj) {
+  for (const cloItem of cloObj) {
+    const { source, data, editor } = cloItem;
+    if (editor === 'select' && source && Array.isArray(source)) {
+      const rowSelectKey = rowObj[data];
+      for (const sourceItem of source) {
+        const { key, value } = sourceItem;
+        if (rowSelectKey === key) {
+          rowObj[data] = value;
+          break;
+        }
+      }
+    }
+  }
+  return rowObj;
+}

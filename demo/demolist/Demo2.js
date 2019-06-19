@@ -17,7 +17,7 @@ const data = [
   {
     id: 1,
     name: '张三',
-    gender: '1',
+    // gender: '1',
     date: '2018-07-02',
     money: 10000,
     staff: '李白',
@@ -83,13 +83,20 @@ class Demo2 extends Component {
     {
       data: 'gender',
       type: 'select', // 表格类型
-      source: [{
-        value: '男',
-        key: '1',
-      }, {
-        value: '女',
-        key: 0,
-      }],
+      source: [
+        {
+          value: '请选择',
+          key: '',
+        },
+        {
+          value: '男',
+          key: '1',
+        },
+        {
+          value: '女',
+          key: 0,
+        }
+      ],
     },
     {
       data: 'date',
@@ -120,7 +127,8 @@ class Demo2 extends Component {
     const rowDefaultData = {
       id: 99,
       name: '张ssss三',
-      gender: '1',
+      // gender: '1',
+      gender: 0,
       date: '2018-07-02',
       money: 10000,
       staff: '李白',
@@ -130,7 +138,7 @@ class Demo2 extends Component {
       department_staff_transfer: '',
     };
     // this.child.onInsertRowData() // 默认从第一行添加
-    this.child.onInsertRowData(0, rowDefaultData);
+    this.child.onInsertRowData(-1, rowDefaultData);
   };
 
   // 更新行
@@ -138,7 +146,7 @@ class Demo2 extends Component {
     const rowDefaultData = {
       id: 99,
       name: '张ssss三',
-      gender: '1',
+      gender: 0,
       date: '2018-07-02',
       money: 10000,
       staff: '李白',

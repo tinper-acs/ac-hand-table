@@ -44,8 +44,8 @@ import 'ac-hand-table/dist/index.css';
 |allowInsertColumn|是否开启插入列|boolean|true|
 |allowInsertRow|是否开启插入行|boolean|true|
 |multiColumnSorting|是否列可以排序|boolean|true|
-|dropdownMenu|表上下文下拉菜单|`boolean` 或 `array` ["见下表 dropdownMenu contextMenu"]() |false|
-|contextMenu|行上下文下拉菜单|`boolean` 或 `array` [ "见下表 dropdownMenu contextMenu"]() |false|
+|dropdownMenu|表上下文下拉菜单|`boolean` 或 `array` [见下表 dropdownMenu contextMenu]() |false|
+|contextMenu|行上下文下拉菜单|`boolean` 或 `array` [ 见下表 dropdownMenu contextMenu]() |false|
 |filters|表头下拉菜单中是否启动过滤器|boolean|false|
 |stretchH|表宽度不等于所有列宽的计算总和时，列宽设置|'none'或 'all' 或'last'|'none'|
 |rowStyle|行设置样式|func|-|
@@ -100,7 +100,7 @@ import 'ac-hand-table/dist/index.css';
 |onChangeCell|表格值变化事件|`func` (rowData, rowNum)=>{}|-|
 |refSource|参照数据回调|`func` (value, type, callback)=>{} 'type'值为`auto` `tree` `table`|-|
 |refOnChange|参照选中回调|`func` (refData, rowData, rowNum)=>{}|-|
-|refConfig|参照配置|["见下表 refConfig"]()|-|
+|refConfig|参照配置|[见下表 refConfig]()|-|
 
 ### refConfig [更多参考](http://bee.tinper.org/tinper-acs/)
 |参数|说明|类型|默认值|

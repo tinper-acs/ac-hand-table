@@ -41,9 +41,10 @@ class AcHandTable extends React.Component {
     refOnChange: null, // 缓存参照选中数据的回调方法
     autoCache: null, // 缓存自动下拉框值
     rowDataCache: null, // 缓存选中行 checkbox
-    currentRow: 0, // 选中当前参照行
-    currentCol: 0, // 选中当前参照例
-    currentKey: '', // 选中当前参照key
+    currentRow: 0, // 选中当前行
+    currentCol: 0, // 选中当前例
+    currentKey: '', // 选中当前key
+    currentValue: '', // 选中当前value
     currentRefType: '', // 获取当前参照类型
 
     selectRowDataNum: [], // 选中行数据下标 select
@@ -77,6 +78,7 @@ class AcHandTable extends React.Component {
   init = () => {
 
     // 对 this.props 处理，添加默认值、checkbox等
+    const _this = this;
     const tempObj = this.dealData();
     let { id, colHeaders } = tempObj;
 
@@ -107,6 +109,22 @@ class AcHandTable extends React.Component {
         this.hot.render();
       }
     });
+
+
+    // 添加双击 dblclick
+    Handsontable.dom.addEvent(container, 'dblclick', (event) => {
+
+      const { rowDataCache, currentRow, currentValue, currentCol } = _this.state;
+      const { columns } = _this.props;
+
+      const { dblClick } = columns[currentCol];
+      // 判断是否有双击方法
+      if (dblClick) {
+        dblClick(rowDataCache, currentRow, currentValue);
+      }
+
+    });
+
 
   };
 
@@ -171,8 +189,13 @@ class AcHandTable extends React.Component {
         const { data } = _this.state;
         const { columns } = _this.props;
         const { onClick, data: columnKey } = columns[col] || {};
-        // 缓存行选中数据
-        _this.setState({ rowDataCache: data[row] });
+        _this.setState({
+          rowDataCache: data[row], // 缓存行选中数据
+          currentRow: row, // 选中当前行
+          currentCol: col, // 选中当前例
+          currentValue: data[row][columnKey], // 当前值
+          currentKey: [columnKey], // 当前key
+        });
         if (onClick) {
           onClick(data[row], row, data[row][columnKey]);
         }
@@ -218,7 +241,7 @@ class AcHandTable extends React.Component {
 
       beforeKeyDown(event) {
         // if (e.keyCode === 8 || e.keyCode == 46)
-        if (event.code === 'MetaLeft') { // 禁止表格行选中使用 ctr 多选
+        if (event.code.toLowerCase() === 'metaleft') { // 禁止表格行选中使用 ctr 多选
           event.stopImmediatePropagation();
         }
 
@@ -499,15 +522,14 @@ class AcHandTable extends React.Component {
 
   // 删除选中行方法 checkbox
   onDelRowCheck = () => {
-    const a = getCheckDelArray(this.state.data);
-    console.log('a', a);
-    this.hot.alter('remove_row', a);
+    const result = getCheckDelArray(this.state.data);
+    this.hot.alter('remove_row', result);
   };
 
   // 删除选中行 selected
   onDelRowSelect = () => {
     const { selectRowDataNum } = this.state;
-    const result = selectRowDataNum.map(item => [item, item]);
+    const result = selectRowDataNum.map(item => [item, item + 1]);
     this.hot.alter('remove_row', result);
     return this.getSelectData();
   };

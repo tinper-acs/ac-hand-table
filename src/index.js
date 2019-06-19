@@ -190,13 +190,16 @@ class AcHandTable extends React.Component {
         const { data } = _this.state;
         const { columns } = _this.props;
         const { onClick, data: columnKey } = columns[col] || {};
-        _this.setState({
-          rowDataCache: data[row], // 缓存行选中数据
-          currentRow: row, // 选中当前行
-          currentCol: col, // 选中当前例
-          currentValue: data[row][columnKey], // 当前值
-          currentKey: [columnKey], // 当前key
-        });
+
+        if (data[row]) {
+          _this.setState({
+            rowDataCache: data[row], // 缓存行选中数据
+            currentRow: row, // 选中当前行
+            currentCol: col, // 选中当前例
+            currentValue: data[row][columnKey], // 当前值
+            currentKey: [columnKey], // 当前key
+          });
+        }
         if (onClick) {
           onClick(data[row], row, data[row][columnKey]);
         }

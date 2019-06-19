@@ -100,7 +100,7 @@ import 'ac-hand-table/dist/index.css';
 |onChangeCell|表格值变化事件|`func` (rowData, rowNum)=>{}|-|
 |refSource|参照数据回调|`func` (value, type, callback)=>{} 'type'值为`auto` `tree` `table`|-|
 |refOnChange|参照选中回调|`func` (refData, rowData, rowNum)=>{}|-|
-|refConfig|参照配置|["见下表 refConfig"]|-|
+|refConfig|参照配置|["见下表 refConfig"]()|-|
 
 ### refConfig [更多参考](http://bee.tinper.org/tinper-acs/)
 |参数|说明|类型|默认值|

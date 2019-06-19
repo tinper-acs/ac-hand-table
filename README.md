@@ -44,14 +44,14 @@ import 'ac-hand-table/dist/index.css';
 |allowInsertColumn|是否开启插入列|boolean|true|
 |allowInsertRow|是否开启插入行|boolean|true|
 |multiColumnSorting|是否列可以排序|boolean|true|
-|dropdownMenu|表上下文下拉菜单|`boolean` 或 `array` ["具有一定意义的字符串，见下表 dropdownMenu contextMenu"] |false|
-|contextMenu|行上下文下拉菜单|`boolean` 或 `array` [ "具有一定意义的字符串，见下表 dropdownMenu contextMenu"] |false|
+|dropdownMenu|表上下文下拉菜单|`boolean` 或 `array` ["具有一定意义的字符串，见下表 dropdownMenu contextMenu"]() |false|
+|contextMenu|行上下文下拉菜单|`boolean` 或 `array` [ "具有一定意义的字符串，见下表 dropdownMenu contextMenu"]() |false|
 |filters|表头下拉菜单中是否启动过滤器|boolean|false|
 |stretchH|表宽度不等于所有列宽的计算总和时，列宽设置|'none'或 'all' 或'last'|'none'|
 |rowStyle|行设置样式|func|-|
 |activeHeaderClassName|选中列标题样式|strig|-|
 |activeHeaderClassName|选中列标题样式|strig|-|
-|fillHandle|自动填充设置|`boolean` 或 `string`('vertical' or 'horizontal') 或者 `object`[见下表 fillHandle]|-|
+|fillHandle|自动填充设置|`boolean` 或 `string`('vertical' or 'horizontal') 或者 `object`[见下表 fillHandle]()|'vertical'|
 
 
 ### dropdownMenu contextMenu
@@ -96,6 +96,7 @@ import 'ac-hand-table/dist/index.css';
 |allowEmpty|是否日期可以值为空|boolean|true|
 |validator|自定义验证方法|`func` (value,callback)=>{}|-|
 |onClick|表格点击事件|`func` (rowData, rowNum, value)=>{}|-|
+|dblClick|表格双击事件|`func` (rowData, rowNum, value)=>{}|-|
 |onChangeCell|表格值变化事件|`func` (rowData, rowNum)=>{}|-|
 |refSource|参照数据回调|`func` (value, type, callback)=>{} 'type'值为`auto` `tree` `table`|-|
 |refOnChange|参照选中回调|`func` (refData, rowData, rowNum)=>{}|-|
@@ -126,6 +127,12 @@ import 'ac-hand-table/dist/index.css';
 |:--|:---|:--|:--|
 |pattern|数字模式 [具体参考](http://numbrojs.com/old-format.html)|string|-|
 |culture|货币处理 [具体参考](http://numbrojs.com/languages.html#supported-languages)|string|-|
+
+### fillHandle
+|参数|说明|类型|默认值|
+|:--|:---|:--|:--|
+|autoInsertRow|填充到最后一行是否自动添加行|boolean|true|
+|direction|自动填充方向|string 值为`vertical` `horizontal` |'vertical'|
 
 ### csvConfig
 |参数|说明|类型|默认值|
@@ -217,6 +224,27 @@ import 'ac-hand-table/dist/index.css';
     console.log('delRowData', delRowData);
   };
 ```
+
+### 获取通过鼠标选中的行
+```js
+  getSelectData = () => {
+   // rowList 鼠标选中的行数据
+   // indexList 鼠标选中行数据的下标
+    const {rowList,indexList} = this.child.getSelectData();
+    console.log('selectData',rowList,indexList);
+  };
+```
+
+### 删除通过鼠标选中的行
+```js
+  onDelRowSelect = () => {
+     // rowList 删除的行数据
+     //  indexList 删除行数据的下标
+    const {rowList,indexList} = this.child.onDelRowSelect();
+    console.log('rowList,indexList', rowList,indexList);
+  };
+```
+
 ### 导出csv
 ```js
 

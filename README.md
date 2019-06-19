@@ -160,7 +160,10 @@ import 'ac-hand-table/dist/index.css';
 ### 表格添加行
 ```js
   onInsertRowData = () => {
-    this.child.onInsertRowData();
+    // onInsertRowData(number,source) 
+    // number 插入行的位置，0 为行首，-1 为行尾
+    // source 插入的行对象，
+    this.child.onInsertRowData(); // 默认行首，空对象
   };
 ```
 

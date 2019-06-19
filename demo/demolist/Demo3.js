@@ -1014,7 +1014,10 @@ class Demo3 extends Component {
       strict: true,
       onClick: (rowData, rowNum, value) => {
         console.log('rowData, rowNum, value', rowData, rowNum, value);
-      }
+      },
+      refConfig: {
+        columnsKey: ['refname', 'id', 'code'], // 约定第一个为回写值,即表格中展示的数据
+      },
     },
 
     {

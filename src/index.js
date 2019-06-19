@@ -23,6 +23,7 @@ import {
   arrayFindObj,
   colFindSelectValue, // 插入select 类型，将key 转换成value
   getBetweenNum, // 生成指定区间整数
+  arrayObjctClone, // 数组深度copy
 } from './utils';
 
 import 'handsontable/languages/zh-CN';
@@ -212,10 +213,9 @@ class AcHandTable extends React.Component {
 
         const column = columns[col];
 
-        const { isRef, data: currentKey, refConfig } = column;
+        const { data: currentKey, refConfig } = column;
 
-
-        if (isRef) {
+        if (refConfig) {
           const { columnsKey } = refConfig;
           // 参照返回字段
           const keyArray = columnsKey && columnsKey.length > 1 ? columnsKey : ['refname', 'refpk'];

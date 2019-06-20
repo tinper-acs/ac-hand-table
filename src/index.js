@@ -758,7 +758,7 @@ class AcHandTable extends React.Component {
           setTargetKeys={this.setTargetKeys}
           handleTreeSelect={this.onSearchRef}
         />
-        /* eslint-disable react/jsx-first-prop-new-line */
+
         {tooltipShow && (
         <div
           className="ac-hand-tooltip"

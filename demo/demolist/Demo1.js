@@ -64,7 +64,9 @@ class Demo extends Component {
 
   columns = [
     { data: 'name.firstName' }, // 对象文本类型
-    { data: 'name.lastName' },
+    {
+      data: 'name.lastName',
+    },
     {
       data: 'level',
       type: 'numeric', // 数字类型

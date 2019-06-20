@@ -228,10 +228,8 @@ class AcHandTable extends React.Component {
         if (refConfig) {
           const { columnsKey, rowKey } = refConfig;
           // 参照返回字段
-          let keyArray = columnsKey && columnsKey.length > 1 ? columnsKey : ['refname', 'refpk'];
-          // if(rowKey && Array.isArray(rowKey) && rowKey.length>1){
-          //   keyArray=rowKey;
-          // }
+          const defaultKey = ['refname', 'refpk'];
+          let keyArray = (columnsKey && columnsKey.length > 1) ? columnsKey : (rowKey && rowKey.length > 0 ? rowKey : defaultKey);
 
           for (let i = row; i <= endRow; i++) {
             // 设置展示值
@@ -245,6 +243,11 @@ class AcHandTable extends React.Component {
               data[i][key] = rowDataCache[key];
             }
           }
+        }
+
+        // 添加修改标记
+        for (let i = row; i <= endRow; i++) {
+          data[i].update_status = true;
         }
         _this.setState({ data });
       },

@@ -34,7 +34,7 @@ const data = [
   {
     id: 3,
     name: {
-      firstName: '王',
+      firstName: '王小维小维小维小维小维小维小维小维小维小维小维小维小维',
       lastName: '小维',
     },
     level: 20,
@@ -63,9 +63,12 @@ class Demo extends Component {
 
 
   columns = [
-    { data: 'name.firstName' }, // 对象文本类型
+    { data: 'name.firstName',
+      textTooltip: true,
+    }, // 对象文本类型
     {
       data: 'name.lastName',
+
     },
     {
       data: 'level',
@@ -89,12 +92,14 @@ class Demo extends Component {
           colHeaders={['姓', '名', '等级', '日期']} // 表格表头
           data={handData} // 表体数据
           columns={this.columns} // 列属性设置
+          colWidths={[null, 40, 40, null, 50]}
           manualRowMove={true} // 行移动
           fillHandle={{
             // enable plugin in vertical direction and with autoInsertRow as false
             autoInsertRow: false,
             direction: 'vertical'
           }}
+          // headerTooltips={true}
         />
 
       </div>

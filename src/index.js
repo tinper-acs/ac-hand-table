@@ -1,4 +1,4 @@
-/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks,react/no-unused-state,prefer-template,no-underscore-dangle,object-curly-newline,no-unused-vars,prefer-destructuring */
+/* eslint-disable import/first,prefer-const,no-shadow,guard-for-in,no-param-reassign,no-restricted-syntax,prefer-rest-params,no-return-assign,react/prop-types,valid-typeof,quotes,react/destructuring-assignment,padded-blocks,react/no-unused-state,prefer-template,no-underscore-dangle,object-curly-newline,no-unused-vars,prefer-destructuring,operator-linebreak */
 /**
  * Created by ranyanchuan on 2018/3/11.
  */
@@ -49,6 +49,11 @@ class AcHandTable extends React.Component {
     currentRefType: '', // 获取当前参照类型
 
     selectRowDataNum: [], // 选中行数据下标 select
+
+
+    tooltipObj: {},
+    tooltipShow: false,
+
   };
 
 
@@ -125,7 +130,6 @@ class AcHandTable extends React.Component {
           dblClick(rowDataCache, currentRow, currentValue);
         }
       }
-
     });
 
 
@@ -282,6 +286,45 @@ class AcHandTable extends React.Component {
         const delDataList = getDelRows(_this.state, physicalRows, rowKey);
         _this.setState({ delDataList });
       },
+
+
+      afterOnCellMouseOut(event, coords, td) {
+
+        const tooltipValue = td.getAttribute('tooltip');
+        if (tooltipValue) { // 判断是否关闭 tooltip
+          _this.setState({ tooltipShow: false });
+        }
+
+      },
+
+      afterOnCellMouseOver(event, coords, td) {
+        // 鼠标移动上去 省略部分展示
+        const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = td;
+        const tooltipValue = td.getAttribute('tooltip');
+
+        // 判断是否省略 ...
+        const clientWidth = td.clientWidth;
+        const scrollWidth = td.scrollWidth;
+        if (tooltipValue) {
+          let tooltipShow = false;
+          const tooltipObj = {
+            offsetLeft,
+            offsetTop,
+            offsetWidth,
+            offsetHeight,
+            tooltipValue,
+          };
+          if (clientWidth < scrollWidth) { // 如果有省略 展示 tooltip
+            tooltipShow = true;
+          }
+          _this.setState({
+            tooltipShow,
+            tooltipObj,
+          });
+        }
+      },
+
+
     });
   };
 
@@ -371,9 +414,9 @@ class AcHandTable extends React.Component {
 
 
     // 添加行样式
-    if (columns && columns.length > 0 && rowStyle) {
+    if (columns && columns.length > 0) {
       for (const column of columns) {
-        const { renderer, type } = column;
+        const { renderer, type, textTooltip } = column;
         // 添加样式
         if (!renderer) {
           column.renderer = function (instance, td, row, col, prop, value) {
@@ -406,7 +449,17 @@ class AcHandTable extends React.Component {
                 Handsontable.renderers.TextRenderer.apply(this, arguments);
             }
 
-            const styles = rowStyle(row + 1, col, prop);
+            if (textTooltip) {
+              // 添加样式 超出部分...
+
+              td.style.textOverflow = 'ellipsis';
+              td.style.whiteSpace = 'nowrap';
+              td.style.wordBreak = 'keep-all';
+              td.setAttribute('tooltip', value);
+
+
+            }
+            const styles = rowStyle ? rowStyle(row + 1, col, prop) : '';
             if (styles) {
               // 修改行样式
               for (const style in styles) {
@@ -663,10 +716,18 @@ class AcHandTable extends React.Component {
 
   render() {
     const { id } = this.props;
-    const { refConfig } = this.state;
+    const { refConfig, tooltipObj, tooltipShow } = this.state;
+
+    const {
+      offsetLeft,
+      offsetTop,
+      offsetWidth,
+      offsetHeight,
+      tooltipValue,
+    } = tooltipObj;
     return (
       <div>
-        <div id={id}/>
+        <div id={id} />
         {/* 表格 */}
         <RefMultipleTable
           {...refConfig}
@@ -697,6 +758,22 @@ class AcHandTable extends React.Component {
           setTargetKeys={this.setTargetKeys}
           handleTreeSelect={this.onSearchRef}
         />
+        /* eslint-disable react/jsx-first-prop-new-line */
+        {tooltipShow && (
+        <div
+          className="ac-hand-tooltip"
+          style={{
+            top: offsetTop + offsetHeight,
+            left: offsetLeft,
+            minWidth: offsetWidth,
+          }}
+          onMouseOver={() => {
+            this.setState({ tooltipShow: false });
+          }}
+        >
+          {tooltipValue}
+        </div>
+        )}
 
       </div>
     );

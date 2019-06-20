@@ -24,6 +24,7 @@
     <li class="sidebar-header-3"><a href="#refconfig-[更多参考](http://bee.tinper.org/tinper-acs/)">refConfig [更多参考](http://bee.tinper.org/tinper-acs/)</a></li>
     <li class="sidebar-header-3"><a href="#multicolumnsorting">multiColumnSorting</a></li>
     <li class="sidebar-header-3"><a href="#numericformat">numericFormat</a></li>
+    <li class="sidebar-header-3"><a href="#fillhandle">fillHandle</a></li>
     <li class="sidebar-header-3"><a href="#csvconfig">csvConfig</a></li>
     <li class="sidebar-header-3"><a href="#获取表格里的数据">获取表格里的数据</a></li>
     <li class="sidebar-header-3"><a href="#表格添加行">表格添加行</a></li>
@@ -34,6 +35,8 @@
     <li class="sidebar-header-3"><a href="#获取被格式化的数据">获取被格式化的数据</a></li>
     <li class="sidebar-header-3"><a href="#获取新增加的数据">获取新增加的数据</a></li>
     <li class="sidebar-header-3"><a href="#获取删除的数据">获取删除的数据</a></li>
+    <li class="sidebar-header-3"><a href="#获取通过鼠标选中的行">获取通过鼠标选中的行</a></li>
+    <li class="sidebar-header-3"><a href="#删除通过鼠标选中的行">删除通过鼠标选中的行</a></li>
     <li class="sidebar-header-3"><a href="#导出csv">导出csv</a></li>
     <li class="sidebar-header-4"><a href="#日期国际化">日期国际化</a></li>
     <li class="sidebar-header-4"><a href="#开发调试">开发调试</a></li>
@@ -43,12 +46,12 @@
 <p>ac-hand-table 是基于 <code>handsontable</code> 的适用于 React 框架的电子表格，它提供了数据绑定、数据验证、行过滤、列排序、表格多选、表格样式、表头交互、表头拖拽、行高拖拽、行交换等操作</p>
 <h2 id="如何使用">如何使用</h2>
 <p>使用 npm 安装最新版本</p>
-<pre class="hljs"><code>$ npm <span class="hljs-keyword">install</span> <span class="hljs-keyword">ref</span>-tree-<span class="hljs-keyword">table</span>  <span class="hljs-comment">--save</span>
+<pre class="hljs"><code>$ npm install ac-hand-<span class="hljs-built_in">table</span>  <span class="hljs-comment">--save</span>
 
 引入
 <span class="hljs-keyword">import</span> AcHandTable <span class="hljs-keyword">from</span> <span class="hljs-string">'ac-hand-table'</span>;
 样式
-import 'ac-hand-table/dist/index.css';
+<span class="hljs-keyword">import</span> <span class="hljs-string">'ac-hand-table/dist/index.css'</span>;
 </code></pre><h2 id="代码演示">代码演示</h2>
 <h2 id="api">API</h2>
 <h3 id="achandtable">AcHandTable</h3>
@@ -209,13 +212,13 @@ import 'ac-hand-table/dist/index.css';
 <tr>
 <td style="text-align:left">dropdownMenu</td>
 <td style="text-align:left">表上下文下拉菜单</td>
-<td style="text-align:left"><code>boolean</code> 或 <code>array</code> [&quot;具有一定意义的字符串，见下表 dropdownMenu contextMenu&quot;]</td>
+<td style="text-align:left"><code>boolean</code> 或 <code>array</code> <a href="">见下表 dropdownMenu contextMenu</a></td>
 <td style="text-align:left">false</td>
 </tr>
 <tr>
 <td style="text-align:left">contextMenu</td>
 <td style="text-align:left">行上下文下拉菜单</td>
-<td style="text-align:left"><code>boolean</code> 或 <code>array</code> [ &quot;具有一定意义的字符串，见下表 dropdownMenu contextMenu&quot;]</td>
+<td style="text-align:left"><code>boolean</code> 或 <code>array</code> <a href=""> 见下表 dropdownMenu contextMenu</a></td>
 <td style="text-align:left">false</td>
 </tr>
 <tr>
@@ -243,10 +246,16 @@ import 'ac-hand-table/dist/index.css';
 <td style="text-align:left">-</td>
 </tr>
 <tr>
-<td style="text-align:left">onRef</td>
-<td style="text-align:left">设置ref属性调用子组件方法</td>
-<td style="text-align:left">onRef={ref =&gt; this.child = ref}</td>
+<td style="text-align:left">activeHeaderClassName</td>
+<td style="text-align:left">选中列标题样式</td>
+<td style="text-align:left">strig</td>
 <td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">fillHandle</td>
+<td style="text-align:left">自动填充设置</td>
+<td style="text-align:left"><code>boolean</code> 或 <code>string</code>(&#39;vertical&#39; or &#39;horizontal&#39;) 或者 <code>object</code><a href="">见下表 fillHandle</a></td>
+<td style="text-align:left">&#39;vertical&#39;</td>
 </tr>
 </tbody>
 </table>
@@ -468,6 +477,12 @@ import 'ac-hand-table/dist/index.css';
 <td style="text-align:left">-</td>
 </tr>
 <tr>
+<td style="text-align:left">dblClick</td>
+<td style="text-align:left">表格双击事件</td>
+<td style="text-align:left"><code>func</code> (rowData, rowNum, value)=&gt;{}</td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
 <td style="text-align:left">onChangeCell</td>
 <td style="text-align:left">表格值变化事件</td>
 <td style="text-align:left"><code>func</code> (rowData, rowNum)=&gt;{}</td>
@@ -488,7 +503,7 @@ import 'ac-hand-table/dist/index.css';
 <tr>
 <td style="text-align:left">refConfig</td>
 <td style="text-align:left">参照配置</td>
-<td style="text-align:left">[&quot;见下表 refConfig&quot;]</td>
+<td style="text-align:left"><a href="">见下表 refConfig</a></td>
 <td style="text-align:left">-</td>
 </tr>
 </tbody>
@@ -604,6 +619,31 @@ import 'ac-hand-table/dist/index.css';
 </tr>
 </tbody>
 </table>
+<h3 id="fillhandle">fillHandle</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">autoInsertRow</td>
+<td style="text-align:left">填充到最后一行是否自动添加行</td>
+<td style="text-align:left">boolean</td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
+<td style="text-align:left">direction</td>
+<td style="text-align:left">自动填充方向</td>
+<td style="text-align:left">string 值为<code>vertical</code> <code>horizontal</code></td>
+<td style="text-align:left">&#39;vertical&#39;</td>
+</tr>
+</tbody>
+</table>
 <h3 id="csvconfig">csvConfig</h3>
 <table>
 <thead>
@@ -679,7 +719,10 @@ import 'ac-hand-table/dist/index.css';
     });
   };</code></pre><h3 id="表格添加行">表格添加行</h3>
 <pre class="hljs"><code>  onInsertRowData = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-    <span class="hljs-keyword">this</span>.child.onInsertRowData();
+    <span class="hljs-comment">// onInsertRowData(number,source) </span>
+    <span class="hljs-comment">// number 插入行的位置，0 为行首，-1 为行尾</span>
+    <span class="hljs-comment">// source 插入的行对象，</span>
+    <span class="hljs-keyword">this</span>.child.onInsertRowData(); <span class="hljs-comment">// 默认行首，空对象</span>
   };</code></pre><h3 id="删除多选选中的行">删除多选选中的行</h3>
 <pre class="hljs"><code>
  onDelRowCheck = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
@@ -714,6 +757,18 @@ import 'ac-hand-table/dist/index.css';
 <pre class="hljs"><code>  getDelRowData = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
     <span class="hljs-keyword">const</span> delRowData = <span class="hljs-keyword">this</span>.child.getDelRowData();
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'delRowData'</span>, delRowData);
+  };</code></pre><h3 id="获取通过鼠标选中的行">获取通过鼠标选中的行</h3>
+<pre class="hljs"><code>  getSelectData = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+   <span class="hljs-comment">// rowList 鼠标选中的行数据</span>
+   <span class="hljs-comment">// indexList 鼠标选中行数据的下标</span>
+    <span class="hljs-keyword">const</span> {rowList,indexList} = <span class="hljs-keyword">this</span>.child.getSelectData();
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selectData'</span>,rowList,indexList);
+  };</code></pre><h3 id="删除通过鼠标选中的行">删除通过鼠标选中的行</h3>
+<pre class="hljs"><code>  onDelRowSelect = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+     <span class="hljs-comment">// rowList 删除的行数据</span>
+     <span class="hljs-comment">//  indexList 删除行数据的下标</span>
+    <span class="hljs-keyword">const</span> {rowList,indexList} = <span class="hljs-keyword">this</span>.child.onDelRowSelect();
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'rowList,indexList'</span>, rowList,indexList);
   };</code></pre><h3 id="导出csv">导出csv</h3>
 <pre class="hljs"><code>
   onDownCsv = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {

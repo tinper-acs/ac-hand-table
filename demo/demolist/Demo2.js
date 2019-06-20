@@ -112,7 +112,11 @@ class Demo2 extends Component {
     {
       data: 'money',
       type: 'numeric', // 资薪
-      allowInvalid: true,
+      // allowInvalid: true,
+      // numericFormat: {
+      //   pattern: '$0,0.00',
+      //   culture: 'en-US' // this is the default culture, set up for USD
+      // },
     },
   ];
 

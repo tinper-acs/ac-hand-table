@@ -1017,6 +1017,7 @@ class Demo3 extends Component {
       },
       refConfig: {
         columnsKey: ['refname', 'id', 'code'], // 约定第一个为回写值,即表格中展示的数据
+        refKey: ['refname', 'id', 'code'], // 约定第一个为回写值,即表格中展示的数据
       },
     },
 
@@ -1054,7 +1055,8 @@ class Demo3 extends Component {
       type: 'refMultipleTable', // 表格
       refConfig: {
         columnsData: refTableData.columnsData,
-        columnsKey: ['refname', 'email', 'mobile'], // 约定第一个为回写值
+        columnsKey: ['name', 'email', 'mobile'], // 约定第一个为回写值
+        rowKey: ['staff', 'staffEmail', 'staffMobile'],
       },
       refSource: (value, type, callback) => { // 表格简单搜索
         console.log('refSearch--table', value, type);

@@ -118,10 +118,12 @@ class AcHandTable extends React.Component {
       const { rowDataCache, currentRow, currentValue, currentCol } = _this.state;
       const { columns } = _this.props;
 
-      const { dblClick } = columns[currentCol];
-      // 判断是否有双击方法
-      if (dblClick) {
-        dblClick(rowDataCache, currentRow, currentValue);
+      if (columns[currentCol]) {
+        const { dblClick } = columns[currentCol];
+        // 判断是否有双击方法
+        if (dblClick) {
+          dblClick(rowDataCache, currentRow, currentValue);
+        }
       }
 
     });
@@ -145,15 +147,20 @@ class AcHandTable extends React.Component {
 
           const { data } = _this.state;
           const { columns } = _this.props;
-          // 添加修改标记
-          if (oldValue !== newValue) {
-            data[rowNum].update_status = true;
-            _this.setState({ data });
-          }
+
 
           // 是否有回调
           let { onChangeCell, type, refSource, cacheAutoData, refConfig, refOnChange, data: currentKey } = getArrayObjByKey(columns, name);
 
+          // 添加修改标记
+          if (oldValue !== newValue) {
+            data[rowNum].update_status = true;
+          }
+
+          // 判断类型
+          if (type === 'numeric' && typeof (newValue) !== 'number') {
+            data[rowNum][name] = null;
+          }
 
           // 下拉自动补全
           if (type === 'autocomplete' && refSource) {
@@ -170,13 +177,13 @@ class AcHandTable extends React.Component {
               const key = columnsKey[i];
               data[rowNum][currentKey + '_' + key] = currentAutoRow[key];
             }
-            _this.setState({ data });
-
             // 下拉回调change
             if (refOnChange) {
               refOnChange(currentAutoRow, data[rowNum], rowNum);
             }
           }
+
+          _this.setState({ data }); // 更新state
 
           if (onChangeCell) {
             const rowData = { ...data[rowNum] };
@@ -219,15 +226,22 @@ class AcHandTable extends React.Component {
         const { data: currentKey, refConfig } = column;
 
         if (refConfig) {
-          const { columnsKey } = refConfig;
+          const { columnsKey, rowKey } = refConfig;
           // 参照返回字段
-          const keyArray = columnsKey && columnsKey.length > 1 ? columnsKey : ['refname', 'refpk'];
+          let keyArray = columnsKey && columnsKey.length > 1 ? columnsKey : ['refname', 'refpk'];
+          // if(rowKey && Array.isArray(rowKey) && rowKey.length>1){
+          //   keyArray=rowKey;
+          // }
+
           for (let i = row; i <= endRow; i++) {
             // 设置展示值
             data[i][currentKey] = rowDataCache[currentKey];
             // 返回参照多余字段用_链接
             for (let j = 1; j < keyArray.length; j++) {
-              const key = currentKey + '_' + keyArray[j];
+              let key = currentKey + '_' + keyArray[j];
+              if (rowKey && Array.isArray(rowKey) && rowKey.length > 1) { // 是否自定义隐藏例的 key
+                key = rowKey[j];
+              }
               data[i][key] = rowDataCache[key];
             }
           }
@@ -480,6 +494,7 @@ class AcHandTable extends React.Component {
   onUpdateRowData = (number = 0, source) => {
     if (source && Object.prototype.toString.call(source === '[Object Object]')) {
       const { data } = this.state;
+      source.update_status = true; // 设置为更新状态
       data[number] = source;
       this.setState({ data });
       this.hot.render();
@@ -564,7 +579,7 @@ class AcHandTable extends React.Component {
 
     // 往行数据中添加参照的其他信息
     if (params && Array.isArray(params) && params.length > 0) {
-      const { columnsKey } = refConfig;
+      const { columnsKey, rowKey } = refConfig;
       // 参照返回字段
       const keyArray = columnsKey && columnsKey.length > 1 ? columnsKey : ['refname', 'refpk'];
       // 将多个对象的值用,链接
@@ -573,7 +588,12 @@ class AcHandTable extends React.Component {
       // 返回参照多余字段用_链接
       for (let i = 1; i < keyArray.length; i++) {
         const key = keyArray[i];
-        data[currentRow][currentKey + '_' + key] = paramObj[key];
+        if (rowKey && Array.isArray(rowKey) && rowKey[i]) {
+
+          data[currentRow][rowKey[i]] = paramObj[key];
+        } else {
+          data[currentRow][currentKey + '_' + key] = paramObj[key];
+        }
       }
     }
 

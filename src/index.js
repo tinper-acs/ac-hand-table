@@ -122,9 +122,10 @@ class AcHandTable extends React.Component {
 
       if (columns[currentCol]) {
         const { dblClick } = columns[currentCol];
+        const td = event.target;
         // 判断是否有双击方法
         if (dblClick) {
-          dblClick(rowDataCache, currentRow, currentValue, tc);
+          dblClick(rowDataCache, currentRow, currentValue, td, event);
         }
       }
     });
@@ -209,7 +210,7 @@ class AcHandTable extends React.Component {
           });
         }
         if (onClick) {
-          onClick(data[row], row, data[row][columnKey], td);
+          onClick(data[row], row, data[row][columnKey], td, event);
         }
       },
 

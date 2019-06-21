@@ -1016,6 +1016,7 @@ class Demo3 extends Component {
         console.log('rowData, rowNum, value', rowData, rowNum, value);
       },
       refConfig: {
+        isThreeBar: true, // 是否出现三道杠
         columnsKey: ['refname', 'id', 'code'], // 约定第一个为回写值,即表格中展示的数据
         refKey: ['refname', 'id', 'code'], // 约定第一个为回写值,即表格中展示的数据
       },
@@ -1054,6 +1055,7 @@ class Demo3 extends Component {
       data: 'staff',
       type: 'refMultipleTable', // 表格
       refConfig: {
+        isThreeBar: true, // 是否出现三道杠
         columnsData: refTableData.columnsData,
         columnsKey: ['name', 'email', 'mobile'], // 约定第一个为回写值
         rowKey: ['staff', 'staffEmail', 'staffMobile'],
@@ -1071,6 +1073,7 @@ class Demo3 extends Component {
       data: 'department',
       type: 'refTreeWithInput', // 树参照
       refConfig: {
+        isThreeBar: true, // 是否出现三道杠
         treeData: refTreeData,
       },
       refSource: (value, type, callback) => { // 表格简单搜索
@@ -1089,6 +1092,7 @@ class Demo3 extends Component {
       data: 'department_staff',
       type: 'refTreeTableWithInput', // 树表参照
       refConfig: {
+        isThreeBar: true, // 是否出现三道杠
         columnsData: refTreeTableData.columnsData,
       },
 
@@ -1116,6 +1120,7 @@ class Demo3 extends Component {
       data: 'department_staff_transfer',
       type: 'refTreeTransferWithInput', // 树穿梭参照
       refConfig: {
+        isThreeBar: true, // 是否出现三道杠
         displayField: '{refname}-{refcode}-jaja',
         valueField: 'refcode',
       },
@@ -1179,7 +1184,6 @@ class Demo3 extends Component {
           colHeaders={['编码', '下拉搜索', '表格参照-人员', '树参照-部门', '树表参照-部门人员', '树穿梭-人员']} // 表格表头
           data={handData} // 表体数据
           columns={this.columns} // 列属性设置
-
           rowKey="id" // 数组对象中唯一id 默认值为'id'
         />
 

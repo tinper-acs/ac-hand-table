@@ -355,6 +355,8 @@ class AcHandTable extends React.Component {
       });
 
     });
+
+    td.innerHTML = '<div class="three-bar">≡</div>';
     td.appendChild(createDiv);
 
     // 添加样式
@@ -403,7 +405,7 @@ class AcHandTable extends React.Component {
     // 添加行样式
     if (columns && columns.length > 0) {
       for (const column of columns) {
-        const { renderer, type, textTooltip } = column;
+        const { renderer, type, textTooltip, refConfig } = column;
         // 添加样式
         if (!renderer) {
           column.renderer = function (instance, td, row, col, prop, value) {
@@ -442,8 +444,14 @@ class AcHandTable extends React.Component {
               td.style.whiteSpace = 'nowrap';
               td.style.wordBreak = 'keep-all';
               td.setAttribute('tooltip', value);
-
             }
+
+            // 如果是参照 三道杠
+            if (refConfig && refConfig.isThreeBar) {
+              const text = value ? value : '';
+              td.innerHTML = '<div class="three-bar">≡</div>' + text;
+            }
+
             // 添加自定义行样式
             const styles = rowStyle ? rowStyle(row + 1, col, prop) : '';
             if (styles) {

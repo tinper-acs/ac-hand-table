@@ -90,8 +90,12 @@ class Demo extends Component {
     {
       data: 'time',
       type: 'time', // 日期类型
-      timeFormat: 'hh:mm:ss',
+      timeFormat: 'h:mm:ss a',
+      defaultData: '1900-01-01 00:00:00', // 默认值
       correctFormat: true,
+      validator: (value, callback) => {
+        callback(true);
+      },
     },
   ];
 
@@ -105,7 +109,6 @@ class Demo extends Component {
 
     return (
       <div>
-        <div title="是是是是是是所所所">是是是是是是所所所</div>
         <AcHandTable
           id="example" // 组件id
           onRef={ref => this.child = ref} // 设置ref属性 调用子组件方法

@@ -20,11 +20,7 @@ const data = [
     // gender: '1',
     date: '2018-07-02',
     money: 10000,
-    staff: '李白',
-    staff_code: '',
-    department: '',
-    department_staff: '',
-    department_staff_transfer: '',
+    custom: '自定义',
   },
   {
     id: 2,
@@ -32,12 +28,7 @@ const data = [
     gender: 0,
     date: '2018-07-02 09:01:01',
     money: 10000,
-    staff_code: '',
-    staff: '李白',
-    department: '',
-    department_staff: '',
-    department_staff_transfer: '',
-
+    custom: '自定义',
   },
   {
     id: 3,
@@ -45,11 +36,7 @@ const data = [
     gender: null,
     date: '2018-07-02',
     money: 10000,
-    staff: '李白',
-    staff_code: '',
-    department: '',
-    department_staff: '',
-    department_staff_transfer: '',
+    custom: '自定义',
   },
 ];
 
@@ -118,6 +105,18 @@ class Demo2 extends Component {
       //   culture: 'en-US' // this is the default culture, set up for USD
       // },
     },
+    {
+      data: 'custom',
+      renderer: (instance, td, row, col, prop, value, cellProperties) => {
+        // 插入内容
+        td.innerHTML = '嘻嘻嘻嘻  ' + value;
+        return td;
+      },
+      dblClick: (rowData, rowNum, value) => {
+        console.log('dblClick,rowData, rowNum, value', rowData, rowNum, value);
+      },
+    }
+
   ];
 
   // 设置行样式
@@ -133,16 +132,12 @@ class Demo2 extends Component {
   onInsertRowData = () => {
     const rowDefaultData = {
       id: 99,
-      name: '张ssss三',
+      name: '张三 insert',
       // gender: '1',
       gender: 0,
       date: '2018-07-02',
       money: 10000,
-      staff: '李白',
-      staff_code: '',
-      department: '',
-      department_staff: '',
-      department_staff_transfer: '',
+      custom: '自定义',
     };
     // this.child.onInsertRowData() // 默认从第一行添加
     this.child.onInsertRowData(-1, rowDefaultData);
@@ -152,15 +147,11 @@ class Demo2 extends Component {
   onUpdateRowData = () => {
     const rowDefaultData = {
       id: 99,
-      name: '张ssss三',
+      name: '张三 update',
       gender: 0,
       date: '2018-07-02',
       money: 10000,
-      staff: '李白',
-      staff_code: '',
-      department: '',
-      department_staff: '',
-      department_staff_transfer: '',
+      custom: '自定义',
     };
     this.child.onUpdateRowData(0, rowDefaultData);
   };
@@ -256,7 +247,7 @@ class Demo2 extends Component {
           onRef={(ref) => { // 设置ref属性 调用子组件方法
             this.child = ref;
           }}
-          colHeaders={['姓名', '性别', '日期', '资薪', '表格参照-人员', '树参照-部门', '树表参照-部门人员', '树穿梭-人员']} // 表格表头
+          colHeaders={['姓名', '性别', '日期', '资薪', '自定义']} // 表格表头
           data={handData} // 表体数据
           columns={this.columns} // 列属性设置
           // 设置行样式

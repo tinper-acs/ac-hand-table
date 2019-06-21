@@ -30,7 +30,7 @@ const data = [
     id: 2,
     name: '李四',
     gender: 0,
-    date: '2018-07-02',
+    date: '2018-07-02 09:01:01',
     money: 10000,
     staff_code: '',
     staff: '李白',
@@ -105,7 +105,7 @@ class Demo2 extends Component {
       data: 'date',
       type: 'date',
       dateFormat: 'YYYY-MM-DD', // 日期格式
-      correctFormat: true, //  当前值是否格式化
+      correctFormat: false, //  当前值是否格式化
       defaultDate: '1900-01-01', // 默认值
       allowInvalid: true, // 不容许日期为空
     },

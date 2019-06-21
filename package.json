@@ -91,6 +91,7 @@
     "prop-types": "^15.6.0"
   },
   "dependencies": {
+    "bee-timepicker": "^2.0.4",
     "handsontable": "7.0.2",
     "ref-combobox": "^2.0.4",
     "ref-multiple-table": "^2.0.4",

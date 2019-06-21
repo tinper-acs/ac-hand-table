@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax,no-use-before-define,no-param-reassign */
-
+import moment from 'moment';
 // 数组深克隆
 // export function deepClone(source) {
 //     let sourceCopy = source instanceof Array ? [] : {};
@@ -47,11 +47,12 @@ export function customRenderData(data, columns, coverRenderer) {
   if (columns && columns.length > 0) {
     for (const [index, column] of columns.entries()) {
       const {
-        type, source, data: columnData, editor, refSource, refConfig,
+        type, source, data: columnData, editor, refSource, refConfig, dateFormat, timeFormat,
       } = column;
 
       let sourceArray = [];
 
+      // 对下拉数据处理
       if ((type === 'select' || editor === 'select') && Array.isArray(source) && source.length > 0 && (typeof source[0]) === 'object') {
         // 更新source 数据
         sourceArray = source.map(item => item.value);
@@ -62,10 +63,36 @@ export function customRenderData(data, columns, coverRenderer) {
         });
       }
 
+      // 对日期处理
+      if (type === 'date' && dateFormat) {
+        data.map((item) => {
+          const dateValue = item[columnData];
+          if (dateValue) {
+            item[columnData] = moment(dateValue)
+              .format(dateFormat);
+          }
+          return item;
+        });
+      }
+
+      // 对时间处理
+      if (type === 'time' && timeFormat) {
+        data.map((item) => {
+          const timeValue = item[columnData];
+          if (timeValue) {
+            // 拼接日期 用moment 格式化
+            const value = `2019-01-01 ${timeValue}`;
+            item[columnData] = moment(value)
+              .format(timeFormat);
+          }
+          return item;
+        });
+      }
+
       // 对下拉参照处理
       if (type === 'autocomplete' && refSource) {
         column.source = function (param, callback) {
-          refSource(param, 'auto', function (value) {
+          refSource(param, 'auto', (value) => {
             const { refValue = 'refname' } = refConfig;
             // 将数据缓存到  cacheAutoData上
             column.cacheAutoData = value;
@@ -275,16 +302,9 @@ export function colFindSelectValue(cloObj, rowObj) {
 
 // 生成指定区间内的整数
 export function getBetweenNum(starNum, endNum, num = 1) {
-  let result = [];
+  const result = [];
   for (let i = starNum; i <= endNum; i += num) {
     result.push(i);
   }
   return result;
 }
-
-
-
-
-
-
-

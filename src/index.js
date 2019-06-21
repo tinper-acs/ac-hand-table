@@ -51,9 +51,6 @@ class AcHandTable extends React.Component {
     selectRowDataNum: [], // 选中行数据下标 select
 
 
-    tooltipObj: {},
-    tooltipShow: false,
-
   };
 
 
@@ -127,7 +124,7 @@ class AcHandTable extends React.Component {
         const { dblClick } = columns[currentCol];
         // 判断是否有双击方法
         if (dblClick) {
-          dblClick(rowDataCache, currentRow, currentValue);
+          dblClick(rowDataCache, currentRow, currentValue, tc);
         }
       }
     });
@@ -212,10 +209,9 @@ class AcHandTable extends React.Component {
           });
         }
         if (onClick) {
-          onClick(data[row], row, data[row][columnKey]);
+          onClick(data[row], row, data[row][columnKey], td);
         }
       },
-
 
       // 用于拖拽 解决参照
       beforeAutofill(start, end, text) {
@@ -290,40 +286,31 @@ class AcHandTable extends React.Component {
 
       afterOnCellMouseOut(event, coords, td) {
 
+
         const tooltipValue = td.getAttribute('tooltip');
-        if (tooltipValue) { // 判断是否关闭 tooltip
-          _this.setState({ tooltipShow: false });
-        }
-
-      },
-
-      afterOnCellMouseOver(event, coords, td) {
-        // 鼠标移动上去 省略部分展示
-        const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = td;
-        const tooltipValue = td.getAttribute('tooltip');
-
-        // 判断是否省略 ...
         const clientWidth = td.clientWidth;
         const scrollWidth = td.scrollWidth;
-        if (tooltipValue) {
-          let tooltipShow = false;
-          const tooltipObj = {
-            offsetLeft,
-            offsetTop,
-            offsetWidth,
-            offsetHeight,
-            tooltipValue,
-          };
-          if (clientWidth < scrollWidth) { // 如果有省略 展示 tooltip
-            tooltipShow = true;
-          }
-          _this.setState({
-            tooltipShow,
-            tooltipObj,
-          });
+        if (tooltipValue && (scrollWidth > clientWidth)) { // 判断是否关闭 tooltip
+          td.innerHTML = tooltipValue || '\&nbsp;\&nbsp';
         }
+
       },
 
+      beforeOnCellMouseOver(event, coords, td) {
+        // 鼠标移动上去 省略部分展示
+        const { offsetWidth } = td;
+        const tooltipValue = td.getAttribute('tooltip');
+        const clientWidth = td.clientWidth;
+        const scrollWidth = td.scrollWidth;
+        // 判断是否省略 ...
+        if (tooltipValue && (scrollWidth > clientWidth)) {
+          let createDiv = document.createElement('div');
+          createDiv.innerHTML = tooltipValue || '\&nbsp;\&nbsp';
+          createDiv.style.width = offsetWidth;
+          createDiv.setAttribute('class', 'ac-hand-tooltip');
+          td.appendChild(createDiv);
+        }
+      },
 
     });
   };
@@ -449,16 +436,15 @@ class AcHandTable extends React.Component {
                 Handsontable.renderers.TextRenderer.apply(this, arguments);
             }
 
+            // 添加样式 超出部分...
             if (textTooltip) {
-              // 添加样式 超出部分...
-
               td.style.textOverflow = 'ellipsis';
               td.style.whiteSpace = 'nowrap';
               td.style.wordBreak = 'keep-all';
               td.setAttribute('tooltip', value);
 
-
             }
+            // 添加自定义行样式
             const styles = rowStyle ? rowStyle(row + 1, col, prop) : '';
             if (styles) {
               // 修改行样式
@@ -716,18 +702,12 @@ class AcHandTable extends React.Component {
 
   render() {
     const { id } = this.props;
-    const { refConfig, tooltipObj, tooltipShow } = this.state;
+    const { refConfig } = this.state;
 
-    const {
-      offsetLeft,
-      offsetTop,
-      offsetWidth,
-      offsetHeight,
-      tooltipValue,
-    } = tooltipObj;
+
     return (
       <div>
-        <div id={id} />
+        <div id={id}/>
         {/* 表格 */}
         <RefMultipleTable
           {...refConfig}
@@ -758,22 +738,6 @@ class AcHandTable extends React.Component {
           setTargetKeys={this.setTargetKeys}
           handleTreeSelect={this.onSearchRef}
         />
-
-        {tooltipShow && (
-        <div
-          className="ac-hand-tooltip"
-          style={{
-            top: offsetTop + offsetHeight,
-            left: offsetLeft,
-            minWidth: offsetWidth,
-          }}
-          onMouseOver={() => {
-            this.setState({ tooltipShow: false });
-          }}
-        >
-          {tooltipValue}
-        </div>
-        )}
 
       </div>
     );

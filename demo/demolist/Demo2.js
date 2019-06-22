@@ -247,7 +247,7 @@ class Demo2 extends Component {
           onRef={(ref) => { // 设置ref属性 调用子组件方法
             this.child = ref;
           }}
-          colHeaders={['姓名', '性别', '日期', '资薪', '自定义']} // 表格表头
+          colHeaders={['姓名', '性别', '日期', '资薪', '自定义', '钉耙日期']} // 表格表头
           data={handData} // 表体数据
           columns={this.columns} // 列属性设置
           // 设置行样式

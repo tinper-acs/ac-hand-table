@@ -90,8 +90,8 @@ class Demo extends Component {
     {
       data: 'time',
       type: 'time', // 日期类型
-      timeFormat: 'h:mm:ss a',
-      defaultData: '1900-01-01 00:00:00', // 默认值
+      timeFormat: 'hh:mm:ss',
+      // defaultData: 00:00:00', // 默认值
       correctFormat: true,
       validator: (value, callback) => {
         callback(true);

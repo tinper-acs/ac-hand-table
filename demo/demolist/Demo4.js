@@ -8,7 +8,6 @@
 
 import React, { Component } from 'react';
 import DatePicker from 'tinper-bee/lib/Datepicker';
-import Timepicker from 'tinper-bee/lib/Timepicker';
 
 import moment from 'moment';
 
@@ -19,9 +18,7 @@ import '../../src/index.less';
 import './index.less';
 
 const formatRule = 'YYYY-MM-DD hh:mm:ss'; // 日期格式
-const timeFormat = 'hh:mm:ss'; // 时间格式化
 
-const dateInputPlaceholder = '选择日期';
 
 const data = [
   {
@@ -60,9 +57,6 @@ class Demo4 extends Component {
       rowColKey: '', //
     };
   }
-
-
-  //  https://handsontable.com/docs/7.1.0/demo-handsontable.html  handsontable
 
 
   columns = [
@@ -110,9 +104,10 @@ class Demo4 extends Component {
       },
       renderer: (instance, td, row, col, prop, value, cellProperties) => {
         // 插入内容
-        td.innerHTML = '嘻嘻嘻嘻  ' + value;
+        td.innerHTML = `嘻嘻嘻嘻  ${value}`;
         return td;
       },
+
     },
 
   ];
@@ -120,14 +115,11 @@ class Demo4 extends Component {
 
   onChangeDate = (dateMoment, dataString) => {
     const { rowData, rowNum, rowColKey } = this.state;
-    rowData[rowColKey] = dataString;
+    rowData[rowColKey] = moment(dateMoment)
+      .format(formatRule);
     this.child.onUpdateRowData(rowNum, rowData);
   };
 
-
-  getPopupContainer = () => {
-    return document.getElementById('chuan');
-  };
 
   render() {
     const {
@@ -148,31 +140,26 @@ class Demo4 extends Component {
             // colWidths={[null, 50, 100, null, 120, null]}
             manualRowMove // 行移动
             fillHandle={{
-              // enable plugin in vertical direction and with autoInsertRow as false
               autoInsertRow: false,
               direction: 'vertical',
             }}
-            // headerTooltips={true}
           />
         </div>
 
 
         {/* 日期组件 */}
-        <div
-          className="ac-tinper"
-          onClick={() => {
-            this.setState({ showDate: false }); // 关闭日期
-          }}
-        >
+        <div className="ac-tinper">
           <DatePicker
             open={showDate}
             format={formatRule}
             onChange={this.onChangeDate}
+            showTime
             defaultValue={moment()}
             placeholder="选择日期"
             style={{
-              marginLeft: offsetLeft,
-              marginTop: offsetTop,
+              left: offsetLeft,
+              top: offsetTop,
+              position: 'absolute',
             }}
           />
         </div>

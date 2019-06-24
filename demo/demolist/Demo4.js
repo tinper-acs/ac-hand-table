@@ -26,6 +26,7 @@ const data = [
     checkbox: true,
     date: '2018-07-03 07:20:30',
     time: '09:20:30',
+    number: 10,
   },
   {
     id: 2,
@@ -33,12 +34,15 @@ const data = [
     level: 10,
     date: '2018-07-03 08:20:30',
     time: '09:20:30',
+    number: 10,
+
   },
   {
     id: 3,
     checkbox: true,
     date: '2018-07-03 09:20:30',
     time: '09:20:30',
+    number: 10,
   },
 ];
 
@@ -104,11 +108,15 @@ class Demo4 extends Component {
       },
       renderer: (instance, td, row, col, prop, value, cellProperties) => {
         // 插入内容
-        td.innerHTML = `嘻嘻嘻嘻  ${value}`;
+        const { number } = data[row];
+        td.innerHTML = `嘻嘻嘻嘻  ${number}`;
         return td;
       },
-
     },
+    {
+      data: 'number',
+      type: 'numeric', // 资薪
+    }
 
   ];
 

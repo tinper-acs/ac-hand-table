@@ -152,7 +152,7 @@ class AcHandTable extends React.Component {
 
 
           // 是否有回调
-          let { onChangeCell, type, refSource, cacheAutoData, refConfig, refOnChange, data: currentKey } = getArrayObjByKey(columns, name);
+          let { onChangeCell, onChange, type, refSource, cacheAutoData, refConfig, refOnChange, data: currentKey } = getArrayObjByKey(columns, name);
 
           // 添加修改标记
           if (oldValue !== newValue) {
@@ -187,10 +187,17 @@ class AcHandTable extends React.Component {
 
           _this.setState({ data }); // 更新state
 
+          // todo 方法将被弃用
           if (onChangeCell) {
             const rowData = { ...data[rowNum] };
-            onChangeCell(rowData, rowNum);
+            onChangeCell(rowData, rowNum, newValue, oldValue);
           }
+          // 表格内容改变回调
+          if (onChange) {
+            const rowData = { ...data[rowNum] };
+            onChange(newValue, oldValue, rowNum, rowData);
+          }
+
         }
       },
 

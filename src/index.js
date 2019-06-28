@@ -61,6 +61,7 @@ class AcHandTable extends React.Component {
     if (this.props.onRef) {
       this.props.onRef(this);
     }
+
     this.init();
   }
 
@@ -405,8 +406,11 @@ class AcHandTable extends React.Component {
         type: 'checkbox',
         className,
       };
+
       colHeaders.unshift(checkedHeader);
-      columns.unshift(checkboxCell);
+      if (columns[0].data !== 'checkbox_status') {
+        columns.unshift(checkboxCell);
+      }
     }
 
 

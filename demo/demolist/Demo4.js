@@ -25,7 +25,7 @@ const data = [
     id: 1,
     checkbox: true,
     date: '2018-07-03 07:20:30',
-    time: '09:20:30',
+    time: '08:20:30',
     number: 10,
   },
   {
@@ -33,7 +33,7 @@ const data = [
     checkbox: true,
     level: 10,
     date: '2018-07-03 08:20:30',
-    time: '09:20:30',
+    time: '07:20:30',
     number: 10,
 
   },
@@ -96,7 +96,6 @@ class Demo4 extends Component {
     {
       data: 'time',
       type: 'text', // 日期类型
-
       validator: (value, callback) => {
         callback(!!value);
       },
@@ -108,8 +107,10 @@ class Demo4 extends Component {
       },
       renderer: (instance, td, row, col, prop, value, cellProperties) => {
         // 插入内容
-        const { number } = data[row];
-        td.innerHTML = `嘻嘻嘻嘻  ${number}`;
+
+        const { time } = data[row];
+        td.innerHTML = `嘻嘻嘻嘻  ${time}`;
+        // td.innerHTML = value;
         return td;
       },
     },
@@ -142,7 +143,7 @@ class Demo4 extends Component {
           <AcHandTable
             id="example4" // 组件id
             onRef={ref => this.child = ref} // 设置ref属性 调用子组件方法
-            colHeaders={['多选框', 'tinper日期', '时间']} // 表格表头
+            colHeaders={['多选框', 'tinper日期', '时间','数字']} // 表格表头
             data={handData} // 表体数据
             columns={this.columns} // 列属性设置
             // colWidths={[null, 50, 100, null, 120, null]}

@@ -74,6 +74,9 @@ class Demo4 extends Component {
       data: 'date',
       type: 'text', // 日期类型
 
+      readOnlyCellClassName: 'is-readOnly',
+      readOnly: true,
+
       validator: (value, callback) => {
         callback(!!value);
       },

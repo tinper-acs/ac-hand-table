@@ -69,6 +69,7 @@ class Demo2 extends Component {
       dblClick: (rowData, rowNum, value) => {
         console.log('dblClick,rowData, rowNum, value', rowData, rowNum, value);
       },
+
     },
     {
       data: 'gender',

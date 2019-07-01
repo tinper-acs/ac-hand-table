@@ -82,6 +82,8 @@ import 'ac-hand-table/dist/index.css';
 |data|列的键,支持'date.xx'|string|-|
 |type|数据类型 `text` `numeric` `date` `time` `checkbox`  `select` `dropdown` `autocomplete` `password` `refMultipleTable` `refTreeWithInput` `refTreeTableWithInput` `refTreeTransferWithInput`|string|true|
 |readOnly|是否数据仅可读|boolean|false|
+|readOnlyCellClassName|自定义只读表格样式|string|-|
+|textTooltip|表格内容超出表格的宽出现 ...|boolean|true|
 |editor|是否数据可以编辑|boolean|true|
 |strict|是否输入到单元格的值区分大小写|boolean|false|
 |placeholder|单元格占位文字|string|-|
@@ -101,11 +103,13 @@ import 'ac-hand-table/dist/index.css';
 |refSource|参照数据回调|`func` (value, type, callback)=>{} 'type'值为`auto` `tree` `table`|-|
 |refOnChange|参照选中回调|`func` (refData, rowData, rowNum)=>{}|-|
 |refConfig|参照配置|[见下表 refConfig]()|-|
+|renderer|自定义表格渲染，目前只支持dom|(instance, td, row, col, prop, value, cellProperties)=>{}|-|
 
 ### refConfig [更多参考](http://bee.tinper.org/tinper-acs/)
 |参数|说明|类型|默认值|
 |:--|:---|:--|:--|
 |columnsKey|获取参照选中对象的值，约定数组第一个为表格回写值|array|['refname','refcode']|
+|isThreeBar|表格中是否出现三道杠icon|boolean|false|
 |columnsData|表头数据|array|-|
 |tableData|表体数据|array|-|
 |columnsData|表头数据|array|-|
@@ -160,7 +164,7 @@ import 'ac-hand-table/dist/index.css';
 ### 表格添加行
 ```js
   onInsertRowData = () => {
-    // onInsertRowData(number,source) 
+    // onInsertRowData(number,source)
     // number 插入行的位置，0 为行首，-1 为行尾
     // source 插入的行对象，
     this.child.onInsertRowData(); // 默认行首，空对象

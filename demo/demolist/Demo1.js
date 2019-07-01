@@ -10,8 +10,14 @@ import React, { Component } from 'react';
 
 
 // 引入 AcHandTable 组件
+
+// demo 工程中引入方式
 import AcHandTable from '../../src/index';
 import '../../src/index.less';
+
+// 项目中引入方式
+// import AcHandTable from 'ac-hand-table';
+// import 'ac-hand-table/dist/index.css';
 
 const data = [
   {

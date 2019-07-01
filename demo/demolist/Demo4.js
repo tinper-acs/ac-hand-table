@@ -8,13 +8,17 @@
 
 import React, { Component } from 'react';
 import DatePicker from 'tinper-bee/lib/Datepicker';
-
 import moment from 'moment';
 
-
 // 引入 AcHandTable 组件
+// demo 工程中引入方式
 import AcHandTable from '../../src/index';
 import '../../src/index.less';
+
+// 项目中引入方式
+// import AcHandTable from 'ac-hand-table';
+// import 'ac-hand-table/dist/index.css';
+
 import './index.less';
 
 const formatRule = 'YYYY-MM-DD hh:mm:ss'; // 日期格式
@@ -175,7 +179,6 @@ class Demo4 extends Component {
             }}
           />
         </div>
-
 
       </div>
 

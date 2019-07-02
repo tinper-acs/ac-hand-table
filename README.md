@@ -260,7 +260,13 @@ import 'ac-hand-table/dist/index.css';
   };
 
 ```
+### 导出模板
+```js
+onExportHeader = () => {
+  this.child.onExportHeader();
+};
 
+```
 
 #### 日期国际化
 ```js

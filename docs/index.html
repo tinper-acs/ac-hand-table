@@ -38,6 +38,7 @@
     <li class="sidebar-header-3"><a href="#获取通过鼠标选中的行">获取通过鼠标选中的行</a></li>
     <li class="sidebar-header-3"><a href="#删除通过鼠标选中的行">删除通过鼠标选中的行</a></li>
     <li class="sidebar-header-3"><a href="#导出csv">导出csv</a></li>
+    <li class="sidebar-header-3"><a href="#导出模板">导出模板</a></li>
     <li class="sidebar-header-4"><a href="#日期国际化">日期国际化</a></li>
     <li class="sidebar-header-4"><a href="#开发调试">开发调试</a></li>
 </ul>
@@ -798,6 +799,10 @@
   onDownCsv = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
     <span class="hljs-keyword">this</span>.child.onExportCSV();
   };
+</code></pre><h3 id="导出模板">导出模板</h3>
+<pre class="hljs"><code>onExportHeader = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-keyword">this</span>.child.onExportHeader();
+};
 </code></pre><h4 id="日期国际化">日期国际化</h4>
 <pre class="hljs"><code>i18n: {
       <span class="hljs-attr">previousMonth</span>: <span class="hljs-string">'Previous Month'</span>,

@@ -261,6 +261,7 @@ class Demo2 extends Component {
           rowKey="id" // 数组对象中唯一id 默认值为'id'
           csvConfig={{
             filename: '导出',
+            rowHeaders: true,
           }}
         />
 

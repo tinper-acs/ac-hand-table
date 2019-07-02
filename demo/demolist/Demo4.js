@@ -29,7 +29,6 @@ const data = [
     id: 1,
     checkbox: true,
     date: '2018-07-03 07:20:30',
-    time: '08:20:30',
     number: 10,
   },
   {
@@ -37,7 +36,6 @@ const data = [
     checkbox: true,
     level: 10,
     date: '2018-07-03 08:20:30',
-    time: '07:20:30',
     number: 10,
 
   },
@@ -45,7 +43,6 @@ const data = [
     id: 3,
     checkbox: true,
     date: '2018-07-03 09:20:30',
-    time: '09:20:30',
     number: 10,
   },
 ];
@@ -57,7 +54,6 @@ class Demo4 extends Component {
     this.state = {
       handData: data,
       showDate: false, // 日期是否展示
-      showTime: false, // 时间是否展示
       offsetTop: 0,
       offsetLeft: 0,
       rowData: {}, // 选中行数据
@@ -77,10 +73,6 @@ class Demo4 extends Component {
     {
       data: 'date',
       type: 'text', // 日期类型
-
-      readOnlyCellClassName: 'is-readOnly',
-      readOnly: true,
-
       validator: (value, callback) => {
         callback(!!value);
       },
@@ -101,34 +93,16 @@ class Demo4 extends Component {
       },
     },
     {
-      data: 'time',
-      type: 'text', // 日期类型
-      validator: (value, callback) => {
-        callback(!!value);
-      },
-      dblClick: (rowData, rowNum, value, td, event) => {
-        console.log('xxxx');
-      },
-      refConfig: {
-        isThreeBar: true, // 是否出现三道杠
-      },
-      renderer: (instance, td, row, col, prop, value, cellProperties) => {
-        // 插入内容
-
-        const { time } = data[row];
-        td.innerHTML = `嘻嘻嘻嘻  ${time}`;
-        // td.innerHTML = value;
-        return td;
-      },
-    },
-    {
       data: 'number',
       type: 'numeric', // 资薪
-    }
+      readOnlyCellClassName: 'is-readOnly',
+      readOnly: true,
+    },
 
   ];
 
 
+  // 日期转换
   onChangeDate = (dateMoment, dataString) => {
     const { rowData, rowNum, rowColKey } = this.state;
     rowData[rowColKey] = moment(dateMoment)
@@ -136,6 +110,7 @@ class Demo4 extends Component {
     this.child.onUpdateRowData(rowNum, rowData);
   };
 
+  //
 
   render() {
     const {
@@ -144,13 +119,13 @@ class Demo4 extends Component {
 
 
     return (
-      <div style={{ marginBottom: '300px' }}>
+      <div>
 
         <div>
           <AcHandTable
             id="example4" // 组件id
             onRef={ref => this.child = ref} // 设置ref属性 调用子组件方法
-            colHeaders={['多选框', 'tinper日期', '时间','数字']} // 表格表头
+            colHeaders={['多选框', 'tinper日期', '时间', '数字']} // 表格表头
             data={handData} // 表体数据
             columns={this.columns} // 列属性设置
             // colWidths={[null, 50, 100, null, 120, null]}

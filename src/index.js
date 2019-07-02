@@ -460,7 +460,7 @@ class AcHandTable extends React.Component {
 
             // 如果是参照 三道杠
             if (refConfig && refConfig.isThreeBar) {
-              const text = value ? value : '';
+              const text = value || '';
               td.innerHTML = '<div class="three-bar">≡</div>' + text;
             }
 
@@ -714,6 +714,33 @@ class AcHandTable extends React.Component {
     exportPlugin.downloadFile('csv', csvConfig);
   };
 
+
+  // 导出
+  onExportHeader = () => {
+    const { csvConfig, colHeaders, multiSelect } = this.props;
+    const { filename } = csvConfig;
+    let copyColHeaders = [...colHeaders];
+
+    if (multiSelect !== false) {
+      copyColHeaders.shift();
+    }
+
+    // BOM的方式解决EXCEL乱码问题
+    const BOM = '\uFEFF';
+    let csvString = BOM + copyColHeaders.join(',');
+    // 创建a标签
+    const eleLink = document.createElement('a');
+    eleLink.href = 'data:attachment/csv,' + encodeURI(csvString);
+    eleLink.target = '_blank';
+    eleLink.download = `${filename}.csv`;
+    document.body.appendChild(eleLink);
+    eleLink.click();
+    // 然后移除
+    document.body.removeChild(eleLink);
+
+  };
+
+
   // auto 值处理
   autoDataConversion = (data, key = 'name') => {
     this.setState({ autoCache: data });
@@ -727,7 +754,7 @@ class AcHandTable extends React.Component {
 
     return (
       <div>
-        <div id={id}/>
+        <div id={id} />
         {/* 表格 */}
         <RefMultipleTable
           {...refConfig}

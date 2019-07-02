@@ -1,6 +1,6 @@
 {
   "name": "ac-hand-table",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -83,6 +83,7 @@
     "webpack-merge": "^4.1.4",
     "bee-button": "^2.0.11",
     "bee-form": "^2.0.11",
+    "ac-excel-reader": "latest",
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
@@ -91,7 +92,6 @@
     "prop-types": "^15.6.0"
   },
   "dependencies": {
-    "bee-timepicker": "^2.0.4",
     "handsontable": "7.0.2",
     "ref-combobox": "^2.0.4",
     "ref-multiple-table": "^2.0.4",

@@ -393,6 +393,18 @@
 <td style="text-align:left">false</td>
 </tr>
 <tr>
+<td style="text-align:left">readOnlyCellClassName</td>
+<td style="text-align:left">自定义只读表格样式</td>
+<td style="text-align:left">string</td>
+<td style="text-align:left">-</td>
+</tr>
+<tr>
+<td style="text-align:left">textTooltip</td>
+<td style="text-align:left">表格内容超出表格的宽出现 ...</td>
+<td style="text-align:left">boolean</td>
+<td style="text-align:left">true</td>
+</tr>
+<tr>
 <td style="text-align:left">editor</td>
 <td style="text-align:left">是否数据可以编辑</td>
 <td style="text-align:left">boolean</td>
@@ -506,6 +518,12 @@
 <td style="text-align:left"><a href="">见下表 refConfig</a></td>
 <td style="text-align:left">-</td>
 </tr>
+<tr>
+<td style="text-align:left">renderer</td>
+<td style="text-align:left">自定义表格渲染，目前只支持dom</td>
+<td style="text-align:left">(instance, td, row, col, prop, value, cellProperties)=&gt;{}</td>
+<td style="text-align:left">-</td>
+</tr>
 </tbody>
 </table>
 <h3 id="refconfig-[更多参考](http://bee.tinper.org/tinper-acs/)">refConfig <a href="http://bee.tinper.org/tinper-acs/">更多参考</a></h3>
@@ -524,6 +542,12 @@
 <td style="text-align:left">获取参照选中对象的值，约定数组第一个为表格回写值</td>
 <td style="text-align:left">array</td>
 <td style="text-align:left">[&#39;refname&#39;,&#39;refcode&#39;]</td>
+</tr>
+<tr>
+<td style="text-align:left">isThreeBar</td>
+<td style="text-align:left">表格中是否出现三道杠icon</td>
+<td style="text-align:left">boolean</td>
+<td style="text-align:left">false</td>
 </tr>
 <tr>
 <td style="text-align:left">columnsData</td>
@@ -719,7 +743,7 @@
     });
   };</code></pre><h3 id="表格添加行">表格添加行</h3>
 <pre class="hljs"><code>  onInsertRowData = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-    <span class="hljs-comment">// onInsertRowData(number,source) </span>
+    <span class="hljs-comment">// onInsertRowData(number,source)</span>
     <span class="hljs-comment">// number 插入行的位置，0 为行首，-1 为行尾</span>
     <span class="hljs-comment">// source 插入的行对象，</span>
     <span class="hljs-keyword">this</span>.child.onInsertRowData(); <span class="hljs-comment">// 默认行首，空对象</span>

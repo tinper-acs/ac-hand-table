@@ -369,7 +369,7 @@ class AcHandTable extends React.Component {
     td.appendChild(createDiv);
 
     // 添加样式
-    const styles = rowStyle && rowStyle(row + 1, col, prop);
+    const styles = rowStyle && rowStyle(row, col, prop);
     if (styles) {
       for (const style in styles) { // 修改行样式
         td.style[style] = styles[style];
@@ -387,6 +387,7 @@ class AcHandTable extends React.Component {
       multiSelect = true, // 行多选框
       dropdownMenu = true, // 表头下拉
       csvConfig = {},
+      headerClassName,
     } = this.props;
 
     // 1.处理下拉值 将[{key:'',value:''}] 转换成 [""],
@@ -411,6 +412,8 @@ class AcHandTable extends React.Component {
       if (columns[0].data !== 'checkbox_status') {
         columns.unshift(checkboxCell);
       }
+
+
     }
 
 
@@ -465,7 +468,7 @@ class AcHandTable extends React.Component {
             }
 
             // 添加自定义行样式
-            const styles = rowStyle ? rowStyle(row + 1, col, prop) : '';
+            const styles = rowStyle ? rowStyle(row, col, prop) : '';
             if (styles) {
               // 修改行样式
               for (const style in styles) {
@@ -754,7 +757,7 @@ class AcHandTable extends React.Component {
 
     return (
       <div>
-        <div id={id} />
+        <div id={id}/>
         {/* 表格 */}
         <RefMultipleTable
           {...refConfig}

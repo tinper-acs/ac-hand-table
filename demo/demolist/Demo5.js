@@ -87,7 +87,7 @@ class Demo5 extends Component {
         {
           value: '女',
           key: '0',
-        }
+        },
       ],
     },
     {
@@ -180,6 +180,24 @@ class Demo5 extends Component {
             filename: '导出',
             columnHeaders: true,
           }}
+
+          cells={(row, column) => { // 禁止修改
+            const cellProperties = {};
+            if (row === 1) {
+              cellProperties.editor = false;
+              cellProperties.readOnly = true;
+            }
+            return cellProperties;
+          }}
+
+          rowStyle={(rowIndex) => { // 禁止修改样式
+            let bgColor = '#fff';
+            if (rowIndex === 1) {
+              bgColor = '#DFE1E6';
+            }
+            return { 'background-color': bgColor };
+          }}
+
         />
 
       </div>

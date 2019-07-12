@@ -145,7 +145,7 @@ class AcHandTable extends React.Component {
       afterChange(changes, source) { // 表格被修改后执行
 
 
-        if (source === 'edit') { // 表格被修改
+        if (source === 'edit' || source === 'CopyPaste.paste') { // 表格被修改
           const [rowNum, name, oldValue, newValue] = changes[0];
 
           const { data } = _this.state;

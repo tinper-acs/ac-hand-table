@@ -103,7 +103,8 @@ import 'ac-hand-table/dist/index.css';
 |refSource|参照数据回调|`func` (value, type, callback)=>{} 'type'值为`auto` `tree` `table`|-|
 |refOnChange|参照选中回调|`func` (refData, rowData, rowNum)=>{}|-|
 |refConfig|参照配置|[见下表 refConfig]()|-|
-|renderer|自定义表格渲染，目前只支持dom|(instance, td, row, col, prop, value, cellProperties)=>{}|-|
+|customValue|自定义表格内容渲染,通常用于表格联动|(rowData)=>{}|-|
+|renderer|自定义表格渲染，支持dom|(instance, td, row, col, prop, value, cellProperties)=>{}|-|
 
 ### refConfig [更多参考](http://bee.tinper.org/tinper-acs/)
 |参数|说明|类型|默认值|

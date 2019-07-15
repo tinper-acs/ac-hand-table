@@ -129,13 +129,12 @@ class Demo4 extends Component {
             colHeaders={['多选框', 'tinper日期', '时间']} // 表格表头
             data={handData} // 表体数据
             columns={this.columns} // 列属性设置
-            // colWidths={[null, 50, 100, null, 120, null]}
+            colWidths={[null, 100, 200, 200]}
             manualRowMove // 行移动
             fillHandle={{
               autoInsertRow: false,
               direction: 'vertical',
             }}
-            currentHeaderClassNam='headClass'
           />
         </div>
 

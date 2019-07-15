@@ -112,15 +112,16 @@ class Demo2 extends Component {
       // },
     },
     {
-      data: 'custom',
+      data: 'custom1',
       renderer: (instance, td, row, col, prop, value, cellProperties) => {
         // 插入内容
-        td.innerHTML = '嘻嘻嘻嘻  ' + value;
+        td.innerHTML = '自定义';
         return td;
       },
       dblClick: (rowData, rowNum, value) => {
         console.log('dblClick,rowData, rowNum, value', rowData, rowNum, value);
       },
+      // readOnly: true,
     }
 
   ];

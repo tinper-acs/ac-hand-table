@@ -84,7 +84,7 @@ class AcHandTable extends React.Component {
     // 对 this.props 处理，添加默认值、checkbox等
     const _this = this;
     const tempObj = this.dealData();
-    let { id, colHeaders, dropdownMenu } = tempObj;
+    let { id, colHeaders } = tempObj;
 
     // 将 信息交有 handsontable 组件处理
     const container = document.getElementById(id);
@@ -146,7 +146,7 @@ class AcHandTable extends React.Component {
       afterChange(changes, source) { // 表格被修改后执行
 
 
-        if (source === 'edit' || source === 'CopyPaste.paste') { // 表格被修改
+        if (source === 'edit' || source === 'CopyPaste.paste' || source === 'Autofill.fill') { // 表格被修改
           const [rowNum, name, oldValue, newValue] = changes[0];
 
           const { data } = _this.state;
@@ -200,6 +200,14 @@ class AcHandTable extends React.Component {
             onChange(newValue, oldValue, rowNum, rowData);
           }
 
+          // 是否自定义 col 显示值
+          for (const columnItem of columns) {
+            const { customValue, data: colName } = columnItem;
+            if (customValue) {
+              data[rowNum][colName] = customValue(data[rowNum]);
+              _this.onUpdateRowData(rowNum, data[rowNum]);
+            }
+          }
         }
       },
 
@@ -260,6 +268,20 @@ class AcHandTable extends React.Component {
           data[i].update_status = true;
         }
         _this.setState({ data });
+
+
+        // // 是否自定义 col 显示值
+        for (const columnItem of columns) {
+          const { customValue, data: colName } = columnItem;
+          if (customValue) {
+            for (let i = row; i <= endRow; i++) {
+              data[i][currentKey] = rowDataCache[currentKey]; // 修改默认 auto值
+              data[i][colName] = customValue(data[i]); //  计算自定义规则
+              _this.onUpdateRowData(i, data[i]); // 更新
+            }
+          }
+        }
+
       },
 
       // afterCreateRow: function (index, amount) {  // 添加行后执行
@@ -388,13 +410,23 @@ class AcHandTable extends React.Component {
       multiSelect = true, // 行多选框
       dropdownMenu = true, // 表头下拉
       csvConfig = {},
-      headerClassName,
     } = this.props;
 
     // 1.处理下拉值 将[{key:'',value:''}] 转换成 [""],
     // 2.处理表格参照,
 
     let { data, columns } = customRenderData(this.state.data, this.props.columns, this.coverRenderer);
+    // 是否自定义 col 显示值
+    for (const columnItem of columns) {
+      const { customValue, data: colName } = columnItem;
+      if (customValue) {
+        for (const [index, ele] of data.entries()) {
+          data[index][colName] = customValue(data[index]);
+        }
+      }
+
+    }
+
 
     // 添加 多选框
     if (multiSelect && colHeaders && Array.isArray(colHeaders) && colHeaders.length > 0) {
@@ -756,7 +788,7 @@ class AcHandTable extends React.Component {
     return (
       <div>
         {/* 多选通过 css 去掉表头下拉 */}
-        <div id={id} className={dropdownMenu !== false ? 'hand-table-drop-down-menu' : ''} />
+        <div id={id} className={dropdownMenu !== false ? 'hand-table-drop-down-menu' : ''}/>
         {/* 表格 */}
         <RefMultipleTable
           {...refConfig}

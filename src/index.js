@@ -84,11 +84,12 @@ class AcHandTable extends React.Component {
     // 对 this.props 处理，添加默认值、checkbox等
     const _this = this;
     const tempObj = this.dealData();
-    let { id, colHeaders } = tempObj;
+    let { id, colHeaders, dropdownMenu } = tempObj;
 
     // 将 信息交有 handsontable 组件处理
     const container = document.getElementById(id);
     this.onHandsonTable(container, tempObj);
+
 
     // 添加 mousedown
     Handsontable.dom.addEvent(container, 'mousedown', (event) => {
@@ -412,7 +413,6 @@ class AcHandTable extends React.Component {
       if (columns[0].data !== 'checkbox_status') {
         columns.unshift(checkboxCell);
       }
-
 
     }
 
@@ -751,13 +751,12 @@ class AcHandTable extends React.Component {
   };
 
   render() {
-    const { id } = this.props;
+    const { id, dropdownMenu } = this.props;
     const { refConfig } = this.state;
-
-
     return (
       <div>
-        <div id={id}/>
+        {/* 多选通过 css 去掉表头下拉 */}
+        <div id={id} className={dropdownMenu !== false ? 'hand-table-drop-down-menu' : ''} />
         {/* 表格 */}
         <RefMultipleTable
           {...refConfig}

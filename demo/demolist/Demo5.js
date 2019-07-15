@@ -89,6 +89,7 @@ class Demo5 extends Component {
           key: '0',
         },
       ],
+      dropdownMenu:true
     },
     {
       data: 'time',
@@ -171,6 +172,7 @@ class Demo5 extends Component {
           data={handData} // 表体数据
           columns={this.columns} // 列属性设置
           colWidths={[50, 100, 100, 120, null]}
+          columnHeaderHeight={30}
           manualRowMove // 行移动
           fillHandle={{
             autoInsertRow: false,
@@ -197,6 +199,7 @@ class Demo5 extends Component {
             }
             return { 'background-color': bgColor };
           }}
+
 
         />
 

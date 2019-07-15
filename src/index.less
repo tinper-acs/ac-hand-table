@@ -1,9 +1,10 @@
 
 :global {
-  .menuCheckbox {
-    padding-right: 22px !important;
-    //background-color: #108ee9 !important;
+  // 多选框
+  .htCheckboxRendererInput{
+    margin: 0px !important;
   }
+
   .ac-hand-tooltip {
     position: fixed;
     background-color: #FFF;
@@ -24,6 +25,31 @@
     width: 16px;
     text-align: center;
   }
+
+  .hand-table-drop-down-menu{
+    .ht_clone_top {
+      tr:first-child {
+        th:nth-child(2) { //匹配第几个元素
+          .changeType{
+            display: none;
+          }
+        }
+        th{
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+
+  // 行表头垂直居中 自己定义高时
+  .ht_clone_top {
+    tr:first-child {
+      th{
+        vertical-align: middle;
+      }
+    }
+  }
+
 
 }
 

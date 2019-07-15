@@ -50,7 +50,7 @@ import 'ac-hand-table/dist/index.css';
 |stretchH|表宽度不等于所有列宽的计算总和时，列宽设置|'none'或 'all' 或'last'|'none'|
 |rowStyle|行设置样式|func|-|
 |activeHeaderClassName|选中列标题样式|strig|-|
-|activeHeaderClassName|选中列标题样式|strig|-|
+|columnHeaderHeight|列表头高|number|25|
 |fillHandle|自动填充设置|`boolean` 或 `string`('vertical' or 'horizontal') 或者 `object`[见下表 fillHandle]()|'vertical'|
 
 

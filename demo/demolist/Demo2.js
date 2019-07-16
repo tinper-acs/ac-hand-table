@@ -43,6 +43,22 @@ const data = [
     money: 10000,
     custom: '自定义',
   },
+  {
+    id: 3,
+    name: '王五',
+    gender: null,
+    date: '2018-07-02',
+    money: 10000,
+    custom: '自定义',
+  },
+  {
+    id: 4,
+    name: '王五',
+    gender: null,
+    date: '2018-07-02',
+    money: 10000,
+    custom: '自定义',
+  },
 ];
 
 
@@ -91,7 +107,7 @@ class Demo2 extends Component {
         {
           value: '女',
           key: 0,
-        }
+        },
       ],
     },
     {
@@ -122,7 +138,7 @@ class Demo2 extends Component {
         console.log('dblClick,rowData, rowNum, value', rowData, rowNum, value);
       },
       // readOnly: true,
-    }
+    },
 
   ];
 
@@ -264,6 +280,8 @@ class Demo2 extends Component {
             filename: '导出',
             rowHeaders: true,
           }}
+          mergeCells // 右键菜单是否开启单元格合并
+
         />
 
       </div>

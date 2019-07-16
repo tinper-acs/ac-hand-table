@@ -146,14 +146,16 @@ class Demo extends Component {
             autoInsertRow: false,
             direction: 'vertical',
           }}
-          fixedRowsTop={2}
-          fixedColumnsLeft={2}
+          fixedRowsTop={2} // 表格顶部固定
+          fixedColumnsLeft={2}  // 表格左侧固定
           fixedShadow // 是否启用固定样式
+
         />
 
       </div>
 
-    );
+    )
+      ;
   }
 }
 

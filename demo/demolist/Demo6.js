@@ -1,8 +1,8 @@
 /* eslint-disable no-return-assign */
 /**
  *
- * @title 多表头
- * @description 多表头拖拽
+ * @title 多表头合并单元
+ * @description 多表头拖拽、合并单元格，设置单元格样式
  *
  */
 
@@ -32,6 +32,7 @@ const data = [
     total: 190,
     date: '2018-07-02',
     time: '09:20:30',
+    desc: '合并备注',
   },
   {
     id: 2,
@@ -44,6 +45,7 @@ const data = [
     total: 190,
     date: '2018-07-02',
     time: '09:20:30',
+    desc: '合并备注',
   },
   {
     id: 3,
@@ -56,6 +58,7 @@ const data = [
     total: 190,
     date: '2018-07-02',
     time: '09:20:30',
+    desc: '合并备注',
   },
   {
     id: 4,
@@ -68,6 +71,7 @@ const data = [
     total: 190,
     date: '2018-07-02 09:20:30',
     time: '09:20:30',
+    desc: '合并备注',
   },
 ];
 
@@ -123,6 +127,9 @@ class Demo6 extends Component {
         callback(true);
       },
     },
+    {
+      data: 'desc',
+    },
   ];
 
 
@@ -136,6 +143,12 @@ class Demo6 extends Component {
     this.child.onDelRowCheck();
   };
 
+  // 获取被格式化的数据
+  getFormatData = () => {
+    const formatData = this.child.getFormatData();
+    console.log('formatData', formatData);
+  };
+
   render() {
     const { handData } = this.state;
 
@@ -145,16 +158,17 @@ class Demo6 extends Component {
         <div style={{ marginBottom: '15px' }}>
           <Button colors="primary" onClick={this.onInsertRowData} size="sm"> 增行 </Button>
           <Button colors="danger" onClick={this.onDelRowCheck} size="sm">删除</Button>
+          <Button colors="primary" onClick={this.getFormatData} size="sm">格式化数据 </Button>
         </div>
 
 
         <AcHandTable
           id="example6" // 组件id
           onRef={ref => this.child = ref} // 设置ref属性 调用子组件方法
-          colHeaders={['姓', '名', '单价', '数量', '合计', '日期', '时间']} // 表格表头
+          colHeaders={['姓', '名', '单价', '数量', '合计', '日期', '时间', '备注']} // 表格表头
           data={handData} // 表体数据
           columns={this.columns} // 列属性设置
-          colWidths={[null, 50, 100, 100, 120, 100, 100, null]}
+          colWidths={[null, 50, 100, 100, 120, 100, 100, 100, null]}
           manualRowMove // 行移动
           fillHandle={{
             autoInsertRow: false,
@@ -173,11 +187,29 @@ class Demo6 extends Component {
               },
               {
                 label: '消费记录',
-                colspan: 2,
+                colspan: 3,
               },
             ],
           ]}
           contextMenu={false}
+
+          mergeCells={[ // 合并单元格
+            {
+              row: 0, // 合并行开始
+              rowspan: 4, // 合并行数量
+              col: 8, //  合并列开始
+              colspan: 1, // 合并列数量
+            },
+          ]}
+
+          cell={[ // 设置表格样式
+            {
+              row: 0, // 行号
+              col: 8, //  列号
+              className: 'htMiddle htCenter', // 样式名
+            },
+
+          ]}
 
         />
 

@@ -76,6 +76,7 @@ import 'ac-hand-table/dist/index.css';
 |alignment|	对齐操作|-|
 |cut|剪切操作|copyPaste打开|
 |copy|复制操作|copyPaste打开|
+|merge_cells|合并单元格|-|
 |freeze_column|锁定列操作|	manualColumnFreeze已开启|
 |unfreeze_column|解锁列操作|	manualColumnFreeze已开启|
 |borders|自定义边框操作|	customBorders已开启|

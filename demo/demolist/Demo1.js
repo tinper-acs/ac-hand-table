@@ -13,7 +13,7 @@ import React, { Component } from 'react';
 
 // demo 工程中引入方式
 import AcHandTable from '../../src/index';
-import '../../src/index.less';
+// import '../../src/index.less';
 
 // 项目中引入方式
 // import AcHandTable from 'ac-hand-table';
@@ -146,7 +146,9 @@ class Demo extends Component {
             autoInsertRow: false,
             direction: 'vertical',
           }}
-          // headerTooltips={true}
+          fixedRowsTop={2}
+          fixedColumnsLeft={2}
+          fixedShadow // 是否启用固定样式
         />
 
       </div>

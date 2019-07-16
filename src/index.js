@@ -803,12 +803,19 @@ class AcHandTable extends React.Component {
   };
 
   render() {
-    const { id, dropdownMenu } = this.props;
+    const { id, dropdownMenu, fixedShadow } = this.props;
     const { refConfig } = this.state;
+
+    let tableClass = dropdownMenu !== false ? 'hand-table-drop-down-menu' : '';
+    if (fixedShadow) { // 固定阴影
+      tableClass += ' fixedShadow';
+    }
+
+
     return (
       <div>
         {/* 多选通过 css 去掉表头下拉 */}
-        <div id={id} className={dropdownMenu !== false ? 'hand-table-drop-down-menu' : ''}/>
+        <div id={id} className={tableClass}/>
         {/* 表格 */}
         <RefMultipleTable
           {...refConfig}

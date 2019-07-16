@@ -51,6 +51,10 @@ import 'ac-hand-table/dist/index.css';
 |rowStyle|行设置样式|func|-|
 |activeHeaderClassName|选中列标题样式|strig|-|
 |columnHeaderHeight|列表头高|number|25|
+|fixedShadow|是否固定表格阴影|boolean|false|
+|fixedColumnsLeft|固定表格列|number|-|
+|fixedRowsTop|是否固定表格顶部|number|-|
+|fixedRowsBottom|是否固定表格底部|number|-|
 |nestedHeaders|多表头|array `[['a','b']]`或者`[['a',{label:'b',colspan:2}]]` |-|
 |fillHandle|自动填充设置|`boolean` 或 `string`('vertical' or 'horizontal') 或者 `object`[见下表 fillHandle]()|'vertical'|
 

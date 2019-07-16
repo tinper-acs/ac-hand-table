@@ -1,7 +1,7 @@
 
 :global {
   // 多选框
-  .htCheckboxRendererInput{
+  .htCheckboxRendererInput {
     margin: 0px !important;
   }
 
@@ -26,15 +26,15 @@
     text-align: center;
   }
 
-  .hand-table-drop-down-menu{
-    .ht_clone_top {
+  .hand-table-drop-down-menu {
+    .ht_clone_top,.ht_clone_top_left_corner {
       tr:last-child {
         th:nth-child(2) { //匹配第几个元素
-          .changeType{
+          .changeType {
             display: none;
           }
         }
-        th{
+        th {
           vertical-align: middle;
         }
       }
@@ -44,12 +44,23 @@
   // 行表头垂直居中 自己定义高时
   .ht_clone_top {
     tr:first-child {
-      th{
+      th {
         vertical-align: middle;
       }
     }
   }
 
+  .fixedShadow { // 固定样式
+    .ht_clone_left,
+    .ht_clone_top,
+    .ht_clone_bottom,
+    .ht_clone_right,
+    .ht_clone_top_left_corner {
+      .htCore {
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) !important;
+      }
+    }
+  }
 
 }
 

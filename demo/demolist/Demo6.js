@@ -178,6 +178,9 @@ class Demo6 extends Component {
             ],
           ]}
 
+          manualColumnFreeze={true}
+          fixedShadow={true}
+
         />
 
       </div>

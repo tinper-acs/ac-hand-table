@@ -194,7 +194,6 @@ class AcHandTable extends React.Component {
             }
           }
 
-          _this.setState({ data }); // 更新state
 
           // todo 方法将被弃用
           if (onChangeCell) {
@@ -215,6 +214,9 @@ class AcHandTable extends React.Component {
               _this.onUpdateRowData(rowNum, data[rowNum]);
             }
           }
+
+          _this.setState({ data }); // 更新state
+
         }
       },
 
@@ -349,6 +351,17 @@ class AcHandTable extends React.Component {
           createDiv.setAttribute('class', 'ac-hand-tooltip');
           td.appendChild(createDiv);
         }
+      },
+
+
+      // 粘贴后操作
+      afterPaste(values, coords) {
+        const { startRow, endRow } = coords[0];
+        let { data } = _this.state;
+        for (let i = startRow; i <= endRow; i++) {
+          data[i].update_status = true;
+        }
+        _this.setState({ data }); // 更新state
       },
 
 

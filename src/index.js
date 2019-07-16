@@ -84,7 +84,7 @@ class AcHandTable extends React.Component {
     // 对 this.props 处理，添加默认值、checkbox等
     const _this = this;
     const tempObj = this.dealData();
-    let { id, colHeaders } = tempObj;
+    let { id, colHeaders, nestedHeaders } = tempObj;
 
     // 将 信息交有 handsontable 组件处理
     const container = document.getElementById(id);
@@ -103,6 +103,7 @@ class AcHandTable extends React.Component {
       // 多选操作
       if (event.target.nodeName === 'INPUT' && event.target.className === 'multiSelectChecker') {
         let checked = !event.target.checked;
+        event.target.checked = checked;
         event.stopPropagation();
         if (checked) {
           colHeaders[0] = `<input type='checkbox' class='multiSelectChecker' checked />`;
@@ -111,6 +112,12 @@ class AcHandTable extends React.Component {
           colHeaders[0] = `<input type='checkbox' class='multiSelectChecker' />`;
           this.state.data.map(item => item.checkbox_status = false);
         }
+        // 更新多表头设置
+        if (nestedHeaders) {
+          nestedHeaders[nestedHeaders.length - 1] = colHeaders;
+          this.hot.updateSettings({ nestedHeaders });
+        }
+
         this.hot.render();
       }
     });
@@ -344,6 +351,7 @@ class AcHandTable extends React.Component {
         }
       },
 
+
     });
   };
 
@@ -406,9 +414,11 @@ class AcHandTable extends React.Component {
   dealData = () => {
 
     let {
-      colHeaders, rowStyle,
+      colHeaders,
+      rowStyle,
       multiSelect = true, // 行多选框
       dropdownMenu = true, // 表头下拉
+      nestedHeaders, // 多表头
       csvConfig = {},
     } = this.props;
 
@@ -430,6 +440,8 @@ class AcHandTable extends React.Component {
 
     // 添加 多选框
     if (multiSelect && colHeaders && Array.isArray(colHeaders) && colHeaders.length > 0) {
+
+
       const checkedHeader = `<input type='checkbox' class='multiSelectChecker' />`;
       let className = 'htCenter htMiddle ';
       if (dropdownMenu) {
@@ -446,6 +458,13 @@ class AcHandTable extends React.Component {
         columns.unshift(checkboxCell);
       }
 
+      // 多表头处理
+      if (nestedHeaders) {
+        for (const index in nestedHeaders) {
+          nestedHeaders[index].unshift('');
+        }
+        nestedHeaders.push(colHeaders);
+      }
     }
 
 
@@ -550,6 +569,7 @@ class AcHandTable extends React.Component {
 
       columns,
       data,
+      nestedHeaders,
 
       csvConfig: { ...csvDefault, ...csvConfig }, // 导出csv 配置
 

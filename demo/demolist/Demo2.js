@@ -259,7 +259,7 @@ class Demo2 extends Component {
           <Button colors="primary" onClick={this.getFormatData} size="sm">格式化数据 </Button>
           <Button colors="primary" onClick={this.onDownCsv} size="sm">导出csv </Button>
 
-          <Button colors="primary" onClick={this.getSelectData} size="sm">获取选中行数据</Button>
+          <Button colors="primary" onClick={this.getSelectData} size="sm">逐行选中数据</Button>
           <Button colors="primary" onClick={this.onDelRowSelect} size="sm">删除选中行数据</Button>
 
 
@@ -281,6 +281,7 @@ class Demo2 extends Component {
             rowHeaders: true,
           }}
           mergeCells // 右键菜单是否开启单元格合并
+          multiSelect={false} // 关闭多选框
 
         />
 

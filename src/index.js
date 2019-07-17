@@ -49,6 +49,7 @@ class AcHandTable extends React.Component {
     currentRefType: '', // 获取当前参照类型
 
     selectRowDataNum: [], // 选中行数据下标 select
+    eventCode: '', // 当前事件code
 
 
   };
@@ -300,22 +301,21 @@ class AcHandTable extends React.Component {
       //     _this.setState({data});
       // },
 
-      beforeKeyDown(event) {
-        // if (e.keyCode === 8 || e.keyCode == 46)
-        if (event.code.toLowerCase() === 'metaleft') { // 禁止表格行选中使用 ctr 多选
-          event.stopImmediatePropagation();
-        }
-
-      },
 
       // 选中行
-      afterSelection(startRow, startCol, endRow, endCol) {
-        const { columns } = _this.props;
-        if (columns && (columns.length - 1 === endCol) && startCol === 0) { // 只对选中整行处理
-          const selectRowDataNum = getBetweenNum(startRow, endRow);
-          _this.setState({ selectRowDataNum });
+      afterSelection(startRow, startCol, endRow, endCol, preventScrolling, selectionLayerLevel) {
+
+        let { selectRowDataNum } = _this.state;
+        const selectNum = getBetweenNum(startRow, endRow);
+
+        if (selectionLayerLevel) { // 是否ctr
+          selectRowDataNum.push(...selectNum);
+        } else {
+          selectRowDataNum = selectNum;
         }
+        _this.setState({ selectRowDataNum });
       },
+
 
       // todo 页面render 依旧保留上一次的数据
       beforeRemoveRow(index, amount, physicalRows, source) {
@@ -675,21 +675,21 @@ class AcHandTable extends React.Component {
     this.hot.alter('remove_row', result);
   };
 
+
   // 删除选中行 selected
   onDelRowSelect = () => {
     const { selectRowDataNum } = this.state;
-    const result = selectRowDataNum.map(item => [item, item + 1]);
-    this.hot.alter('remove_row', result);
+    const result = selectRowDataNum.map(item => [item, 1]);
+    this.hot.alter('remove_row', [...result]);
     return this.getSelectData();
   };
 
 
-  // 获取选中行数据
+  // 获取选中行数据 通过多选框
   getSelectData = () => {
 
     const { selectRowDataNum, data } = this.state;
     const { columns } = this.props;
-
     const selectRowData = selectRowDataNum.map(item => data[item]);
     const selectResult = changeSelectValue2Key(selectRowData, columns); // 回写下拉框值
 

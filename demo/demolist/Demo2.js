@@ -281,7 +281,7 @@ class Demo2 extends Component {
             rowHeaders: true,
           }}
           mergeCells // 右键菜单是否开启单元格合并
-          multiSelect={false} // 关闭多选框
+          // multiSelect={false} // 关闭多选框
 
         />
 

@@ -79,7 +79,6 @@ class Demo extends Component {
     };
   }
 
-
   columns = [
     {
       data: 'name.firstName',
@@ -142,7 +141,6 @@ class Demo extends Component {
           colWidths={[null, 50, 100, 100, 120, 100, 100, null]}
           manualRowMove // 行移动
           fillHandle={{
-            // enable plugin in vertical direction and with autoInsertRow as false
             autoInsertRow: false,
             direction: 'vertical',
           }}

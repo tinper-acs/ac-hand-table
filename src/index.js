@@ -176,7 +176,7 @@ class AcHandTable extends React.Component {
 
           // 下拉自动补全
           if (type === 'autocomplete' && refSource) {
-            const { columnsKey = [] } = refConfig;
+            const { columnsKey = [], rowKey } = refConfig;
 
             let refValue = 'refname';
             if (columnsKey.length > 0) {
@@ -185,10 +185,20 @@ class AcHandTable extends React.Component {
 
             const currentAutoRow = arrayFindObj(cacheAutoData, refValue, newValue) || {};
             data[rowNum][currentKey] = newValue;
-            for (let i = 1; i < columnsKey.length; i++) {
-              const key = columnsKey[i];
-              data[rowNum][currentKey + '_' + key] = currentAutoRow[key];
+
+            if (rowKey && rowKey) { // 自定义列名
+              for (let i = 1; i < rowKey.length; i++) {
+                const key = columnsKey[i];
+                data[rowNum][rowKey[i]] = currentAutoRow[key];
+              }
+            } else {
+              for (let i = 1; i < columnsKey.length; i++) {
+                const key = columnsKey[i];
+                data[rowNum][currentKey + '_' + key] = currentAutoRow[key];
+              }
             }
+
+
             // 下拉回调change
             if (refOnChange) {
               refOnChange(currentAutoRow, data[rowNum], rowNum);
@@ -259,12 +269,13 @@ class AcHandTable extends React.Component {
           const defaultKey = ['refname', 'refpk'];
           let keyArray = (columnsKey && columnsKey.length > 1) ? columnsKey : (rowKey && rowKey.length > 0 ? rowKey : defaultKey);
 
+          console.log("keyArray",keyArray);
           for (let i = row; i <= endRow; i++) {
             // 设置展示值
             data[i][currentKey] = rowDataCache[currentKey];
             // 返回参照多余字段用_链接
             for (let j = 1; j < keyArray.length; j++) {
-              let key = currentKey + '_' + keyArray[j];
+              let key = currentKey + '_' + keyArray[j]; // 系统默认key
               if (rowKey && Array.isArray(rowKey) && rowKey.length > 1) { // 是否自定义隐藏例的 key
                 key = rowKey[j];
               }

@@ -98,6 +98,7 @@ class Demo4 extends Component {
       readOnlyCellClassName: 'is-readOnly',
       readOnly: true,
 
+
     },
 
   ];

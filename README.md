@@ -116,6 +116,7 @@ import 'ac-hand-table/dist/index.css';
 |参数|说明|类型|默认值|
 |:--|:---|:--|:--|
 |columnsKey|获取参照选中对象的值，约定数组第一个为表格回写值|array|['refname','refcode']|
+|rowKey|拖拽修改值关联key|array|-|
 |isThreeBar|表格中是否出现三道杠icon|boolean|false|
 |columnsData|表头数据|array|-|
 |tableData|表体数据|array|-|

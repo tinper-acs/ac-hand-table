@@ -112,7 +112,7 @@ import 'ac-hand-table/dist/index.css';
 |customValue|自定义表格内容渲染,通常用于表格联动|(rowData)=>{}|-|
 |renderer|自定义表格渲染，支持dom|(instance, td, row, col, prop, value, cellProperties)=>{}|-|
 
-### refConfig [更多参考](http://bee.tinper.org/tinper-acs/)
+### refConfig [更多参考](http://bee.tinpfer.org/tinper-acs/)
 |参数|说明|类型|默认值|
 |:--|:---|:--|:--|
 |columnsKey|获取参照选中对象的值，约定数组第一个为表格回写值|array|['refname','refcode']|

@@ -126,24 +126,24 @@ class Demo2 extends Component {
     {
       data: 'money',
       type: 'numeric', // 资薪
-      // allowInvalid: false,
-      // numericFormat: {
-      //   pattern: '$0,0.00',
-      //   culture: 'en-US' // this is the default culture, set up for USD
-      // },
-    },
-    {
-      data: 'custom1',
-      renderer: (instance, td, row, col, prop, value, cellProperties) => {
-        // 插入内容
-        td.innerHTML = '自定义';
-        return td;
+      allowInvalid: false,
+      numericFormat: {
+        pattern: '$0,0.00',
+        culture: 'en-US' // this is the default culture, set up for USD
       },
-      dblClick: (rowData, rowNum, value) => {
-        console.log('dblClick,rowData, rowNum, value', rowData, rowNum, value);
-      },
-      // readOnly: true,
     },
+    // {
+    //   data: 'custom1',
+    //   renderer: (instance, td, row, col, prop, value, cellProperties) => {
+    //     // 插入内容
+    //     td.innerHTML = '自定义';
+    //     return td;
+    //   },
+    //   dblClick: (rowData, rowNum, value) => {
+    //     console.log('dblClick,rowData, rowNum, value', rowData, rowNum, value);
+    //   },
+    //   // readOnly: true,
+    // },
 
   ];
 
@@ -270,7 +270,8 @@ class Demo2 extends Component {
 
         </div>
 
-        <div className="min-table">
+
+
           <AcHandTable
             id="example2" // 组件id
             onRef={(ref) => { // 设置ref属性 调用子组件方法
@@ -282,15 +283,17 @@ class Demo2 extends Component {
             // 设置行样式
             rowStyle={this.setStyle}
             rowKey="id" // 数组对象中唯一id 默认值为'id'
+            colWidths={100}
             csvConfig={{
               filename: '导出',
               rowHeaders: true,
             }}
-            mergeCells // 右键菜单是否开启单元格合并
+            // mergeCells // 右键菜单是否开启单元格合并
             // multiSelect={false} // 关闭多选框
-
+            width="100%"
+            height="150px"
           />
-        </div>
+
 
       </div>
     );

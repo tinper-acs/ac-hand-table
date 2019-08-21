@@ -77,7 +77,24 @@ class AcHandTable extends React.Component {
       // 更新数据
       this.hot.loadData(data);
     }
+
   }
+
+
+  updateSettings = (param) => {
+    const { data: newOld } = param;
+    const { columns } = this.props;
+
+    if (newOld) {
+      let { data } = customRenderData(newOld, columns, this.coverRenderer);
+      param.data = data;
+    }
+
+    this.hot.updateSettings({
+      ...param,
+    });
+
+  };
 
 
   init = () => {
@@ -216,7 +233,7 @@ class AcHandTable extends React.Component {
 
             // 获取行数据
             const rowDataList = rowNumList.map(item => data[item]);
-            onChange(rowNumList, rowDataList,newValueList, oldValueList);
+            onChange(rowNumList, rowDataList, newValueList, oldValueList);
           }
 
           // 是否自定义 col 显示值

@@ -26,6 +26,7 @@ import 'ac-hand-table/dist/index.css';
 |language|表格语言|'zh-CN'或 'en-US'或 'zh-TW'|'zh-CN'|
 |rowHeaders|表头信息|`boolean`或 `array`或 `function` (index)=>{}|true|
 |colWidths|列宽|`number` 100或 `string` '100px'或 `array` [100,200]或 `func` (index)=>{}|-|
+|rowHeights|列宽|`number` 100或 `string` '100px'或 `array` [100,200]或 `func` (index)=>{}|-|
 |width|表格总宽度|'%' 或 'px'|-|
 |height|表格总高度|'%' 或 'px' 或 'auto'|-|
 |multiSelect|是否含有多选框|boolean|true|

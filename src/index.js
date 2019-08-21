@@ -64,6 +64,13 @@ class AcHandTable extends React.Component {
     }
 
     this.init();
+
+    // 点击空白出 清空选中的行
+    document.addEventListener('click', e => {
+      this.setState({ selectRowDataNum: [] });
+    });
+
+
   }
 
   //
@@ -78,22 +85,15 @@ class AcHandTable extends React.Component {
       this.hot.loadData(data);
     }
 
+
   }
 
 
+  // 更新设置
   updateSettings = (param) => {
-    const { data: newOld } = param;
-    const { columns } = this.props;
-
-    if (newOld) {
-      let { data } = customRenderData(newOld, columns, this.coverRenderer);
-      param.data = data;
-    }
-
     this.hot.updateSettings({
       ...param,
     });
-
   };
 
 
@@ -169,7 +169,6 @@ class AcHandTable extends React.Component {
 
 
       afterChange(changes, source) { // 表格被修改后执行
-
 
         if (source === 'edit' || source === 'CopyPaste.paste' || source === 'Autofill.fill') { // 表格被修改
           const [rowNum, name, oldValue, newValue] = changes[0];
@@ -337,6 +336,7 @@ class AcHandTable extends React.Component {
           selectRowDataNum = selectNum;
         }
         _this.setState({ selectRowDataNum });
+
       },
 
 
@@ -349,7 +349,6 @@ class AcHandTable extends React.Component {
 
 
       afterOnCellMouseOut(event, coords, td) {
-
 
         const tooltipValue = td.getAttribute('tooltip');
         const clientWidth = td.clientWidth;
@@ -714,7 +713,7 @@ class AcHandTable extends React.Component {
     const { columns } = this.props;
     const selectRowData = selectRowDataNum.map(item => data[item]);
     const selectResult = changeSelectValue2Key(selectRowData, columns); // 回写下拉框值
-
+    // 清空选中数据
     return {
       rowList: selectResult,
       indexList: selectRowDataNum,

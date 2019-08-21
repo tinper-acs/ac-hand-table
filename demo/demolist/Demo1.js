@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 /**
  *
  * @title 基础表格展示

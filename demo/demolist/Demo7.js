@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 /**
  *
  * @title 动态表格编辑
@@ -82,7 +81,7 @@ class Demo7 extends Component {
       data: 'price',
       type: 'numeric', // 数字类型
       numericFormat: {
-        pattern: '0,0.00 $',
+        pattern: '$0,0.00',
       },
     },
     {
@@ -93,7 +92,7 @@ class Demo7 extends Component {
       data: 'total',
       type: 'numeric', // 数字类型
       numericFormat: {
-        pattern: '0,0.00 $',
+        pattern: '$0,0.00',
       },
       customValue: (rowData) => { // 自定义列显示值
         const { price = 0, number = 0 } = rowData;

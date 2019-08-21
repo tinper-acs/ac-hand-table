@@ -70,10 +70,9 @@ class AcHandTable extends React.Component {
       this.setState({ selectRowDataNum: [] });
     });
 
-
   }
 
-  //
+
   componentWillReceiveProps(nextProps) {
 
     const { columns } = nextProps;// 表体数据

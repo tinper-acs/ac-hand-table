@@ -66,10 +66,18 @@ class AcHandTable extends React.Component {
     this.init();
 
     // 点击空白出 清空选中的行
-    document.addEventListener('click', e => {
+    window.addEventListener('click', e => {
       this.setState({ selectRowDataNum: [] });
     });
 
+    // // 模态框弹出
+    // const modalEle = document.getElementsByClassName('pop-show');
+    // if (modalEle) {
+    //   modalEle[0].addEventListener('click', e => {
+    //     console.log("ddddd")
+    //     this.setState({ selectRowDataNum: [] });
+    //   });
+    // }
   }
 
 
@@ -712,6 +720,7 @@ class AcHandTable extends React.Component {
     const { columns } = this.props;
     const selectRowData = selectRowDataNum.map(item => data[item]);
     const selectResult = changeSelectValue2Key(selectRowData, columns); // 回写下拉框值
+    this.setState({ selectRowDataNum: [] });
     // 清空选中数据
     return {
       rowList: selectResult,

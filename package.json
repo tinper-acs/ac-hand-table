@@ -1,7 +1,7 @@
 {
   "name": "ac-hand-table",
-  "version": "0.1.6",
-  "description": "汉德表格",
+  "version": "0.1.7",
+  "description": "Hand 表格",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

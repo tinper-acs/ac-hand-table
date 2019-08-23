@@ -58,6 +58,7 @@ class AcHandTable extends React.Component {
   hot = null;
 
   componentDidMount() {
+    const { id } = this.props;
     // 在父组件上绑定子组件方法
     if (this.props.onRef) {
       this.props.onRef(this);
@@ -67,17 +68,22 @@ class AcHandTable extends React.Component {
 
     // 点击空白出 清空选中的行
     window.addEventListener('click', e => {
-      this.setState({ selectRowDataNum: [] });
+      const { selectRowDataNum } = this.state;
+      if (selectRowDataNum.length > 0) {
+        this.setState({ selectRowDataNum: [] });
+      }
     });
 
-    // // 模态框弹出
-    // const modalEle = document.getElementsByClassName('pop-show');
-    // if (modalEle) {
-    //   modalEle[0].addEventListener('click', e => {
-    //     console.log("ddddd")
-    //     this.setState({ selectRowDataNum: [] });
-    //   });
-    // }
+    // 模态框弹出 选中行不清空bug
+    const modalEle = document.getElementById(id);
+    if (modalEle) {
+      modalEle.addEventListener('click', e => {
+        if (e.target.className && e.target.className === 'wtHolder') {
+          this.setState({ selectRowDataNum: [] });
+        }
+        e.stopPropagation();
+      });
+    }
   }
 
 
@@ -332,8 +338,7 @@ class AcHandTable extends React.Component {
 
 
       // 选中行
-      afterSelection(startRow, startCol, endRow, endCol, preventScrolling, selectionLayerLevel) {
-
+      afterSelection(startRow, startCol, endRow, endCol, preventScrolling, selectionLayerLevel, event) {
         let { selectRowDataNum } = _this.state;
         const selectNum = getBetweenNum(startRow, endRow);
 

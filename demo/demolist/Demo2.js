@@ -295,7 +295,7 @@ class Demo2 extends Component {
           // mergeCells // 右键菜单是否开启单元格合并
           // multiSelect={false} // 关闭多选框
           width="100%"
-          height="150px"
+          height="350px"
           onSelectData={this.onSelectData}
         />
 

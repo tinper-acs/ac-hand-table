@@ -24,6 +24,7 @@ import {
   colFindSelectValue, // 插入select 类型，将key 转换成value
   getBetweenNum, // 生成指定区间整数
   arrayObjctClone, // 数组深度copy
+  compareObj,
 } from './utils';
 
 import 'handsontable/languages/zh-CN';
@@ -58,7 +59,7 @@ class AcHandTable extends React.Component {
   hot = null;
 
   componentDidMount() {
-    const { id } = this.props;
+    const { id, isModal } = this.props;
     // 在父组件上绑定子组件方法
     if (this.props.onRef) {
       this.props.onRef(this);
@@ -76,7 +77,7 @@ class AcHandTable extends React.Component {
 
     // 模态框弹出 选中行不清空bug
     const modalEle = document.getElementById(id);
-    if (modalEle) {
+    if (modalEle && isModal) {
       modalEle.addEventListener('click', e => {
         if (e.target.className && e.target.className === 'wtHolder') {
           this.setState({ selectRowDataNum: [] });
@@ -277,7 +278,7 @@ class AcHandTable extends React.Component {
             currentKey: [columnKey], // 当前key
           });
         }
-        if (onClick) {
+        if (onClick && data[row]) {
           onClick(data[row], row, data[row][columnKey], td, event);
         }
       },
@@ -336,6 +337,18 @@ class AcHandTable extends React.Component {
       //     _this.setState({data});
       // },
 
+      afterColumnSort(column, orders) {
+        // 获取原始数据
+        const newData = _this.hot.getSourceData();
+        const { column: cIndex, sortOrder } = orders[orders.length - 1];
+        const { columns } = _this.props;
+        const type = columns[cIndex].data;
+        // 排序算法
+        const sortData = newData.sort(compareObj(type, sortOrder));
+        // 更新数据
+        _this.setState({ data: sortData });
+        _this.hot.loadData(sortData);
+      },
 
       // 选中行
       afterSelection(startRow, startCol, endRow, endCol, preventScrolling, selectionLayerLevel, event) {

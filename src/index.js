@@ -110,6 +110,25 @@ class AcHandTable extends React.Component {
     });
   };
 
+  // 重新刷新
+  onRender = () => {
+    this.hot.render();
+  };
+
+
+  setCellMeta = (row, col, key, val) => {
+    this.hot.setCellMeta(row, col, key, val);
+  };
+
+  getSourceData = () => {
+    return this.hot.getSourceData();
+  };
+
+  getDataAtCell = (row, column) => {
+    return this.hot.getDataAtCell(row, column);
+  };
+
+
 
   init = () => {
 

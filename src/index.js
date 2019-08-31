@@ -52,14 +52,13 @@ class AcHandTable extends React.Component {
     selectRowDataNum: [], // 选中行数据下标 select
     eventCode: '', // 当前事件code
 
-
   };
 
 
   hot = null;
 
   componentDidMount() {
-    const { id, isModal } = this.props;
+    const { id} = this.props;
     // 在父组件上绑定子组件方法
     if (this.props.onRef) {
       this.props.onRef(this);
@@ -69,6 +68,7 @@ class AcHandTable extends React.Component {
 
     // 点击空白出 清空选中的行
     window.addEventListener('click', e => {
+      console.log("click window");
       const { selectRowDataNum } = this.state;
       if (selectRowDataNum.length > 0) {
         this.setState({ selectRowDataNum: [] });
@@ -77,7 +77,8 @@ class AcHandTable extends React.Component {
 
     // 模态框弹出 选中行不清空bug
     const modalEle = document.getElementById(id);
-    if (modalEle && isModal) {
+    if (modalEle) {
+      console.log("click isModal");
       modalEle.addEventListener('click', e => {
         if (e.target.className && e.target.className === 'wtHolder') {
           this.setState({ selectRowDataNum: [] });

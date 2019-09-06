@@ -58,7 +58,7 @@ class AcHandTable extends React.Component {
   hot = null;
 
   componentDidMount() {
-    const { id} = this.props;
+    const { id } = this.props;
     // 在父组件上绑定子组件方法
     if (this.props.onRef) {
       this.props.onRef(this);
@@ -68,7 +68,6 @@ class AcHandTable extends React.Component {
 
     // 点击空白出 清空选中的行
     window.addEventListener('click', e => {
-      console.log("click window");
       const { selectRowDataNum } = this.state;
       if (selectRowDataNum.length > 0) {
         this.setState({ selectRowDataNum: [] });
@@ -78,7 +77,6 @@ class AcHandTable extends React.Component {
     // 模态框弹出 选中行不清空bug
     const modalEle = document.getElementById(id);
     if (modalEle) {
-      console.log("click isModal");
       modalEle.addEventListener('click', e => {
         if (e.target.className && e.target.className === 'wtHolder') {
           this.setState({ selectRowDataNum: [] });
@@ -128,7 +126,6 @@ class AcHandTable extends React.Component {
   getDataAtCell = (row, column) => {
     return this.hot.getDataAtCell(row, column);
   };
-
 
 
   init = () => {
@@ -232,6 +229,7 @@ class AcHandTable extends React.Component {
               refValue = columnsKey[0];
             }
 
+
             const currentAutoRow = arrayFindObj(cacheAutoData, refValue, newValue) || {};
             data[rowNum][currentKey] = newValue;
             if (rowKey) { // 自定义列名
@@ -277,7 +275,6 @@ class AcHandTable extends React.Component {
               _this.onUpdateRowData(rowNum, data[rowNum]);
             }
           }
-
           _this.setState({ data }); // 更新state
 
         }
@@ -320,10 +317,11 @@ class AcHandTable extends React.Component {
           const { rowKey } = refConfig;
           // 参照返回字段
           for (let i = row; i <= endRow; i++) {
-            // 返回参照多余字段用_链接
             for (let j = 0; j < rowKey.length; j++) {
               let key = rowKey[j]; // 系统默认key
-              data[i][key] = rowDataCache[key];
+              if (data[i][key]) { // 如果没有找到key 不更新
+                data[i][key] = rowDataCache[key];
+              }
             }
           }
 

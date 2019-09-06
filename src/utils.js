@@ -269,7 +269,7 @@ export function array2Obj(array, keyArray) {
 
 
 // 根据数组合成对象
-export function arrayFindObj(array, key = 'name', value) {
+export function arrayFindObj(array = [], key = 'name', value) {
   let result = null;
   for (const item of array) {
     if (item[key] === value) {

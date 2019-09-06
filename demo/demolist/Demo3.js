@@ -1061,15 +1061,23 @@ class Demo3 extends Component {
       },
       refConfig: {
         refValue: 'selectValue', // 下拉显示值
-        rowKey: ['autocomplete', 'yyy'],
+        rowKey: ['autocomplete', 'refCode'],
       },
       refOnChange: (refData, rowData, rowNum) => { // 下拉选中数据回调
         const { refname, code } = refData;
-        rowData.autocomplete = refname;
-        rowData.yyy = code;
-        console.log('refData', refData); // 如果为空对象表示没有选中
+
+        if (refname) {
+          rowData.autocomplete = refname;
+          rowData.refCode = code;
+        } else {
+          // 删除
+          delete rowData.refCode;
+          // 清空
+          // rowData.refCode="";
+        }
         this.child.onUpdateRowData(rowNum, rowData);
       },
+
 
     },
 

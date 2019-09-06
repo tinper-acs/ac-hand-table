@@ -201,6 +201,7 @@ class AcHandTable extends React.Component {
 
       afterChange(changes, source) { // 表格被修改后执行
 
+
         if (source === 'edit' || source === 'CopyPaste.paste' || source === 'Autofill.fill') { // 表格被修改
           const [rowNum, name, oldValue, newValue] = changes[0];
 
@@ -319,8 +320,10 @@ class AcHandTable extends React.Component {
           for (let i = row; i <= endRow; i++) {
             for (let j = 0; j < rowKey.length; j++) {
               let key = rowKey[j]; // 系统默认key
-              if (data[i][key]) { // 如果没有找到key 不更新
+              if (rowDataCache[key]) { // 如果没有找到key 不更新
                 data[i][key] = rowDataCache[key];
+              } else { // 清空参照code id
+                delete data[i][key];
               }
             }
           }
@@ -690,8 +693,12 @@ class AcHandTable extends React.Component {
     if (source && Object.prototype.toString.call(source === '[Object Object]')) {
       const { data } = this.state;
       source.update_status = true; // 设置为更新状态
+
       data[number] = source;
-      this.setState({ data });
+      this.setState({
+        data,
+        rowDataCache: source
+      });
       this.hot.render();
     }
   };

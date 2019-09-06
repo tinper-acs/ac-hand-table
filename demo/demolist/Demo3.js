@@ -1219,7 +1219,7 @@ class Demo3 extends Component {
           colWidths={[null, 100, 100, 100, 100, 100, 100, null]}
           rowKey="id" // 数组对象中唯一id 默认值为'id'
           width="100%"
-          height="106px"
+          height="auto"
         />
 
       </div>

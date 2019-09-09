@@ -314,7 +314,7 @@ class AcHandTable extends React.Component {
         const { data: currentKey, refConfig } = column;
 
 
-        if (refConfig && refConfig.rowKey.length > 1) {
+        if (refConfig && refConfig.rowKey && refConfig.rowKey.length > 1) {
           const { rowKey } = refConfig;
           // 参照返回字段
           for (let i = row; i <= endRow; i++) {

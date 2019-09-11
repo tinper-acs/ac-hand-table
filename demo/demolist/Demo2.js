@@ -242,11 +242,17 @@ class Demo2 extends Component {
     console.log('onDelRowSelect', onDelRowSelect);
   };
 
+  // 删除行
+  onDelRowNum=()=>{
+    this.child.onDelRowNum([0,1]);
+  }
+
 
   // 导出csv
   onDownCsv = () => {
     this.child.onExportCSV();
   };
+
 
 
   render() {
@@ -268,6 +274,7 @@ class Demo2 extends Component {
           <Button colors="primary" style={btn_style} onClick={this.onDownCsv} size="sm">导出csv </Button>
           <Button colors="primary" style={btn_style} onClick={this.getSelectData} size="sm">逐行选中数据</Button>
           <Button colors="primary" style={btn_style} onClick={this.onDelRowSelect} size="sm">删除选中行数据</Button>
+          <Button colors="primary" style={btn_style} onClick={this.onDelRowNum} size="sm">删除指定行</Button>
         </div>
 
 

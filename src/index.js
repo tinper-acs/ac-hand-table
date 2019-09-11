@@ -756,6 +756,13 @@ class AcHandTable extends React.Component {
   };
 
 
+  // 删除选中行方法 checkbox
+  onDelRowNum = (selectRowDataNum) => {
+    const result = selectRowDataNum.map(item => [item, 1]);
+    this.hot.alter('remove_row', result);
+  };
+
+
   // 获取选中行数据 通过多选框
   getSelectData = () => {
 

@@ -441,6 +441,7 @@ class AcHandTable extends React.Component {
   coverRenderer = (instance, td, row, col, prop, value, cellProperties) => {
 
     const _this = this;
+    const { data } = _this;
 
     const { columns, rowStyle } = _this.props;
     Handsontable.dom.empty(td); // 清空td
@@ -481,7 +482,7 @@ class AcHandTable extends React.Component {
     td.appendChild(createDiv);
 
     // 添加样式
-    const styles = rowStyle && rowStyle(row, col, prop, value);
+    const styles = rowStyle && rowStyle(row, col, prop, value, data[row]);
     if (styles) {
       for (const style in styles) { // 修改行样式
         td.style[style] = styles[style];
@@ -599,7 +600,7 @@ class AcHandTable extends React.Component {
             }
 
             // 添加自定义行样式
-            const styles = rowStyle ? rowStyle(row, col, prop, value) : '';
+            const styles = rowStyle ? rowStyle(row, col, prop, value,data[row]) : '';
             if (styles) {
               // 修改行样式
               for (const style in styles) {

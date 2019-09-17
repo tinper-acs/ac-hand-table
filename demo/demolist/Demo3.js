@@ -1222,6 +1222,16 @@ class Demo3 extends Component {
           rowKey="id" // 数组对象中唯一id 默认值为'id'
           width="100%"
           height="auto"
+          rowStyle={(rowIndex, column, prop, value,rowData) => { // 自定义 禁止修改样式
+            // console.log("rowData",rowData)
+            // const data = this.child.getSourceData();
+            // console.log("rowData",data[rowIndex]);
+            let bgColor = '#fff';
+            if (rowIndex === 1 && column === 1) {
+              bgColor = '#DFE1E6';
+            }
+            return { 'background-color': bgColor };
+          }}
         />
 
       </div>

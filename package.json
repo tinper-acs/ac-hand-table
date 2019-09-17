@@ -1,6 +1,6 @@
 {
   "name": "ac-hand-table",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "Hand 表格",
   "main": "dist/index.js",
   "scripts": {

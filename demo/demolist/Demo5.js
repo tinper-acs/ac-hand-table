@@ -156,6 +156,7 @@ class Demo5 extends Component {
     if (gender === '男' && column === 1) {
       cellProperties.editor = false;
       cellProperties.readOnly = true;
+      cellProperties.className = 'headClass';
     }
     return cellProperties;
   };
@@ -206,18 +207,6 @@ class Demo5 extends Component {
           csvConfig={{
             filename: '导出',
             columnHeaders: true,
-          }}
-
-
-          rowStyle={(rowIndex, column, prop, value) => { // 自定义 禁止修改样式
-
-            console.log("rowIndex, column, prop, value",rowIndex, column, prop, value)
-
-            let bgColor = '#fff';
-            if (rowIndex === 1 && column === 1) {
-              bgColor = '#DFE1E6';
-            }
-            return { 'background-color': bgColor };
           }}
 
           width="100%"

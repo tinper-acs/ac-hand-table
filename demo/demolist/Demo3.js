@@ -1194,6 +1194,8 @@ class Demo3 extends Component {
   };
 
 
+
+
   render() {
     const { handData } = this.state;
     console.log(this.columns);

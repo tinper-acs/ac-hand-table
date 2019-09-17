@@ -56,6 +56,7 @@ class AcHandTable extends React.Component {
 
 
   hot = null;
+  cacheData = null;
 
   componentDidMount() {
     const { id } = this.props;
@@ -94,10 +95,12 @@ class AcHandTable extends React.Component {
     if (nextProps.data !== this.props.data) {
       let { data } = customRenderData(nextProps.data, columns, this.coverRenderer);
       this.setState({ data });
+      // 缓存 data 排序用
+      this.cacheData = data;
       // 更新数据
       this.hot.loadData(data);
-    }
 
+    }
 
   }
 
@@ -358,17 +361,23 @@ class AcHandTable extends React.Component {
       //     _this.setState({data});
       // },
 
+
       afterColumnSort(column, orders) {
+
         // 获取原始数据
-        const newData = _this.hot.getSourceData();
-        const { column: cIndex, sortOrder } = orders[orders.length - 1];
-        const { columns } = _this.props;
-        const type = columns[cIndex].data;
-        // 排序算法
-        const sortData = newData.sort(compareObj(type, sortOrder));
-        // 更新数据
-        _this.setState({ data: sortData });
-        _this.hot.loadData(sortData);
+        if (orders.length > 0) {
+          const newData = arrayObjctClone(_this.hot.getSourceData());
+          const { column: cIndex, sortOrder } = orders[orders.length - 1];
+          const { columns } = _this.props;
+          const type = columns[cIndex].data;
+          // 排序算法
+          const sortData = newData.sort(compareObj(type, sortOrder));
+          // 更新数据
+          _this.setState({ data: sortData });
+        } else {
+          _this.setState({ data: _this.cacheData });
+        }
+
       },
 
       // 选中行
@@ -441,7 +450,7 @@ class AcHandTable extends React.Component {
   coverRenderer = (instance, td, row, col, prop, value, cellProperties) => {
 
     const _this = this;
-    const { data } = _this;
+    const { data } = _this.state;
 
     const { columns, rowStyle } = _this.props;
     Handsontable.dom.empty(td); // 清空td
@@ -519,6 +528,8 @@ class AcHandTable extends React.Component {
 
     }
 
+    // 缓存 data 排序用
+    this.cacheData = data;
 
     // 添加 多选框
     if (multiSelect && colHeaders && Array.isArray(colHeaders) && colHeaders.length > 0) {
@@ -600,7 +611,7 @@ class AcHandTable extends React.Component {
             }
 
             // 添加自定义行样式
-            const styles = rowStyle ? rowStyle(row, col, prop, value,data[row]) : '';
+            const styles = rowStyle ? rowStyle(row, col, prop, value, data[row]) : '';
             if (styles) {
               // 修改行样式
               for (const style in styles) {
@@ -769,6 +780,7 @@ class AcHandTable extends React.Component {
 
     const { selectRowDataNum, data } = this.state;
     const { columns } = this.props;
+
     const selectRowData = selectRowDataNum.map(item => data[item]);
     const selectResult = changeSelectValue2Key(selectRowData, columns); // 回写下拉框值
     this.setState({ selectRowDataNum: [] });

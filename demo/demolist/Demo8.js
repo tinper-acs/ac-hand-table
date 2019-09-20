@@ -55,20 +55,12 @@ class Demo8 extends Component {
     super(props);
     this.state = {
       handData: mockData,
-      startDate: '2019-01-01',
-      endDate: '2019-12-31',
     };
   }
 
-
-  componentDidMount() {
-
-  }
-
-
   // 获取第一个表头，也就是月份
   getNestedHeaders = () => {
-    const { startDate } = this.state;
+    const { startDate } = this.getStartEndDate();
     const dayNum = this.getDayNum();
 
     let monthTemp = {};   // 月份
@@ -111,7 +103,7 @@ class Demo8 extends Component {
 
   // 获取col
   getColumns = () => {
-    const { startDate } = this.state;
+    const { startDate } = this.getStartEndDate();
     const dayNum = this.getDayNum();
     let columnsGantta = [];
     for (let i = 0; i < dayNum; i++) {
@@ -124,18 +116,20 @@ class Demo8 extends Component {
         readOnly: true,
         renderer: (instance, td, row, col, prop, value) => { // 自定义列显示值
           // 是否出现计划时间条
-          const planDivString = value[0] ? '<div style="height: 10px;background-color:red;"></div>' : '';
-          // 是否出现实际时间条
-          let actualDivString = '';
-          if (value[0]) {
-            // 实际时间在计划时间内
-            actualDivString = value[1] ? '<div style="height: 10px;background-color:green;"></div>' : '';
-          } else {
-            // 实际时间超出计划时间
-            actualDivString = value[1] ? '<div style="height: 10px;"></div><div style="height: 10px;background-color:green;"></div>' : '';
+          if (Array.isArray(value)) {
+            const planDivString = value[0] ? '<div style="height: 10px;background-color:red;"></div>' : '';
+            // 是否出现实际时间条
+            let actualDivString = '';
+            if (value[0]) {
+              // 实际时间在计划时间内
+              actualDivString = value[1] ? '<div style="height: 10px;background-color:green;"></div>' : '';
+            } else {
+              // 实际时间超出计划时间
+              actualDivString = value[1] ? '<div style="height: 10px;"></div><div style="height: 10px;background-color:green;"></div>' : '';
+            }
+            td.innerHTML = planDivString + actualDivString;
+            td.style = 'padding:0px';
           }
-          td.innerHTML = planDivString + actualDivString;
-          td.style = 'padding:0px';
           return td;
         },
       };
@@ -147,7 +141,7 @@ class Demo8 extends Component {
 
   // 获取 colHeaders
   getColHeaders = () => {
-    const { startDate } = this.state;
+    const { startDate } = this.getStartEndDate();
     const dayNum = this.getDayNum();
     let colHeaders = [];
     for (let i = 0; i < dayNum; i++) {
@@ -163,16 +157,17 @@ class Demo8 extends Component {
 
   // 获取两个日期直接的天数
   getDayNum = () => {
-    const { startDate, endDate, } = this.state;
+    const { startDate, endDate, } = this.getStartEndDate();
     return moment(endDate)
-      .diff(moment(startDate), 'days');
+      .diff(moment(startDate), 'days') + 1;
   };
 
 
   // 计算甘特图数据
   getGanttaData = () => {
 
-    const { startDate, handData } = this.state;
+    const { handData } = this.state;
+    const { startDate, } = this.getStartEndDate();
     const dayNum = this.getDayNum();
 
     let ganttaArray = []; // 甘特图数组
@@ -203,15 +198,63 @@ class Demo8 extends Component {
   };
 
 
-  // 动态计算
+  // 动态计算日期改变事件
   onChangeDate = (rowNumList, newValueList, key) => {
     const rowNum = rowNumList[0];
     const newValue = newValueList[0];
     const { handData } = this.state;
     handData[rowNum][key] = newValue;
+
+    // 获取表头1，2
+    let nestedHeaders = this.getNestedHeaders();
+    let temp = [];
+    for (const item of this.getColHeaders()) {
+      temp.push({
+        label: item,
+        colspan: 1,
+      });
+    }
+    // 添加表头3
+    nestedHeaders.push(temp);
+
+    //  更新甘特图设置
+    this.childGantta.updateSettings({
+      data: this.getGanttaData(),
+      columns: this.getColumns(),
+      width: this.getDayNum() * 20 + 50,
+      nestedHeaders,
+    });
+
     this.setState({ handData });
+
   };
 
+  // 计算开始日期和结束日期
+
+  getStartEndDate = () => {
+    const { handData } = this.state;
+    const dateArray = [];
+    // 获取所有日期
+    for (const item of  handData) {
+      const { planStartDate, planEndDate, actualStarDate, actualEndDate } = item;
+      dateArray.push(planStartDate, planEndDate, actualStarDate, actualEndDate);
+    }
+
+    // 去重
+    let set = new Set(dateArray);
+    const dateClearArray = Array.from(set);
+    // 获取最小日期
+    const startDate = moment.min(dateClearArray.map(a => moment(a)))
+      .format('YYYY-MM-DD');
+
+    // 获取最大日期
+    const endDate = moment.max(dateClearArray.map(a => moment(a)))
+      .format('YYYY-MM-DD');
+    return {
+      startDate,
+      endDate
+    };
+  };
 
   column = [
     {
@@ -262,61 +305,60 @@ class Demo8 extends Component {
 
     const { handData } = this.state;
 
-
     return (
       <div className="demoPadding">
-        <div>
+        <div className={'gantta-content'}>
+          <AcHandTable
+            id="example8" // 组件id
+            onRef={(ref) => this.ssschild = ref} // 设置ref属性 调用子组件方法
+            data={handData} // 表体数据
+            columns={this.column} // 列属性设置
+            colWidths={100}
+            colHeaders={['工程拆分', '计划开始时间', '计划结束时间', '实际开始时间', '实际结束时间']} // 表格表头
+            manualRowMove // 行移动
+            fillHandle={{
+              autoInsertRow: false,
+              direction: 'vertical',
+            }}
+            width="548px"
+            height="auto"
+            multiSelect={false}
+            stretchH={'none'}
+            dropdownMenu={false}
+            multiColumnSorting={false} // 去掉排序
+            columnHeaderHeight={77} //表头高
+          />
 
-          <div className={'xxxx'} id={'xxxx'}>
-            <AcHandTable
-              id="example8" // 组件id
-              onRef={(ref) => this.ssschild = ref} // 设置ref属性 调用子组件方法
-              data={handData} // 表体数据
-              columns={this.column} // 列属性设置
-              colWidths={100}
-              colHeaders={['工程拆分', '计划开始时间', '计划结束时间', '实际开始时间', '实际结束时间']} // 表格表头
-              manualRowMove // 行移动
-              fillHandle={{
-                autoInsertRow: false,
-                direction: 'vertical',
-              }}
-              width="548px"
-              height="auto"
-              multiSelect={false}
-              stretchH={'none'}
-              dropdownMenu={false}
-              columnHeaderHeight={77} //表头高
-            />
 
-
+          {handData &&
             <AcHandTable
               id="columnsGantta" // 组件id
-              onRef={ref => this.child2 = ref} // 设置ref属性 调用子组件方法
-              colHeaders={this.getColHeaders()} // 表格表头
+              onRef={ref => this.childGantta = ref} // 设置ref属性 调用子组件方法
 
+              colHeaders={this.getColHeaders()} // 表格表头
               data={this.getGanttaData()} // 表体数据
               columns={this.getColumns()} // 列属性设置
-              colWidths={20}
+              colWidths={25}
               manualRowMove // 行移动
               fillHandle={{
-                autoInsertRow: false,
+                autoInsertRow: false, // 去掉自动加行
                 direction: 'vertical',
               }}
-              width={'800px'}
-              // width={this.getDayNum() * 20 + 50}
+              width={'1000px'}
+              // width={this.getDayNum() * 25}
               height="auto"
               headerTooltips
               nestedHeaders={this.getNestedHeaders()} // 设置多表头
-              contextMenu={false}
-              dropdownMenu={false}
-              multiSelect={false}
-              // rowHeaders={false}
-              // stretchH={'none'}
-              manualColumnResize={false}
+              contextMenu={false}  // 去掉菜单
+              dropdownMenu={false} // 去掉下拉
+              multiSelect={false}  // 去掉多选
+              multiColumnSorting={false} // 去掉排序
+              manualColumnResize={false} // 去掉 Resize
+              stretchH={'none'} // 最后一行禁止拉伸
             />
-          </div>
-
+          }
         </div>
+
       </div>
 
     );

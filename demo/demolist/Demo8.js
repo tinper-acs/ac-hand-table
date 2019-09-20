@@ -344,7 +344,7 @@ class Demo8 extends Component {
                 autoInsertRow: false, // 去掉自动加行
                 direction: 'vertical',
               }}
-              width={'1000px'}
+              width={'800px'}
               // width={this.getDayNum() * 25}
               height="auto"
               headerTooltips

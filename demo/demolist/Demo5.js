@@ -62,9 +62,9 @@ class Demo5 extends Component {
 
   componentDidMount() {
 
-    this.child.updateSettings({
-      cells: this.setCell,
-    });
+    // this.child.updateSettings({
+    //   cells: this.setCell,
+    // });
 
   }
 
@@ -96,11 +96,11 @@ class Demo5 extends Component {
         },
       ],
       dropdownMenu: true,
-      onChange: () => {
-        this.child.updateSettings({
-          cells: this.setCell,
-        });
-      }
+      // onChange: () => {
+      //   this.child.updateSettings({
+      //     cells: this.setCell,
+      //   });
+      // }
     },
     {
       data: 'time',

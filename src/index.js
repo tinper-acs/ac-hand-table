@@ -558,6 +558,10 @@ class AcHandTable extends React.Component {
       }
     }
 
+    // 多表头无checkbox
+    if (!multiSelect && nestedHeaders) {
+      nestedHeaders.push(colHeaders);
+    }
 
     // 添加行样式
     if (columns && columns.length > 0) {
@@ -637,6 +641,7 @@ class AcHandTable extends React.Component {
       rowHeaders: true,
     };
 
+
     return {
 
       licenseKey: 'non-commercial-and-evaluation', // 添加 License key
@@ -653,7 +658,7 @@ class AcHandTable extends React.Component {
       allowInsertColumn: false, // 是否开启插入列
       allowInsertRow: true, // 是否开启插入行
       allowEmpty: false,
-      multiSelect: true, // 行多选框
+      multiSelect, // 行多选框
       dropdownMenu: true, // 表头下拉
       mergeCells: false, // 表格合并
       fillHandle: 'vertical', // 默认只能横向 为了解决参照问题
@@ -909,7 +914,7 @@ class AcHandTable extends React.Component {
   };
 
   render() {
-    const { id, dropdownMenu, fixedShadow } = this.props;
+    const { id, dropdownMenu, fixedShadow ,spanClass,spanStyle} = this.props;
     const { refConfig } = this.state;
 
     let tableClass = dropdownMenu !== false ? 'hand-table-drop-down-menu' : '';
@@ -919,7 +924,7 @@ class AcHandTable extends React.Component {
 
 
     return (
-      <div>
+      <span className={spanClass} style={spanStyle}>
         {/* 多选通过 css 去掉表头下拉 */}
         <div id={id} className={tableClass}/>
         {/* 表格 */}
@@ -953,7 +958,7 @@ class AcHandTable extends React.Component {
           handleTreeSelect={this.onSearchRef}
         />
 
-      </div>
+      </span>
     );
   }
 }

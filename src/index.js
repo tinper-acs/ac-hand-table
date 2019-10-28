@@ -916,8 +916,12 @@ class AcHandTable extends React.Component {
     const { filename } = csvConfig;
     let copyColHeaders = [...colHeaders];
 
-    if (multiSelect !== false) {
-      copyColHeaders.shift();
+    // 判断是否有 dom 节点
+    if (Array.isArray(copyColHeaders) && copyColHeaders.length > 0) {
+      let reg = /<[^>]+>/g;
+      if (reg.test(copyColHeaders[0])) {
+        copyColHeaders.shift();
+      }
     }
 
     // BOM的方式解决EXCEL乱码问题

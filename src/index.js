@@ -407,15 +407,17 @@ class AcHandTable extends React.Component {
       // 选中行
       afterSelection(startRow, startCol, endRow, endCol, preventScrolling, selectionLayerLevel, event) {
         let { selectRowDataNum } = _this.state;
-        const selectNum = getBetweenNum(startRow, endRow);
+        if (startRow > endRow) {
+          [startRow, endRow] = [endRow, startRow];
+        }
 
+        const selectNum = getBetweenNum(startRow, endRow);
         if (selectionLayerLevel) { // 是否ctr
           selectRowDataNum.push(...selectNum);
         } else {
           selectRowDataNum = selectNum;
         }
         _this.setState({ selectRowDataNum });
-
         // 选中行回调
         const { afterSelection } = _this.props;
         if (afterSelection) {

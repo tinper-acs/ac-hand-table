@@ -70,7 +70,9 @@ class AcHandTable extends React.Component {
     // 点击空白出 清空选中的行
     window.addEventListener('click', e => {
       const { selectRowDataNum } = this.state;
-      if (selectRowDataNum.length > 0) {
+      // 防止最后一行选中
+      const select = this.hot.getSelected();
+      if (selectRowDataNum.length > 0 && !Array.isArray(select)) {
         this.setState({ selectRowDataNum: [] });
       }
     });

@@ -79,7 +79,7 @@ class Demo2 extends Component {
       data: 'name',
       type: 'text',
       validator: (value, callback) => {
-        console.log("valuevalue",!!value)
+        console.log('valuevalue', !!value);
         callback(true);
       },
       allowInvalid: true,
@@ -311,6 +311,11 @@ class Demo2 extends Component {
             filename: '导出',
             rowHeaders: true,
           }}
+
+          afterSelection={(startRow, startCol, endRow, endCol, selectRowNum) => {
+            console.log('startRow, startCol, endRow, endCol', startRow, startCol, endRow, endCol, selectRowNum);
+          }}
+
           // mergeCells // 右键菜单是否开启单元格合并
           // multiSelect={false} // 关闭多选框
           width="100%"

@@ -423,7 +423,7 @@ class AcHandTable extends React.Component {
         // 选中行回调
         const { afterSelection } = _this.props;
         if (afterSelection) {
-          afterSelection(startRow, startCol, endRow, endCol);
+          afterSelection(startRow, startCol, endRow, endCol, selectRowDataNum);
         }
       },
 
@@ -813,6 +813,11 @@ class AcHandTable extends React.Component {
   };
 
 
+  // 清空选中
+  onClearSelectData = () => {
+    this.setState({ selectRowDataNum: [] });
+  };
+
   // 获取选中行数据 通过多选框
   getSelectData = () => {
 
@@ -821,7 +826,7 @@ class AcHandTable extends React.Component {
 
     const selectRowData = selectRowDataNum.map(item => data[item]);
     const selectResult = changeSelectValue2Key(selectRowData, columns); // 回写下拉框值
-    this.setState({ selectRowDataNum: [] });
+    // this.setState({ selectRowDataNum: [] });
     // 清空选中数据
     return {
       rowList: selectResult,

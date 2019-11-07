@@ -419,11 +419,14 @@ class AcHandTable extends React.Component {
         } else {
           selectRowDataNum = selectNum;
         }
-        _this.setState({ selectRowDataNum });
+        // 去重
+        const set = new Set(selectRowDataNum);
+        const selectRowIndex = Array.from(set);
+        _this.setState({ selectRowDataNum: selectRowIndex });
         // 选中行回调
         const { afterSelection } = _this.props;
         if (afterSelection) {
-          afterSelection(startRow, startCol, endRow, endCol, selectRowDataNum);
+          afterSelection(startRow, startCol, endRow, endCol, selectRowIndex);
         }
       },
 
